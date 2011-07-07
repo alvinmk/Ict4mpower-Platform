@@ -1,0 +1,15 @@
+bin
+*.class
+.bak
+*.off
+*.old
+*.log
+target
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.externalToolBuilders
+

@@ -1,0 +1,61 @@
+/*####################
+STYLE FOR PROCESS TABS
+#####################*/
+
+ul {
+	list-style: none;
+}
+
+#process li {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	float: left;
+	min-width: 80px;
+	margin: 0 5px 0 0;
+	background-color: #2B477D;
+	border: solid 1px #adadad;
+	position: relative;
+	z-index: 1;
+}
+
+#process li.selected {
+	z-index: 3;
+}
+
+#process li a:link, #process li a:visited {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	display: block;
+	text-align: center;
+	min-width: 80px;
+	line-height: 36px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+	color: #fff;
+	letter-spacing: 1px;
+	outline: none;
+	float: left;
+	background: #2B477D;
+	-webkit-transition: background-color 0.3s linear;
+	-moz-transition: background-color 0.3s linear;
+	-o-transition: background-color 0.3s linear;
+}
+
+#process li a:hover {
+	background-color: #5a87dd;
+}
+
+#process li.selected a:link, #process li.selected a:visited {
+	color: #2B477D;
+	border: solid 1px #fff;
+	-webkit-transition: background-color 0.2s linear;
+	background: -moz-linear-gradient(top center, #d1d1d1, #f2f2f2 80%) repeat scroll 0 0 #f2f2f2;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(.2, #f2f2f2),color-stop(.8, #d1d1d1));
+	background-color: #f2f2f2;
+}
+
