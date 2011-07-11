@@ -19,7 +19,7 @@ import templatePanels.LinkButton;
 import templatePanels.MenuPanel;
 import templatePanels.ProcessPanel;
 import templatePanels.UserPanel;
-import templatePanels.WorkingObjectPanel;
+import templatePanels.StatePanel;
 
 public class Template extends WebPage {
 
@@ -30,7 +30,7 @@ public class Template extends WebPage {
 		ProcessPanel p = new ProcessPanel("process", parameters, tasks );
 		MenuPanel m = new MenuPanel("menu", parameters.getString("goalname"), tasks );
 		UserPanel u = new UserPanel("userPanel");
-		WorkingObjectPanel wp = new WorkingObjectPanel("workingObject");
+		StatePanel wp = new StatePanel("workingObject");
 		add(wp);
 		add(u);
 		add(p);

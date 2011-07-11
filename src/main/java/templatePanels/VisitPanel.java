@@ -13,7 +13,7 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		add( new Label("visitDate", "DATE"));
-		add( new Label("visitStage", "Visit finished to stage: stage"));
+		add( new Label("visitStage", "VISIT SIGNED"));
 	}
 	
 }

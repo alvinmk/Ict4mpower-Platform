@@ -14,6 +14,7 @@ public class UserPanel extends Panel {
 		super(id);
 		add( new Label("username", "username"));
 		add( new Label("applicationSelect", "Current Application"));
+		add( new Label("location", "Kampala, HC4"));
 		add( new Label("exitApplication", "Exit"));
 	}
 
