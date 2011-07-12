@@ -9,9 +9,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.*;
 import org.apache.wicket.markup.html.link.*;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.WebRequest;
 
 import template.Template;
  
@@ -35,7 +33,8 @@ public class ProcessPanel extends Panel {
 				if(task.name.equals(selectedTask)){
 					item.add(new AttributeAppender("class", new Model<String>("selected"), " "));
 				}
-				BookmarkablePageLink link = new BookmarkablePageLink("tasklink", Template.class, new PageParameters("taskname=" +task.parameter+",goalname="+selectedgoal));
+				PageParameters pp = new PageParameters("taskname=" +task.parameter+",goalname="+selectedgoal);
+				BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
 				link.add(new Label("taskname", task.name));
 				item.add(link);
 				

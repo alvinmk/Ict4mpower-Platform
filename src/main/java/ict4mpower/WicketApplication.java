@@ -28,7 +28,8 @@ public class WicketApplication extends WebApplication
 		return HomePage.class;
 	}
 	
-	public Class<Template> getTemplate(){
+	public Class<Template> getTemplate()
+	{
 		return Template.class;
 		
 	}

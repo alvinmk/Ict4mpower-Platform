@@ -13,8 +13,12 @@
 	<wicket:panel>
 	 	<span wicket:id="username" class=user_info">USERNAME</span>
 	 	<span wicket:id="location" class=user_info">Location</span>
-	 	<span wicket:id="applicationSelect" class=user_info">Applications</span>
-	 	<span wicket:id="exitApplication" class=user_info">EXIT</span>
+	 	<select wicket:id="applicationSelect" class=user_info">
+	 		<option>Current Application</option>
+	 	</select>
+	 	<form style="display: inline">	
+	 		<input wicket:id="exitApplication" type="submit" value="Exit" class=user_info"></input>
+	 	</form>
 	</wicket:panel>
 </body>
-</html>
+</html>>

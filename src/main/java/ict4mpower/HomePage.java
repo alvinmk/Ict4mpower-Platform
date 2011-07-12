@@ -24,7 +24,7 @@ public class HomePage extends WebPage {
 		add(new BookmarkablePageLink("linky", Template.class, new PageParameters("taskname=Task1")));
 
 		Button button = new Button("open-dialog");
-		button.add(new WiQueryEventBehavior(new Event(MouseEvent.DBLCLICK) {
+		button.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 
 			@Override
 			public JsScope callback() {

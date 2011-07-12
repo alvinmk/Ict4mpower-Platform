@@ -24,7 +24,8 @@ public class MenuPanel extends Panel {
 				// This method is called for each 'entry' in the list.
 				@Override protected void populateItem(ListItem<LinkButton> item) {
 					final LinkButton goal = (LinkButton)item.getModelObject();
-					BookmarkablePageLink link = new BookmarkablePageLink("tasklink", Template.class, new PageParameters("goalname=" +goal.parameter));
+					PageParameters pp = new PageParameters("goalname=" +goal.parameter);
+					BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
 					Label l = new Label("taskname", goal.name);
 					if(goal.name.equals(selectedTask)){
 						l.add(new AttributeAppender("class", new Model<String>("selected"), " "));
