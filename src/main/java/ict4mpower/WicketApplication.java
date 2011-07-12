@@ -23,14 +23,9 @@ public class WicketApplication extends WebApplication
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
-	public Class<HomePage> getHomePage()
-	{
-		return HomePage.class;
-	}
-	
-	public Class<Template> getTemplate()
+	public Class<Template> getHomePage()
 	{
 		return Template.class;
-		
 	}
+	
 }
