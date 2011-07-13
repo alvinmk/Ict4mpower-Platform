@@ -1,8 +1,14 @@
 package ict4mpower;
 
+import ict4mpower.openid.OpenIdConsumer;
 import javax.xml.transform.Templates;
-
+import org.apache.wicket.Page;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.openid4java.OpenIDException;
+import org.openid4java.discovery.Identifier;
 
 import template.Template;
 
@@ -26,6 +32,38 @@ public class WicketApplication extends WebApplication
 	public Class<Template> getHomePage()
 	{
 		return Template.class;
+	}
+	
+	@Override
+	public AppSession newSession(Request req, Response res){
+		return new AppSession(req);		
+	}
+	
+
+	@Override
+	protected void init() {
+		super.init();
+		getSecuritySettings().setAuthorizationStrategy(new AuthStrategy());
+		OpenIdConsumer consumer = new OpenIdConsumer("http://ivaynberg.dnsalias.com") {
+			
+			@Override
+			protected void onLoginSuccessful(Identifier identifier, Page page) {
+				AppSession session = (AppSession) page.getSession();
+				session.setUserID(identifier.getIdentifier());
+				if (!page.continueToOriginalDestination()) {
+					page.setResponsePage(getHomePage());
+				}
+			}
+
+			@Override
+			protected void onLoginFailed(String identity, OpenIDException cause, Page page) {
+				LoginPage login = new LoginPage();
+				login.error("OpenID Authentication Failed");
+				page.setResponsePage(login);
+			}
+
+		};
+		consumer.init(this);
 	}
 	
 }
