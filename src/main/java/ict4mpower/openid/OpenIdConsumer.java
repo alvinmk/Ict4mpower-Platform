@@ -44,7 +44,7 @@ public abstract class OpenIdConsumer {
 
 	public void init(WebApplication application) {
 		consumers = new MapMaker().expireAfterWrite(5, TimeUnit.MINUTES).makeMap();
-		application.mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
+		//application.mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
 		application.setMetaData(KEY, this);
 	}
 

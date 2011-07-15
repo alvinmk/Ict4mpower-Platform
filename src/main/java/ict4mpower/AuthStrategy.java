@@ -1,5 +1,7 @@
 package ict4mpower;
 
+import ict4mpower.openid.OpenIdCallbackPage;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
@@ -19,10 +21,16 @@ public class AuthStrategy implements IAuthorizationStrategy {
 		if (LoginPage.class.isAssignableFrom(componentClass)) {
 			return true;
 		}
+		
+		if (OpenIdCallbackPage.class.isAssignableFrom(componentClass)) {
+			return true;
+		}
 
-		if (((AppSession) AppSession.get()).getUserID() == null) {
+		if (((AppSession) Session.get()).getUserID() == null) {
 			throw new RestartResponseAtInterceptPageException(LoginPage.class);
 		}
+
+
 
 		return true;
 	}
