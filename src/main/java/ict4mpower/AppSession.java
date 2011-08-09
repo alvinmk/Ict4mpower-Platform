@@ -3,11 +3,14 @@ package ict4mpower;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebSession;
 
+/*
+ * What should be stored in the session
+ */
 public class AppSession extends WebSession{
 	private static final long serialVersionUID = 1L;
-	private String userID;
-	private String goal;
-	private String task;
+	private String userID; //An Id for the current user
+	private String goal; //Current goal
+	private String task; //Current task
 	
 	public AppSession(Request r){
 		super(r);

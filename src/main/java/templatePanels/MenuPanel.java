@@ -17,8 +17,9 @@ import template.Template;
 public class MenuPanel extends Panel {
 		private static final long serialVersionUID = 1L;
 
-		public MenuPanel(String id, final String selectedTask, List<LinkButton> goals){
+		public MenuPanel(String id, PageParameters params, List<LinkButton> goals){
 			super(id);
+			final String selectedGoal= params.getString("goalname");
 			add(new ListView<LinkButton>("processlist", goals) {
 				private static final long serialVersionUID = 1L;
 				// This method is called for each 'entry' in the list.
@@ -27,7 +28,7 @@ public class MenuPanel extends Panel {
 					PageParameters pp = new PageParameters("goalname=" +goal.parameter);
 					BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
 					Label l = new Label("taskname", goal.name);
-					if(goal.name.equals(selectedTask)){
+					if(goal.name.equals(selectedGoal)){
 						l.add(new AttributeAppender("class", new Model<String>("selected"), " "));
 					}
 					link.add(l);

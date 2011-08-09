@@ -1,4 +1,4 @@
-package ict4mpower.openid;
+package authentication;
 
 import java.util.List;
 import java.util.Map;

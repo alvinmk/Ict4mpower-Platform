@@ -1,7 +1,5 @@
 package ict4mpower;
 
-import ict4mpower.openid.OpenIdCallbackPage;
-import ict4mpower.openid.OpenIdConsumer;
 import javax.xml.transform.Templates;
 import org.apache.wicket.Page;
 import org.apache.wicket.Request;
@@ -10,6 +8,10 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.openid4java.OpenIDException;
 import org.openid4java.discovery.Identifier;
+
+import authentication.LoginPage;
+import authentication.OpenIdCallbackPage;
+import authentication.OpenIdConsumer;
 
 import template.Template;
 

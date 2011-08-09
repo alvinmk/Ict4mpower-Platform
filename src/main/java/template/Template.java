@@ -21,8 +21,11 @@ import templatePanels.ProcessPanel;
 import templatePanels.UserPanel;
 import templatePanels.StatePanel;
 
+/*
+ * The basic strucutre of the template page and the components it contains.
+ */
 public class Template extends WebPage {
-
+	
 	public Template(final PageParameters parameters) {
 		//This is a temprary solution to keep track of which task and goal the user is in
 		PageParameters previousparams = new PageParameters("goalname=" +parameters.getString("goalname")); 
@@ -32,7 +35,7 @@ public class Template extends WebPage {
 		ProcessPanel p = new ProcessPanel("process", parameters, tasks );
 		add(p);
 		
-		MenuPanel m = new MenuPanel("menu", parameters.getString("goalname"), goals );
+		MenuPanel m = new MenuPanel("menu", parameters, goals );
 		add(m);
 		
 		//A panel that keeps track of the user and the users information
