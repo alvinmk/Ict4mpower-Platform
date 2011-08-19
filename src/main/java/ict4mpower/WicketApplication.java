@@ -1,10 +1,8 @@
 package ict4mpower;
 
-import javax.xml.transform.Templates;
 import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
-import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.openid4java.OpenIDException;
 import org.openid4java.discovery.Identifier;
@@ -46,9 +44,9 @@ public class WicketApplication extends WebApplication
 	@Override
 	protected void init() {
 		super.init();
-		mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
+		//mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
 		getSecuritySettings().setAuthorizationStrategy(new AuthStrategy());
-		OpenIdConsumer consumer = new OpenIdConsumer("http://anomie.ftpaccess.cc:8080/template") {
+		OpenIdConsumer consumer = new OpenIdConsumer("http://localhost:8080/template") {
 			
 			@Override
 			protected void onLoginSuccessful(Identifier identifier, Page page) {

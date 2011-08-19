@@ -23,11 +23,11 @@ public class AuthStrategy implements IAuthorizationStrategy {
 			return true;
 		}
 		
-		//The login page is available for everyone
+		//The login page is always available
 		if (LoginPage.class.isAssignableFrom(componentClass)) {
 			return true;
 		}
-		//The openidcallback page is available for everyone.
+		//The openidcallback page is always available
 		if (OpenIdCallbackPage.class.isAssignableFrom(componentClass)) {
 			return true;
 		}
@@ -35,7 +35,7 @@ public class AuthStrategy implements IAuthorizationStrategy {
 		if (((AppSession) Session.get()).getUserID() == null) {
 			throw new RestartResponseAtInterceptPageException(LoginPage.class);
 		}
-		//if nothing matches it user is allowed the resource
+		//if nothing matches disallow.
 		return true;
 	}
 

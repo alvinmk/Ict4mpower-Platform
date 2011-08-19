@@ -27,6 +27,7 @@ public class UserPanel extends Panel {
 		
 		add( new Label("location", "Kampala, HC4"));
 		add( new Button("exitApplication"){
+
 			@Override
 			public void onSubmit() {
 				setResponsePage(Template.class);

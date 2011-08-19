@@ -11,6 +11,7 @@ public class AppSession extends WebSession{
 	private String userID; //An Id for the current user
 	private String goal; //Current goal
 	private String task; //Current task
+	private String[] roles;
 	
 	public AppSession(Request r){
 		super(r);
@@ -38,6 +39,14 @@ public class AppSession extends WebSession{
 
 	public void setTask(String task) {
 		this.task = task;
+	}
+
+	public void setRoles(String[] roles) {
+		this.roles = roles;
+	}
+
+	public String[] getRoles() {
+		return roles;
 	}
 	
 }
