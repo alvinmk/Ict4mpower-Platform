@@ -60,7 +60,7 @@ public abstract class OpenIdConsumer {
 	}
 
 	public void startLogin(String identity) throws OpenIDException {
-		identity = "http://localhost:8081/openid-provider-sample-app/user/id/" +identity;
+		identity = "http://localhost:8081/openid-provider-sample-app/user";//id/" +identity;
 		final Logger log = Logger.getLogger(OpenIdConsumer.class);
 		log.info(identity);
 		consumers.remove(identity);
