@@ -5,6 +5,7 @@ bin
 *.old
 *.log
 target
+\#*\#
 
 # eclipse conf file
 .settings

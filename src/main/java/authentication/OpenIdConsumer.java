@@ -28,6 +28,9 @@ import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.AxMessage;
 import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
+import org.openid4java.message.sreg.SRegMessage;
+import org.openid4java.message.sreg.SRegRequest;
+import org.openid4java.message.sreg.SRegResponse;
 
 import com.google.common.collect.MapMaker;
 
@@ -73,12 +76,20 @@ public abstract class OpenIdConsumer {
 				+ RequestCycle.get().urlFor(OpenIdCallbackPage.class, null);
 		callbackUrl += callbackUrl.contains("?") ? "&" : "?";
 		callbackUrl += "wicket.identity=" + identity;
-
+		log.info("CallbackURL: " +callbackUrl);
 		DiscoveryInformation discovered = manager.associate(discoveries);
 		AuthRequest req = manager.authenticate(discovered, callbackUrl);
 		FetchRequest fetchRequest = FetchRequest.createFetchRequest();
 		fetchRequest.addAttribute("roles", "http://makotogroup.com/schema/1.0/roles", false);
 		req.addExtension(fetchRequest);
+		
+		SRegRequest sRegRequest =  SRegRequest.createFetchRequest();
+		sRegRequest.addAttribute("email", false);
+		sRegRequest.addAttribute("fullname", false);
+		sRegRequest.addAttribute("dob", false);
+		sRegRequest.addAttribute("postcode", false);
+		req.addExtension(sRegRequest);
+		
 		consumers.put(identity, manager);
 		
 		throw new RedirectToUrlException(req.getDestinationUrl(true));
@@ -86,7 +97,8 @@ public abstract class OpenIdConsumer {
 
 	public void finishLogin(Request req, Page page) {
 		HttpServletRequest request = ((WebRequest) req).getHttpServletRequest();
-
+			
+		
 		String identity = request.getParameter("wicket.identity");
 		if (Strings.isEmpty(identity)) {
 			throw new AbortWithWebErrorCodeException(500);
@@ -111,13 +123,23 @@ public abstract class OpenIdConsumer {
 			Identifier verified = verification.getVerifiedId();
 			AuthSuccess authSuccess =(AuthSuccess) verification.getAuthResponse();
 			
+			 log.info(authSuccess.getExtensions());	
+			 
 			 if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX))
              {
                  FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(AxMessage.OPENID_NS_AX);
                  List roles = fetchResp.getAttributeValues("roles");
-                 String email = (String) roles.get(0);
-                 log.info("Roles " +email);
+                 String role = (String) roles.get(0);
+                 log.info("Roles " +role);
+                 
              }
+			 
+			 if (authSuccess.hasExtension(SRegResponse.OPENID_NS_SREG)){
+			//	 log.info("SREG PRESENT");
+			//	 FetchResponse fp = (FetchResponse) authSuccess.getExtension(SRegResponse.OPENID_NS_SREG);
+			//	 log.info( fetchResp.getAttributes().toString());
+			 }
+					
 
 			if (verified == null) {
 				throw new OpenIDException("Authentication failed");

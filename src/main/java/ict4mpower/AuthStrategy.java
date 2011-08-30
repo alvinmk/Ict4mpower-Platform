@@ -32,9 +32,9 @@ public class AuthStrategy implements IAuthorizationStrategy {
 			return true;
 		}
 		//If the user is not logged in, intercept with the login page and then complete the request
-		if (((AppSession) Session.get()).getUserID() == null) {
-			throw new RestartResponseAtInterceptPageException(LoginPage.class);
-		}
+		//if (((AppSession) Session.get()).getUserID() == null) {
+		//	throw new RestartResponseAtInterceptPageException(LoginPage.class);
+		//}
 		//if nothing matches disallow.
 		return true;
 	}
