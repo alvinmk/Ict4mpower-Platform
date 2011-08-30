@@ -37,7 +37,7 @@ public class Template extends WebPage {
 		add(t);
 		
 		
-		
+		//The procespanel on top, uses the taskList to keep track of available tabs.
 		ProcessPanel p = new ProcessPanel("process", parameters, taskList );
 		add(p);
 		
