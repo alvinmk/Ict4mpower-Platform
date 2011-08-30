@@ -27,13 +27,8 @@ public class Template extends WebPage {
 	final Logger log = Logger.getLogger(Template.class);
 	
 	public Template(final PageParameters parameters) {
-		List<LinkButton> tasks = getTasks(); //Replace with your task list
 		List<LinkButton> goals = getGoals(); //Replace with your goal list
-		TaskList taskList = new TaskList("Patient");
-		Task1 t1 = new Task1("Task 1");
-		taskList.addTask(t1);		
-		Task2 t2 = new Task2("Task 2");
-		taskList.addTask(t2);
+		TaskList taskList = getTaskList();
 		
 		//Parse the parameter and add the coresponding tab
 		//If no argument set use first tab
@@ -59,15 +54,16 @@ public class Template extends WebPage {
 	}
 	
 	//Dummy code to the the template	
-	private List<LinkButton> getTasks(){
-		List<LinkButton> tasks = new ArrayList<LinkButton>();
-		tasks.add(new LinkButton("Task1", "Task1"));
-		tasks.add(new LinkButton("Task2", "Task2"));
-		tasks.add(new LinkButton("Task3", "Task3"));
-		tasks.add(new LinkButton("Task4", "Task4"));
-		tasks.add(new LinkButton("Task5", "Task5"));
-		return tasks;
+	
+	private TaskList getTaskList(){
+		TaskList taskList = new TaskList("Patient");
+		Task1 t1 = new Task1("Task 1");
+		taskList.addTask(t1);		
+		Task2 t2 = new Task2("Task 2");
+		taskList.addTask(t2);
+		return taskList;
 	}
+	
 	
 	
 	private List<LinkButton> getGoals(){
