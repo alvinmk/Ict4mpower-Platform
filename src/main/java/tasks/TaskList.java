@@ -5,18 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TaskList {
- private List<Tab> tasks = new ArrayList<Tab>();
- private String goal;
+ private List<Task> tasks = new ArrayList<Task>();
  
- public TaskList(String goal){
-	 this.goal = goal;
+ public TaskList(){
  }
  
- public void addTask(Tab t){
+ public boolean addTask(Task t){
 	 tasks.add(t);
+	 return true;
  }
  
- public void removeTask(Tab t){
+ public void removeTask(Task t){
 	 tasks.remove(t);
  }
  
@@ -26,8 +25,8 @@ public class TaskList {
  
  public List<HashMap> getNames(){
 	 List<HashMap> l = new ArrayList<HashMap>();
-	 for(Tab  t : tasks ){
-		 HashMap h = new HashMap();
+	 for(Task  t : tasks ){
+		 HashMap<String, Object> h = new HashMap<String,Object>();
 		 h.put("name", t.getName());
 		 h.put("index", tasks.indexOf(t));
 		 l.add(h);
@@ -35,11 +34,11 @@ public class TaskList {
 	 return l;
  }
  
- public Tab getTaskByNumber(int index){
+ public Task getTaskByNumber(int index){
 	 return tasks.get(index);
  }
   
- public List<Tab> getTasks(){
+ public List<Task> getTasks(){
 	 return tasks;
  }
  

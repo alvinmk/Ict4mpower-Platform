@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.link.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import tasks.Tab;
+import tasks.Task;
 import tasks.Task1;
 import tasks.TaskList;
 import template.Template;

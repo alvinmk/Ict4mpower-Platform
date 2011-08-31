@@ -1,6 +1,6 @@
 package tasks;
 
-public class Task2 extends Tab{
+public class Task2 extends Task{
 	private static final long serialVersionUID = -8880286421735956692L;
 
 	public Task2(String name) {
