@@ -173,6 +173,10 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+	          		<scanIntervalSeconds>1</scanIntervalSeconds>
+	          		<reload>manual</reload>
+	        	</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
