@@ -63,7 +63,8 @@ public abstract class OpenIdConsumer {
 	}
 
 	public void startLogin(String identity) throws OpenIDException {
-		identity = "http://localhost:8081/openid-provider-sample-app/user";//id/" +identity;
+		log.info("Starting login");
+		//identity = "http://localhost:8081/openid-provider-sample-app/user";//id/" +identity;
 		final Logger log = Logger.getLogger(OpenIdConsumer.class);
 		log.info(identity);
 		consumers.remove(identity);
@@ -74,9 +75,11 @@ public abstract class OpenIdConsumer {
 
 		String callbackUrl = applicationUrl + "/"
 				+ RequestCycle.get().urlFor(OpenIdCallbackPage.class, null);
+		log.info("THE CALLBACK URL IS : " +callbackUrl);
 		callbackUrl += callbackUrl.contains("?") ? "&" : "?";
 		callbackUrl += "wicket.identity=" + identity;
 		log.info("CallbackURL: " +callbackUrl);
+		log.info("Discovery info: " +discoveries.toString());
 		DiscoveryInformation discovered = manager.associate(discoveries);
 		AuthRequest req = manager.authenticate(discovered, callbackUrl);
 		FetchRequest fetchRequest = FetchRequest.createFetchRequest();
@@ -84,10 +87,7 @@ public abstract class OpenIdConsumer {
 		req.addExtension(fetchRequest);
 		
 		SRegRequest sRegRequest =  SRegRequest.createFetchRequest();
-		sRegRequest.addAttribute("email", false);
 		sRegRequest.addAttribute("fullname", false);
-		sRegRequest.addAttribute("dob", false);
-		sRegRequest.addAttribute("postcode", false);
 		req.addExtension(sRegRequest);
 		
 		consumers.put(identity, manager);

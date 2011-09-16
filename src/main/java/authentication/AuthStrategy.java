@@ -1,5 +1,7 @@
-package ict4mpower;
+package authentication;
 
+
+import ict4mpower.AppSession;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -8,8 +10,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 
-import authentication.LoginPage;
-import authentication.OpenIdCallbackPage;
 /*
  * The authorization strategy used in the application. Sets access to pages and components.
  * 

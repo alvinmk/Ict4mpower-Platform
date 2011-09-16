@@ -8,8 +8,10 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 import authentication.OpenIdCallbackPage;
+import authentication.OpenIdConsumer;
 
 import tasks.Task;
 import tasks.Task1;
@@ -25,10 +27,10 @@ import templatePanels.UserPanel;
  * The basic strucutre of the template page and the components it contains.
  */
 public class Template extends WebPage {
-	final Logger log = Logger.getLogger(Template.class);
+	
 	
 	public Template(final PageParameters parameters) {
-
+	
 		
 		//Parse the parameter and add the coresponding tab
 		//If no argument set use first tab
@@ -41,7 +43,7 @@ public class Template extends WebPage {
 			
 		}
 		else{
-			log.info("goal is " +goal +" Finding task ");
+		//	log.info("goal is " +goal +" Finding task ");
 			int index = parameters.getInt("taskname", -1) != -1  ? parameters.getInt("taskname") : 0;
 			taskList = gt.getGoals().getTasks(goal);
 			Task t = taskList.getTaskByNumber(index); 		
@@ -65,6 +67,13 @@ public class Template extends WebPage {
 		//A panel that keeps track of the applications state. Shows clients, visits and so on.
 		StatePanel sp = new StatePanel("statePanel");
 		add(sp);
+		
+		//A feedbackPanel
+		FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+		
+	    add(feedbackPanel);
+	    info("Here we go!");
+		
 	}
 	
 	

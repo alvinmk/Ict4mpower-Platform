@@ -10,8 +10,8 @@ public class GoalsAndTasks {
 	
 	public GoalsAndTasks(){
 				
-		Task1 t1 = new Task1("Task 1");
-		Task2 t2 = new Task2("Task 2");
+		Task1 t1 = new Task1("Task1");
+		Task2 t2 = new Task2("Task2");
 		
 		
 		g.addGoal("patients");

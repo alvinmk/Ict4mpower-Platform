@@ -7,6 +7,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.openid4java.OpenIDException;
 import org.openid4java.discovery.Identifier;
 
+import authentication.AuthStrategy;
 import authentication.LoginPage;
 import authentication.OpenIdCallbackPage;
 import authentication.OpenIdConsumer;

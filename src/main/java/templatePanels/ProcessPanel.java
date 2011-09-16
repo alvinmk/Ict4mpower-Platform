@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.list.*;
 import org.apache.wicket.markup.html.link.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 
 import tasks.Task;
 import tasks.Task1;
@@ -38,7 +39,9 @@ public class ProcessPanel extends Panel {
 				}
 				PageParameters pp = new PageParameters("taskname=" +task.get("index")+",goalname="+selectedgoal);
 				BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
-				link.add(new Label("taskname", (String) task.get("name") ));
+				//Add the label as a resourceModel for localization
+				Label l = new Label("taskname", new ResourceModel((String) task.get("name")));
+				link.add(l);
 				item.add(link);
 				
 			}		

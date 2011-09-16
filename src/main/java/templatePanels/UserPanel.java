@@ -22,6 +22,7 @@ public class UserPanel extends Panel {
 		super(id);
 		selected = selectedApplication;
 		add( new Label("username", "username"));
+		
 		DropDownChoice choice = new DropDownChoice("applicationSelect", new PropertyModel(this, "selected"), Apps);	
 		add( choice);
 		

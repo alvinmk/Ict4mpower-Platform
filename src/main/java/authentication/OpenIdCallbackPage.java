@@ -27,8 +27,5 @@ public class OpenIdCallbackPage extends WebPage {
 	public OpenIdCallbackPage() {
 		OpenIdConsumer consumer = OpenIdConsumer.get(getApplication());
 		consumer.finishLogin(getRequest(), this);
-		String user = ((AppSession) Session.get()).getUserID();
-		
-		log.info("THE USER IS :" +user);
 	}
 }
