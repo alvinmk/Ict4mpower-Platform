@@ -1,7 +1,7 @@
 package ict4mpower;
 
-import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
 
 /*
  * What should be stored in the session

@@ -10,12 +10,11 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.Page;
-import org.apache.wicket.RedirectToUrlException;
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.servlet.AbortWithWebErrorCodeException;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.flow.RedirectToUrlException;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.util.string.Strings;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerManager;
@@ -28,7 +27,6 @@ import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.AxMessage;
 import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
-import org.openid4java.message.sreg.SRegMessage;
 import org.openid4java.message.sreg.SRegRequest;
 import org.openid4java.message.sreg.SRegResponse;
 
@@ -40,6 +38,7 @@ public abstract class OpenIdConsumer {
 	final Logger log = Logger.getLogger(OpenIdConsumer.class);
 	
 	private static MetaDataKey<OpenIdConsumer> KEY=new MetaDataKey<OpenIdConsumer>() {
+		private static final long serialVersionUID = -3861162573902821715L;
 	};
 	
 	public static OpenIdConsumer get(Application application) {
@@ -58,7 +57,8 @@ public abstract class OpenIdConsumer {
 
 	public void init(WebApplication application) {
 		consumers = new MapMaker().expireAfterWrite(5, TimeUnit.MINUTES).makeMap();
-		application.mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
+		//application.mountPage("/openid/finish", OpenIdCallbackPage.class);
+		//application.mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
 		application.setMetaData(KEY, this);
 	}
 
@@ -96,17 +96,18 @@ public abstract class OpenIdConsumer {
 	}
 
 	public void finishLogin(Request req, Page page) {
-		HttpServletRequest request = ((WebRequest) req).getHttpServletRequest();
+		
+		HttpServletRequest request = (HttpServletRequest) req;
 			
 		
 		String identity = request.getParameter("wicket.identity");
 		if (Strings.isEmpty(identity)) {
-			throw new AbortWithWebErrorCodeException(500);
+			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
 
 		ConsumerManager manager = consumers.get(identity);
 		if (manager == null) {
-			throw new AbortWithWebErrorCodeException(500);
+			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
 		consumers.remove(manager);
 

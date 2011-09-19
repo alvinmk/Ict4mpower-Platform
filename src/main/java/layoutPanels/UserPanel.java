@@ -16,7 +16,7 @@ public class UserPanel extends Panel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List Apps = Arrays.asList(new String[] { "Current Application", "Other Application", "Another Application" });
+	private List<String> Apps = Arrays.asList(new String[] { "Current Application", "Other Application", "Another Application" });
 	public String selected ="";
 	
 	public UserPanel(String id, String selectedApplication) {

@@ -28,7 +28,7 @@ public class TaskList {
  }
  
  public List<HashMap> getTaskNamesAndIndexes(){
-	 List<HashMap> l = new ArrayList<HashMap>();
+	 List<HashMap> l = new ArrayList <HashMap>();
 	 for(String  task : tasks ){
 		 HashMap<String, Integer> h = new HashMap<String, Integer>();
 		 h.put(task, tasks.indexOf(task));

@@ -3,9 +3,9 @@ package ict4mpower;
 import layout.Template;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.openid4java.OpenIDException;
 import org.openid4java.discovery.Identifier;
 
@@ -37,7 +37,6 @@ public class WicketApplication extends WebApplication
 		return Template.class;
 	}
 	
-	@Override
 	public AppSession newSession(Request req, Response res){
 		return new AppSession(req);		
 	}
@@ -47,6 +46,10 @@ public class WicketApplication extends WebApplication
 	protected void init() {
 		super.init();
 		//mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
+		//mount(new MountedMapper("/openid/finish", OpenIdCallbackPage.class));
+		mountPage("/openid/finish", OpenIdCallbackPage.class);
+		
+		
 		getSecuritySettings().setAuthorizationStrategy(new AuthStrategy());
 		OpenIdConsumer consumer = new OpenIdConsumer("http://localhost:8080/template") {
 			

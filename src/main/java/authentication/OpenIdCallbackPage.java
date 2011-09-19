@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
+import org.apache.wicket.request.*;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -19,6 +18,7 @@ import org.openid4java.message.AuthRequest;
 
 
 public class OpenIdCallbackPage extends WebPage {
+	private static final long serialVersionUID = -7370038018494236607L;
 	final Logger log = Logger.getLogger(OpenIdCallbackPage.class);
 	
 	/*
