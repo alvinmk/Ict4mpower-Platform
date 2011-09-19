@@ -1,4 +1,4 @@
-package templatePanels;
+package layoutPanels;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;

@@ -1,9 +1,11 @@
-package templatePanels;
+package layoutPanels;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import layout.Template;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -14,7 +16,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import template.Template;
 
 public class MenuPanel extends Panel {
 		private static final long serialVersionUID = 1L;

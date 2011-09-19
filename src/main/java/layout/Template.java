@@ -1,8 +1,14 @@
-package template;
+package layout;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import layoutPanels.LinkButton;
+import layoutPanels.MenuPanel;
+import layoutPanels.ProcessPanel;
+import layoutPanels.StatePanel;
+import layoutPanels.UserPanel;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
@@ -17,17 +23,12 @@ import tasks.Task;
 import tasks.Task1;
 import tasks.Task2;
 import tasks.TaskList;
-import templatePanels.LinkButton;
-import templatePanels.MenuPanel;
-import templatePanels.ProcessPanel;
-import templatePanels.StatePanel;
-import templatePanels.UserPanel;
 
 /*
  * The basic strucutre of the template page and the components it contains.
  */
 public class Template extends WebPage {
-	
+	static final Logger log = Logger.getLogger(Template.class);
 	
 	public Template(final PageParameters parameters) {
 	
@@ -36,19 +37,24 @@ public class Template extends WebPage {
 		//If no argument set use first tab
 		GoalsAndTasks gt = new GoalsAndTasks();
 		TaskList taskList;
+		
 		String goal = parameters.getString("goalname") != null ? parameters.getString("goalname") : "none";
 		if(goal.equals("none")){
 			add( new Label("task", ""));
 			taskList = new TaskList();
-			
 		}
 		else{
-		//	log.info("goal is " +goal +" Finding task ");
-			int index = parameters.getInt("taskname", -1) != -1  ? parameters.getInt("taskname") : 0;
-			taskList = gt.getGoals().getTasks(goal);
-			Task t = taskList.getTaskByNumber(index); 		
-			add(t);
 			
+			String task = parameters.getString("taskname") != null ? parameters.getString("taskname") : "none";
+			log.debug("goal is " +goal +" Finding task " +task);
+			taskList = gt.getGoals().getTasks(goal);
+			Task t = taskList.getTaskPanel(task);
+			if(t != null){
+				add(t);
+			}
+			else{
+				add( new Label("task", ""));
+			}
 		}
 		
 		

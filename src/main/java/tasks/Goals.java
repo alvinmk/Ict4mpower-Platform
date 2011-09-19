@@ -21,6 +21,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import layout.GoalsAndTasks;
+
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Elias
@@ -29,7 +34,7 @@ public class Goals {
 //    private LinkedList goalList;
     private String name;
     private Map <String, TaskList> map = new HashMap<String, TaskList> ();
-    
+    final Logger log = Logger.getLogger(Goals.class);
     
     public Goals(){
        
@@ -43,9 +48,8 @@ public class Goals {
         map.remove(goal_name);
     }
     
-    public boolean addTask(String goal_name, Task tab){
-       return map.get(goal_name).addTask(tab);
-
+    public boolean addTask(String goal_name, String task){
+       return map.get(goal_name).addTask(task);
     }
     
     public TaskList getTasks(String goal_name){

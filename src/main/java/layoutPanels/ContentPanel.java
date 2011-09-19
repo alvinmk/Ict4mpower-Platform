@@ -1,4 +1,4 @@
-package templatePanels;
+package layoutPanels;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.panel.Panel;

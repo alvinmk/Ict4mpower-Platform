@@ -1,10 +1,11 @@
 package ict4mpower;
 
 import junit.framework.TestCase;
+import layout.Template;
+import layoutPanels.UserPanel;
+
 import org.apache.wicket.util.tester.WicketTester;
 
-import template.Template;
-import templatePanels.UserPanel;
 
 /**
  * Simple test using the WicketTester

@@ -1,14 +1,15 @@
-package templatePanels;
+package layoutPanels;
 
 import java.util.Arrays;
 import java.util.List;
+
+import layout.Template;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
-import template.Template;
 
 public class UserPanel extends Panel {
 	/**

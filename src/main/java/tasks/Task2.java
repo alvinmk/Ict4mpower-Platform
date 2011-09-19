@@ -12,8 +12,7 @@ public class Task2 extends Task{
 	private static final long serialVersionUID = -8880286421735956692L;
 	
 	public Task2(String name) {
-		super(name);
-		
+		super(name);		
 		Form form = new Form("form") {
 	        protected void onSubmit() {}
 	    };

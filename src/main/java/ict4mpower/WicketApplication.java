@@ -1,5 +1,7 @@
 package ict4mpower;
 
+import layout.Template;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
@@ -12,7 +14,6 @@ import authentication.LoginPage;
 import authentication.OpenIdCallbackPage;
 import authentication.OpenIdConsumer;
 
-import template.Template;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
