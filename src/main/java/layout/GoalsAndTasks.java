@@ -23,7 +23,7 @@ public class GoalsAndTasks {
 		g.addTask("Child Health", "DevelopmentTask");
 		g.addTask("Child Health", "EducationTask");
 		g.addTask("Child Health", "FollowUpTask");
-		g.addTask("Child Health", "VisitSummarTask");
+		g.addTask("Child Health", "VisitSummaryTask");
 	}
 	
 	public Goals getGoals(){
