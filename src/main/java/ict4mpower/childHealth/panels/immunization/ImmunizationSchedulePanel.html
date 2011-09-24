@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">  
+<wicket:head>
+</wicket:head>
+
+<wicket:extend>
+	<!-- Table of vaccinations -->
+	<table>
+		<tr>
+			<th><wicket:message key="age"/></th>
+			<th><wicket:message key="vaccine"/></th>
+			<th class="action_taken_status"><wicket:message key="status"/></th>
+			<th><wicket:message key="date_given"/></th>
+		</tr>
+		
+		<wicket:container wicket:id="vaccinations">
+			<tbody wicket:id="rowPanel"></tbody>
+		</wicket:container>
+	</table>
+	
+	<br/>
+	<!-- Button for giving vaccinations -->
+	<button wicket:id="giveVaccine"><wicket:message key="give_vaccine"/></button>
+	
+	<!-- Form for giving vaccinations -->
+	<div wicket:id="giveVaccinePanel"/>
+</wicket:extend>
+</html>

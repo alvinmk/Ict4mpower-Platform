@@ -1,0 +1,118 @@
+.divisionPanel label, .divisionPanel legend, .divisionPanel table, .divisionPanel th,
+	.divisionPanel td, .divisionPanel .subheader, .divisionPanel span, .divisionPanel button,
+	.divisionPanel select, .divisionPanel input {
+	font-size: 8pt;
+	font-family: Arial,sans-serif;
+}
+
+fieldset {
+	border: 2px solid #AAA;
+	padding: 5px 15px;
+	margin: 5px;
+	border-radius: 9px;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+}
+
+legend {
+	color: #1C94C4;
+	font-weight: bold;
+	padding: 0 5px 5px 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+	padding: 3px;
+}
+th {
+	font-weight: bold;
+	padding: 5px 5px 10px 5px;
+	background-color: #408080;
+	color: white;
+}
+td {
+	background-color: #FFF4F4;
+	padding: 7px 12px;
+	text-align: center;
+}
+td.determined {
+	font-weight: bold;
+}
+
+.subheader {
+	color: #404040;
+	font-weight: bold;
+	margin: 3px 0 7px 0;
+}
+
+.saveButton {
+	float: right;
+	margin: 5px;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.fullwide {
+	width: 100%;
+}
+
+.frame_div {
+	border: 1px solid grey;
+	width: 99%;
+	padding: 7px;
+}
+
+.check_info_text {
+	width: 80%;
+	float: right;
+}
+
+.table_subheading th {
+	color: black;
+	background-color: #FFF4F4;
+	font-weight: bold;
+}
+
+.low_value {
+	background-color: #FFFFCE;
+}
+
+.critical_value {
+	background-color: #FFD9D9;
+}
+
+.good_value {
+	background-color: #DDFFDD;
+}
+
+.missed_icon {
+	width: 20px;
+	height: 16px;
+	float: right;
+}
+
+.taken_icon {
+	width: 20px;
+	height: 20px;
+	float: right;
+}
+
+.action_taken_status {
+	width: 230px;
+}
+
+.vaccination_cell {
+	text-align: left;
+	vertical-align: bottom;
+}
+
+.vaccination_status {
+	text-align: center;
+	vertical-align: text-top;
+}

@@ -71,7 +71,7 @@ public class TaskList {
  }
  
 private Task constructTask(String name){
-	 return constructTask(name, "tasks");
+	 return constructTask(name, "ict4mpower.childHealth.tasks");
  }
  
  
