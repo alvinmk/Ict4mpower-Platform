@@ -78,7 +78,7 @@ public class AntimalarialPanel extends DivisionPanel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				vPanel.setVisible(true);
-				target.addComponent(vPanel);
+				target.add(vPanel);
 			}
 		});
 		

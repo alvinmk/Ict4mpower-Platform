@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -124,16 +123,16 @@ class IndicatorPanel extends Panel {
 		// Add child's values
 		add(new Label("age", new Model<String>(indicator.age+" months")));
 		Label head = new Label("headCircumference", new Model<String>(indicator.headCircumference+" cm"));
-		setClass(head, indicator.headCircumference, indicator.getNormalHeadCircumference());
+		//setClass(head, indicator.headCircumference, indicator.getNormalHeadCircumference());
 		add(head);
 		Label height = new Label("height", new Model<String>(indicator.height+" cm"));
-		setClass(height, indicator.height, indicator.getNormalHeight());
+		//setClass(height, indicator.height, indicator.getNormalHeight());
 		add(height);
 		Label weight = new Label("weight", new Model<String>(indicator.weight+" kg"));
-		setClass(weight, indicator.weight, indicator.getNormalWeight());
+		//setClass(weight, indicator.weight, indicator.getNormalWeight());
 		add(weight);
 		Label bmi = new Label("bmi", new Model<Float>(indicator.getBmi()));
-		setClass(bmi, indicator.getBmi(), indicator.getNormalBmi());
+		//setClass(bmi, indicator.getBmi(), indicator.getNormalBmi());
 		add(bmi);
 		add(new Label("date", new Model<Date>(indicator.date)));
 		
@@ -144,17 +143,17 @@ class IndicatorPanel extends Panel {
 		add(new Label("bmi_normal", new Model<Float>(indicator.getNormalBmi())));
 	}
 
-	private void setClass(Label label, float value, float normal) {
-		if(value > normal*1.2f
-				|| value < normal*0.8f) {
-			label.add(new SimpleAttributeModifier("class", "critical_value"));
-		}
-		else if(value > normal*1.1f
-				|| value < normal*0.9f) {
-			label.add(new SimpleAttributeModifier("class", "low_value"));
-		}
-		else {
-			label.add(new SimpleAttributeModifier("class", "good_value"));
-		}
-	}
+//	private void setClass(Label label, float value, float normal) {
+//		if(value > normal*1.2f
+//				|| value < normal*0.8f) {
+//			label.add(new SimpleAttributeModifier("class", "critical_value"));
+//		}
+//		else if(value > normal*1.1f
+//				|| value < normal*0.9f) {
+//			label.add(new SimpleAttributeModifier("class", "low_value"));
+//		}
+//		else {
+//			label.add(new SimpleAttributeModifier("class", "good_value"));
+//		}
+//	}
 }
