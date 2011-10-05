@@ -2,6 +2,7 @@ package ict4mpower.childHealth.tasks;
 
 import ict4mpower.childHealth.panels.medications.AntimalarialPanel;
 import ict4mpower.childHealth.panels.medications.DeWormingPanel;
+import ict4mpower.childHealth.panels.medications.OtherMedicationsPanel;
 import ict4mpower.childHealth.panels.medications.VitaminASupplementationPanel;
 
 import tasks.Task;
@@ -20,5 +21,8 @@ public class MedicationsTask extends Task {
 		
 		// Antimalarial treatment
 		add(new AntimalarialPanel("antimalarial"));
+		
+		// Other medications
+		add(new OtherMedicationsPanel("otherMeds"));
 	}
 }

@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.tasks;
 
+import ict4mpower.childHealth.panels.followUp.FollowUpPanel;
 import tasks.Task;
 
 public class FollowUpTask extends Task {
@@ -7,5 +8,8 @@ public class FollowUpTask extends Task {
 
 	public FollowUpTask(String name) {
 		super(name);
+		
+		// Make follow-up visit
+		add(new FollowUpPanel("followUp"));
 	}
 }
