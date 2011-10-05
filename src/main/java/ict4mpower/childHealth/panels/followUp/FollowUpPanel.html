@@ -9,12 +9,9 @@
 <wicket:head>
 </wicket:head>
 
-<body>
-	<wicket:panel>
-		<div wicket:id="vitaminA"/>
-		<div wicket:id="deworming"/>
-		<div wicket:id="antimalarial"/>
-		<div wicket:id="otherMeds"/>
-	</wicket:panel>
-</body>
+<wicket:extend>
+	<input type="text" wicket:id="datePicker"/>
+	<br/>
+	<textarea wicket:id="textArea" cols="90" rows="5"></textarea>
+</wicket:extend>
 </html>

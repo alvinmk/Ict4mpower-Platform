@@ -1,0 +1,26 @@
+#chart {
+	width: 100%;
+	height: 600px;
+}
+
+#label_head, #label_length, #label_weight {
+	position: absolute;
+	font-family: Arial, sans-serif;
+	font-size: 11pt;
+	color: #555;
+}
+
+#label_head {
+	left: 650px;
+	top: 260px;
+}
+
+#label_length {
+	left: 650px;
+	top: 440px;
+}
+
+#label_weight {
+	left: 650px;
+	top: 580px;
+}

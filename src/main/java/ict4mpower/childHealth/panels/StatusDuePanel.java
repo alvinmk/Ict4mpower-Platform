@@ -24,7 +24,7 @@ public class StatusDuePanel extends StatusPanel {
 		add(new Label("label", new StringResourceModel("due", new Model<DateModel>(model))));
 		
 		PageParameters pp = new PageParameters();
-		pp.set("taskname", 7);
+		pp.set("taskname", "FollowUpTask");
 		pp.set("goalname", "Child Health");
 		BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("link", Template.class, pp);
 		add(link);
