@@ -1,0 +1,44 @@
+#legend {
+	float: right;
+}
+
+#legend_well, #legend_behind, #legend_not {
+	display: inline-block;
+	border: 1px solid black;
+	width: 40px;
+	height: 20px;
+	margin: 5px;
+}
+
+#legend_well {
+	background-color: #F0F0F0;
+}
+
+#legend_behind {
+	background-color: #FFFFE1;
+}
+
+#legend_not {
+	background-color: #FFD7D7;
+}
+
+#milestones_table {
+	width: 97%;
+	margin-top: 45px;
+}
+
+.well_developed {
+	background-color: #F0F0F0;
+}
+
+.stays_behind {
+	background-color: #FFFFE1;
+}
+
+.not_developed {
+	background-color: #FFD7D7;
+}
+
+.thin {
+	width: 50px;
+}

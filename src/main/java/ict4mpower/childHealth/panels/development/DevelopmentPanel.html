@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">  
+<wicket:head>
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="DevelopmentPanel.css"></link>
+	</wicket:link>
+</wicket:head>
+
+<wicket:extend>
+	<div id="legend" class="clearfix">
+		<div id="legend_well">&nbsp;</div> <span><wicket:message key="well_developed"/></span>
+		<div id="legend_behind">&nbsp;</div> <span><wicket:message key="stays_behind"/></span>
+		<div id="legend_not">&nbsp;</div> <span><wicket:message key="not_developed"/></span>
+	</div>
+	
+	<table id="milestones_table">
+		<tr>
+			<th><wicket:message key="age"/></th>
+			<th><wicket:message key="gross_motor"/></th>
+			<th><wicket:message key="fine_motor"/></th>
+			<th><wicket:message key="communication"/></th>
+			<th><wicket:message key="cognitive"/></th>
+			<th colspan="2"><wicket:message key="hearing"/></th>
+			<th colspan="2"><wicket:message key="eyesight"/></th>
+		</tr>
+		
+		<wicket:container wicket:id="milestones">
+			<tbody wicket:id="rowPanel"></tbody>
+		</wicket:container>
+	</table>
+	
+	<div wicket:id="nextMilestonePanel"/>
+</wicket:extend>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">  
+<wicket:head>
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="DevelopmentPanel.css"></link>
+	</wicket:link>
+</wicket:head>
+
+<wicket:extend>
+	<table>
+		<tr>
+			<th><wicket:message key="age"/></th>
+			<th><wicket:message key="gross_motor"/></th>
+			<th><wicket:message key="fine_motor"/></th>
+			<th><wicket:message key="communication"/></th>
+			<th><wicket:message key="cognitive"/></th>
+			<th colspan="2"><wicket:message key="hearing"/></th>
+			<th colspan="2"><wicket:message key="eyesight"/></th>
+		</tr>
+		
+		<tr>
+			<td wicket:id="age"/>
+			<td>
+				<span wicket:id="gross_motor"/><br/>
+				<select wicket:id="select_gross"/>
+			</td>
+			<td>
+				<span wicket:id="fine_motor"/><br/>
+				<select wicket:id="select_fine"/>
+			</td>
+			<td>
+				<span wicket:id="communication"/><br/>
+				<select wicket:id="select_comm"/>
+			</td>
+			<td>
+				<span wicket:id="cognitive"/><br/>
+				<select wicket:id="select_cog"/>
+			</td>
+			<td>
+				<span wicket:id="hearing_left"/><br/>
+				<select wicket:id="select_hear_left" class="thin"/>
+			</td>
+			<td>
+				<span wicket:id="hearing_right"/><br/>
+				<select wicket:id="select_hear_right" class="thin"/>
+			</td>
+			<td>
+				<span wicket:id="eyesight_left"/><br/>
+				<select wicket:id="select_eye_left" class="thin"/>
+			</td>
+			<td>
+				<span wicket:id="eyesight_right"/><br/>
+				<select wicket:id="select_eye_right" class="thin"/>
+			</td>
+		</tr>
+	</table>
+</wicket:extend>
+</html>

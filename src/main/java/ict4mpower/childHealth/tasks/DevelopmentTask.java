@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.tasks;
 
+import ict4mpower.childHealth.panels.development.DevelopmentPanel;
 import tasks.Task;
 
 public class DevelopmentTask extends Task {
@@ -7,5 +8,7 @@ public class DevelopmentTask extends Task {
 
 	public DevelopmentTask(String name) {
 		super(name);
+		
+		add(new DevelopmentPanel("milestones"));
 	}
 }
