@@ -3,14 +3,15 @@ package ict4mpower.childHealth.panels.growth;
 import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RadioChoice;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.StringResourceModel;
+import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 public class PMTCTRecordPanel extends DivisionPanel {
 	private static final long serialVersionUID = 3074630914459300687L;
@@ -48,6 +49,6 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		rc2.setSuffix(" ");
 		add(rc2);
 		// Date of initiation of treatment
-		add(new TextField<Object>("init_treatment_date"));
+		add(new DatePicker<Date>("init_treatment_date"));
 	}
 }
