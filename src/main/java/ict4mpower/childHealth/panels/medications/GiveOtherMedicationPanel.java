@@ -25,11 +25,4 @@ class GiveOtherMedicationPanel extends DivisionPanel {
 		// Instructions
 		add(new TextField<String>("instructions"));
 	}
-	
-	@Override
-	public boolean save() {
-		//TODO Hide
-		this.setVisible(false);
-		return super.save();
-	}
 }

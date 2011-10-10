@@ -10,13 +10,15 @@
 </wicket:head>
 
 <wicket:extend>
-	<select wicket:id="pmtct"/>
-	<br/>
-	<span wicket:id="hivtest"/>: <span wicket:id="hivtest_radio"/>
-	<br/>
-	<span wicket:id="init_treatment"/>: <span wicket:id="init_treatment_radio"/>
-	<br/>
-	<label for="init_date"><wicket:message key="init_treatment_date"/></label>
-	 <input type="text" wicket:id="init_treatment_date"/>
+	<form wicket:id="form">
+		<select wicket:id="pmtct"/>
+		<br/>
+		<span><wicket:message key="hivtest_results"/>: <span wicket:id="hivtest_radio"/></span>
+		<br/>
+		<span><wicket:message key="init_treatment"/>: <span wicket:id="init_treatment_radio"/></span>
+		<br/>
+		<label for="init_date"><wicket:message key="init_treatment_date"/></label>
+		 <input type="text" wicket:id="init_treatment_date"/>
+	</form>
 </wicket:extend>
 </html>

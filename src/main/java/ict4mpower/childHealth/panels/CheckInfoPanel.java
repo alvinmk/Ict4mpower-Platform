@@ -1,26 +1,25 @@
 package ict4mpower.childHealth.panels;
 
-import ict4mpower.childHealth.interfaces.ISavable;
-
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
-public class CheckInfoPanel extends Panel implements ISavable {
+public class CheckInfoPanel extends Panel {
 	private static final long serialVersionUID = 827830474865500102L;
 
-	public CheckInfoPanel(String id, String label) {
+	public CheckInfoPanel(String id, IModel<CheckInfoData> model) {
 		super(id);
 		
 		// Add check box, label and text field
-		// TODO Get saved information
-		CheckBox check = new CheckBox("check");
-		final TextField<String> input = new TextField<String>("info", String.class);
+		CheckBox check = new CheckBox("check", new PropertyModel<Boolean>(model, "check"));
+		final TextField<String> input = new TextField<String>("info", new PropertyModel<String>(model, "info"), String.class);
 		input.setOutputMarkupPlaceholderTag(true);
-		input.setVisible(false);
+		input.setVisible(model.getObject().isCheck());
 		check.add(new AjaxEventBehavior("onclick") {
 			private static final long serialVersionUID = 1L;
 
@@ -37,13 +36,7 @@ public class CheckInfoPanel extends Panel implements ISavable {
 			}
 		});
 		add(check);
-		add(new Label("label", label));
+		add(new Label("label", model.getObject().getLabel()));
 		add(input);
-	}
-	
-	public boolean save() {
-		// TODO Implement save
-		System.out.println("Saving check info...");
-		return true;
 	}
 }

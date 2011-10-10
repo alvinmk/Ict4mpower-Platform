@@ -14,13 +14,17 @@
 
 <body>
 	<wicket:panel class="clearfix divisionPanel">
-		<fieldset>
+		<fieldset id="fieldsetFrame">
 			<legend wicket:id="title"/>
 			<wicket:child/>
 		</fieldset>
 		<button type="button" wicket:id="saveButton" class="saveButton">
 			<wicket:message key="saveButtonText"/>
 		</button>
+		
+		<div wicket:id="dialog" title="Saved">
+			Information has been saved!
+		</div>
 	</wicket:panel>
 </body>
 </html>

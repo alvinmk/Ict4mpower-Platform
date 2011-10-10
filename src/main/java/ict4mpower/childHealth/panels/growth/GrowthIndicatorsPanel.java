@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 public class GrowthIndicatorsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8147585043264253460L;
@@ -48,10 +50,26 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			}
 		});
 		
-		// Input fields for todays values
-		add(new TextField<Float>("head", Float.class));
-		add(new TextField<Float>("height", Float.class));
-		add(new TextField<Float>("weight", Float.class));
+		// Add form
+		GrowthIndicatorsForm form = new GrowthIndicatorsForm("form");
+		add(form);
+		
+		setForm(form, this.getClass().getName()+"Frame");
+	}
+	
+	private class GrowthIndicatorsForm extends SavingForm {
+		private static final long serialVersionUID = 1858236985096796569L;
+
+		public GrowthIndicatorsForm(String id) {
+			super(id, GrowthIndicatorsForm.class.getName());
+			
+			GrowthIndicatorsData data = new GrowthIndicatorsData();
+			
+			// Input fields for todays values
+			add(new TextField<Float>("head", new PropertyModel<Float>(data, "head"), Float.class));
+			add(new TextField<Float>("height", new PropertyModel<Float>(data, "height"), Float.class));
+			add(new TextField<Float>("weight", new PropertyModel<Float>(data, "weight"), Float.class));
+		}
 	}
 }
 
