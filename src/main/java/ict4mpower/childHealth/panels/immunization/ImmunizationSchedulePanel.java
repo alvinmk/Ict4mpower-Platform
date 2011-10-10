@@ -247,11 +247,4 @@ class GiveVaccinationPanel extends DivisionPanel {
 		// Vaccine serial number
 		add(new TextField<String>("vaccine_sn"));
 	}
-	
-	@Override
-	public boolean save() {
-		//TODO Hide
-		this.setVisible(false);
-		return super.save();
-	}
 }

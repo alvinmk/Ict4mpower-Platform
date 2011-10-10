@@ -12,6 +12,12 @@ fieldset {
 	border-radius: 9px;
 	-moz-border-radius: 9px;
 	-webkit-border-radius: 9px;
+	-moz-transition: background-color .5s linear .5;
+	transition: background-color .5s linear;
+}
+
+#fieldsetFrame {
+	background-color: #F2F2F2;
 }
 
 legend {

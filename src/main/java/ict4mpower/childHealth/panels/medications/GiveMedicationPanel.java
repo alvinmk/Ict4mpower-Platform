@@ -61,11 +61,4 @@ class GiveMedicationPanel extends DivisionPanel {
 		// Batch number
 		add(new TextField<String>("batch_nb"));
 	}
-	
-	@Override
-	public boolean save() {
-		//TODO Hide
-		this.setVisible(false);
-		return super.save();
-	}
 }

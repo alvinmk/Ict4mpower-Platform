@@ -1,12 +1,15 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
 import ict4mpower.childHealth.panels.DivisionPanel;
+import ict4mpower.childHealth.panels.SingleStringResourceData;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
 public class FeedingPanel extends DivisionPanel {
@@ -23,13 +26,29 @@ public class FeedingPanel extends DivisionPanel {
 
 	public FeedingPanel(String id) {
 		super(id, "title");
-		add(new DropDownChoice<StringResourceModel>("feeding", FEEDING, new StringResourceModelChoiceRenderer()) {
-			private static final long serialVersionUID = 1L;
+		
+		FeedingForm form = new FeedingForm("form");
+		add(form);
+		
+		setForm(form, this.getClass().getName()+"Frame");
+	}
+	
+	private class FeedingForm extends SavingForm {
+		private static final long serialVersionUID = 7663790124524711200L;
+
+		public FeedingForm(String id) {
+			super(id, FeedingForm.class.getName());
 			
-			@Override
-			protected CharSequence getDefaultChoice(String arg0) {
-				return defaultChoice.getObject();
-			}
-		});
+			SingleStringResourceData data = new SingleStringResourceData();
+			
+			add(new DropDownChoice<StringResourceModel>("feeding", new PropertyModel<StringResourceModel>(data, "model"), FEEDING, new StringResourceModelChoiceRenderer()) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				protected CharSequence getDefaultChoice(String arg0) {
+					return defaultChoice.getObject();
+				}
+			});
+		}
 	}
 }
