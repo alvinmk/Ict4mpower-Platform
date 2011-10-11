@@ -8,7 +8,6 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.model.PropertyModel;
@@ -34,7 +33,7 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		PMTCTRecordForm form = new PMTCTRecordForm("form");
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class PMTCTRecordForm extends SavingForm {

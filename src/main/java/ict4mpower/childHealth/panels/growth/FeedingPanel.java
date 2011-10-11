@@ -30,7 +30,7 @@ public class FeedingPanel extends DivisionPanel {
 		FeedingForm form = new FeedingForm("form");
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class FeedingForm extends SavingForm {

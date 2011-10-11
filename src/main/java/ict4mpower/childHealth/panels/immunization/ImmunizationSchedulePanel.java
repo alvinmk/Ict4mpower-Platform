@@ -29,7 +29,7 @@ import ict4mpower.childHealth.panels.StatusTakenPanel;
 public class ImmunizationSchedulePanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 	
-	private DateFormat df = new SimpleDateFormat("d/M/y");
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 	public ImmunizationSchedulePanel(String id) {
 		super(id, "title", false);

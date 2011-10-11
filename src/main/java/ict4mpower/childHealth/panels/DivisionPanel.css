@@ -5,7 +5,7 @@
 	font-family: Arial,sans-serif;
 }
 
-fieldset {
+.divisionPanel fieldset {
 	border: 2px solid #AAA;
 	padding: 5px 15px;
 	margin: 5px;
@@ -20,28 +20,28 @@ fieldset {
 	background-color: #F2F2F2;
 }
 
-legend {
+.divisionPanel legend {
 	color: #1C94C4;
 	font-weight: bold;
 	padding: 0 5px 5px 5px;
 }
 
-table, th, td {
+.divisionPanel table, th, td {
 	border: 1px solid black;
 	padding: 3px;
 }
-th {
+.divisionPanel th {
 	font-weight: bold;
 	padding: 5px 5px 10px 5px;
 	background-color: #408080;
 	color: white;
 }
-td {
+.divisionPanel td {
 	background-color: #FFF4F4;
 	padding: 7px 12px;
 	text-align: center;
 }
-td.determined {
+.divisionPanel td.determined {
 	font-weight: bold;
 }
 
@@ -121,4 +121,10 @@ td.determined {
 .vaccination_status {
 	text-align: center;
 	vertical-align: text-top;
+}
+
+.saveText {
+	position: absolute;
+	display: none;
+	z-index: 50;
 }

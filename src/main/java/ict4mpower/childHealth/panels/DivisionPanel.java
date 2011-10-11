@@ -2,6 +2,7 @@ package ict4mpower.childHealth.panels;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -9,12 +10,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.util.value.ValueMap;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.ui.dialog.Dialog;
 
 /**
  * DivisionPanel is a specific part of a task
@@ -26,7 +25,8 @@ public class DivisionPanel extends Panel {
 	
 	private StringResourceModel title = null;
 	private Button saveButton;
-	private Dialog dialog;
+	private Label saveLabel;
+	private String frame;
 
 	public DivisionPanel(String id, String titleId, boolean savable) {
 		super(id);
@@ -39,9 +39,8 @@ public class DivisionPanel extends Panel {
 		saveButton.setVisible(savable);
 		add(saveButton);
 		
-		dialog = new Dialog("dialog");
-		dialog.setCloseText("OK");
-		add(dialog);
+		saveLabel = new Label("saveText", new StringResourceModel("saveText", this, null));
+		add(saveLabel);
 	}
 	
 	public DivisionPanel(String id, String titleId) {
@@ -53,9 +52,17 @@ public class DivisionPanel extends Panel {
 		super.renderHead(response);
 		response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.core.js"));
 		response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.highlight.js"));
+		response.renderOnDomReadyJavaScript("var fs = $('#"+frame+" fieldset');"
+        		+"$('#"+frame+"SaveText').offset({left: fs.position().left+"
+        		+"fs.width()/2, top: fs.position().top+fs.height()/2});");
 	}
 	
-	public void setForm(final Form<?> form, final String frame) {
+	public void setForm(final Form<?> form, Panel panel) {
+		// Get only class name
+		frame = panel.getClass().getName().substring(panel.getClass().getName().lastIndexOf('.')+1)+"Frame";
+		panel.add(AttributeAppender.replace("id", frame));
+		saveLabel.add(AttributeAppender.replace("id", frame+"SaveText"));
+		
 		saveButton.add(new AjaxFormSubmitBehavior(form, "onclick") {
 			private static final long serialVersionUID = 1L;
 
@@ -63,17 +70,20 @@ public class DivisionPanel extends Panel {
 			protected void onError(AjaxRequestTarget target) {}
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				((ValueMap)form.getModelObject()).add("datePicker", form.get(0).getDefaultModelObject().toString());
-			}
+			protected void onSubmit(AjaxRequestTarget target) {}
 		});
 		saveButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
             public JsScope callback() {
-                return JsScope.quickScope(dialog.open().render()
-                		+"$('"+frame+" fieldset').effect('highlight', {mode: 'ease-in'}, 3000);");
+                return JsScope.quickScope(
+                		"var fs = $('#"+frame+" fieldset');"
+                		+"var st = $('#"+frame+"SaveText');"
+                		+"st.stop(true, true); fs.stop(true, true);"
+                		+"fs.effect('highlight', {color: '#77ED45'}, 1500);"
+                		+"st.show();"
+                		+"st.fadeOut(1500);");
             }
 		}));
 	}
