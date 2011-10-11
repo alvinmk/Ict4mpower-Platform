@@ -3,7 +3,6 @@ package ict4mpower.childHealth.panels.status;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.StringResourceModel;
@@ -47,9 +46,7 @@ public class CheckUpPanel extends DivisionPanel {
 		CheckUpForm form = new CheckUpForm("form"); 
 		add(form);
 		
-		add(AttributeAppender.replace("id", this.getClass().getName()+"Frame"));
-		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class CheckUpForm extends SavingForm {

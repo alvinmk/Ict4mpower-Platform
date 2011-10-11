@@ -16,7 +16,7 @@ public class ConclusionPanel extends DivisionPanel {
 		ConclusionForm form = new ConclusionForm("form");
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class ConclusionForm extends SavingForm {

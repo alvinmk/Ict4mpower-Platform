@@ -6,12 +6,15 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -22,25 +25,24 @@ import org.apache.wicket.model.PropertyModel;
 public class GrowthIndicatorsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8147585043264253460L;
 	
-	private DateFormat df = new SimpleDateFormat("d/M/y");
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	private ListView<Indicator> list;
 
 	public GrowthIndicatorsPanel(String id) {
 		super(id, "title");
 		
 		//TODO Temporary
-		List<Indicator> indicators = null;
+		List<Indicator> indicators = new ArrayList<Indicator>();//null;
 		try {
-			indicators = Arrays.asList(new Indicator[]{
-					new Indicator(1, 36, 51, 4.2f, df.parse("01/01/10")),
-					new Indicator(2, 37, 54, 5.2f, df.parse("01/02/10")),
-					new Indicator(3, 38, 59, 5.3f, df.parse("01/03/10")),
-					new Indicator(4, 40, 62, 6f, df.parse("01/04/10"))
-			});
+			indicators.add(new Indicator(1, 36, 51, 4.2f, df.parse("01/01/2011")));
+			indicators.add(new Indicator(2, 37, 54, 5.2f, df.parse("01/02/2011")));
+			indicators.add(new Indicator(3, 38, 59, 5.3f, df.parse("01/03/2011")));
+			indicators.add(new Indicator(4, 40, 62, 6f, df.parse("01/04/2011")));
 		} catch(Exception e) {
 			//
 		}
-			
-		add(new ListView<Indicator>("indicators", indicators) {
+		
+		list = new ListView<Indicator>("indicators", indicators) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -48,13 +50,32 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 				Indicator indi = item.getModelObject();
 				item.add(new IndicatorPanel("rowPanel", indi));
 			}
-		});
+		};
+		list.setOutputMarkupId(true);
+		add(list);
 		
 		// Add form
-		GrowthIndicatorsForm form = new GrowthIndicatorsForm("form");
+		final GrowthIndicatorsForm form = new GrowthIndicatorsForm("form");
+		form.add(new AjaxFormSubmitBehavior("onsubmit") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onError(AjaxRequestTarget target) {}
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+				//TODO Temporary info
+				list.getModelObject().add(new Indicator(5,
+						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(0)).getValue()),
+						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(1)).getValue()),
+						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(2)).getValue()),
+						new Date()));
+				target.add(GrowthIndicatorsPanel.this);
+			}
+		});
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class GrowthIndicatorsForm extends SavingForm {
@@ -70,6 +91,9 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			add(new TextField<Float>("height", new PropertyModel<Float>(data, "height"), Float.class));
 			add(new TextField<Float>("weight", new PropertyModel<Float>(data, "weight"), Float.class));
 		}
+		
+		@Override
+		protected void onSubmit() {}
 	}
 }
 
@@ -91,16 +115,19 @@ class Indicator implements Serializable {
 		normal_headCircumference.put(2, 38f);
 		normal_headCircumference.put(3, 40f);
 		normal_headCircumference.put(4, 41f);
+		normal_headCircumference.put(5, 45f);
 		
 		normal_height.put(1, 51f);
 		normal_height.put(2, 56f);
 		normal_height.put(3, 60f);
 		normal_height.put(4, 62f);
+		normal_height.put(5, 67f);
 		
 		normal_weight.put(1, 4.1f);
 		normal_weight.put(2, 5f);
 		normal_weight.put(3, 6f);
 		normal_weight.put(4, 6.2f);
+		normal_weight.put(5, 7f);
 	}
 	
 	public Indicator(int age, float headCircumference, float height, float weight, Date date) {
@@ -134,6 +161,8 @@ class Indicator implements Serializable {
 
 class IndicatorPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
+	
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 	public IndicatorPanel(String id, Indicator indicator) {
 		super(id);
@@ -152,7 +181,7 @@ class IndicatorPanel extends Panel {
 		Label bmi = new Label("bmi", new Model<Float>(indicator.getBmi()));
 		//setClass(bmi, indicator.getBmi(), indicator.getNormalBmi());
 		add(bmi);
-		add(new Label("date", new Model<Date>(indicator.date)));
+		add(new Label("date", new Model<String>(df.format(indicator.date))));
 		
 		// Add normal values
 		add(new Label("headCircumference_normal", new Model<String>(indicator.getNormalHeadCircumference()+" cm")));

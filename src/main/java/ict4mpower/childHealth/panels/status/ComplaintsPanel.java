@@ -16,7 +16,7 @@ public class ComplaintsPanel extends DivisionPanel {
 		ComplaintsForm form = new ComplaintsForm("form");
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class ComplaintsForm extends SavingForm {

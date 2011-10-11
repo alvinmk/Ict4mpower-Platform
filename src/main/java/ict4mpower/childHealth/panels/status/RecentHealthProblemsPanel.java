@@ -37,7 +37,7 @@ public class RecentHealthProblemsPanel extends DivisionPanel {
 		RecentHealthProblemsForm form = new RecentHealthProblemsForm("form");
 		add(form);
 		
-		setForm(form, this.getClass().getName()+"Frame");
+		setForm(form, this);
 	}
 	
 	private class RecentHealthProblemsForm extends SavingForm {

@@ -32,7 +32,7 @@ public class SavingForm extends Form<ValueMap> {
 				// Set value for component
 				child.setDefaultModelObject(((IModel<?>)getSession().getAttribute(getSaveName(child))).getObject());
 			}
-			// Add to save map
+			// Add to save list
 			System.out.println("Adding to saveList: "+getSaveName(child));
 			saveList.add(child);
 		}
@@ -42,6 +42,10 @@ public class SavingForm extends Form<ValueMap> {
 	
 	private String getSaveName(Component child) {
 		return saveNamePath+"."+child.getId();
+	}
+	
+	public List<Component> getSaveList() {
+		return saveList;
 	}
 	
 	@Override
