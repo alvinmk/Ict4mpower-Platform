@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels;
 
+import ict4mpower.childHealth.data.CheckInfoData;
+
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;

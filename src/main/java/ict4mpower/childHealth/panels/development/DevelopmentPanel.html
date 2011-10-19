@@ -19,21 +19,23 @@
 		<div id="legend_not">&nbsp;</div> <span><wicket:message key="not_developed"/></span>
 	</div>
 	
-	<table id="milestones_table">
-		<tr>
-			<th><wicket:message key="age"/></th>
-			<th><wicket:message key="gross_motor"/></th>
-			<th><wicket:message key="fine_motor"/></th>
-			<th><wicket:message key="communication"/></th>
-			<th><wicket:message key="cognitive"/></th>
-			<th colspan="2"><wicket:message key="hearing"/></th>
-			<th colspan="2"><wicket:message key="eyesight"/></th>
-		</tr>
-		
-		<wicket:container wicket:id="milestones">
-			<tbody wicket:id="rowPanel"></tbody>
-		</wicket:container>
-	</table>
+	<form wicket:id="form">
+		<table id="milestones_table">
+			<tr>
+				<th><wicket:message key="age"/></th>
+				<th><wicket:message key="gross_motor"/></th>
+				<th><wicket:message key="fine_motor"/></th>
+				<th><wicket:message key="communication"/></th>
+				<th><wicket:message key="cognitive"/></th>
+				<th colspan="2"><wicket:message key="hearing"/></th>
+				<th colspan="2"><wicket:message key="eyesight"/></th>
+			</tr>
+			
+			<wicket:container wicket:id="milestones">
+				<tbody wicket:id="rowPanel"></tbody>
+			</wicket:container>
+		</table>
+	</form>
 	
 	<div wicket:id="nextMilestonePanel"/>
 </wicket:extend>

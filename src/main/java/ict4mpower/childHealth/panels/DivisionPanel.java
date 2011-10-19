@@ -50,11 +50,15 @@ public class DivisionPanel extends Panel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.core.js"));
-		response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.highlight.js"));
-		response.renderOnDomReadyJavaScript("var fs = $('#"+frame+" fieldset');"
-        		+"$('#"+frame+"SaveText').offset({left: fs.position().left+"
-        		+"fs.width()/2, top: fs.position().top+fs.height()/2});");
+		if(frame != null) {
+			// Import highlight effect
+			response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.core.js"));
+			response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.highlight.js"));
+			// Set position of save feedback text
+			response.renderOnDomReadyJavaScript("var fs = $('#"+frame+" fieldset');"
+	        		+"$('#"+frame+"SaveText').offset({left: fs.position().left+"
+	        		+"fs.width()/2, top: fs.position().top+fs.height()/2});");
+		}
 	}
 	
 	public void setForm(final Form<?> form, Panel panel) {

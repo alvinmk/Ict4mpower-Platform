@@ -2,6 +2,7 @@ package ict4mpower.childHealth.panels.growth;
 
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
+import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.sql.Date;
@@ -40,9 +41,9 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		private static final long serialVersionUID = -2897098367783146028L;
 
 		public PMTCTRecordForm(String id) {
-			super(id, PMTCTRecordForm.class.getName());
+			super(id);
 			
-			PMTCTRecordData data = new PMTCTRecordData();
+			GrowthData data = GrowthData.instance();
 			
 			// PMTCT drop down
 			add(new DropDownChoice<StringResourceModel>("pmtct", new PropertyModel<StringResourceModel>(data, "pmtct"),
@@ -55,20 +56,20 @@ public class PMTCTRecordPanel extends DivisionPanel {
 				}
 			});
 			// Other choices
-			RadioChoice<StringResourceModel> rc1 = new RadioChoice<StringResourceModel>("hivtest_radio",
-					new PropertyModel<StringResourceModel>(data, "hivTest"),
+			RadioChoice<StringResourceModel> rc1 = new RadioChoice<StringResourceModel>("hivTestRadio",
+					new PropertyModel<StringResourceModel>(data, "hivTestRadio"),
 					Arrays.asList(new StringResourceModel[]{new StringResourceModel("hivtest_reactive", this, null), new StringResourceModel("hivtest_non-reactive", this, null)}),
 					new StringResourceModelChoiceRenderer());
 			rc1.setSuffix(" ");
 			add(rc1);
-			RadioChoice<StringResourceModel> rc2 = new RadioChoice<StringResourceModel>("init_treatment_radio",
-					new PropertyModel<StringResourceModel>(data, "initTreatment"),
+			RadioChoice<StringResourceModel> rc2 = new RadioChoice<StringResourceModel>("initTreatmentRadio",
+					new PropertyModel<StringResourceModel>(data, "initTreatmentRadio"),
 					Arrays.asList(new StringResourceModel[]{new StringResourceModel("init_treatment_yes", this, null), new StringResourceModel("init_treatment_no", this, null)}),
 					new StringResourceModelChoiceRenderer());
 			rc2.setSuffix(" ");
 			add(rc2);
 			// Date of initiation of treatment
-			add(new DatePicker<Date>("init_treatment_date", new PropertyModel<Date>(data, "date")));
+			add(new DatePicker<Date>("initTreatmentDate", new PropertyModel<Date>(data, "initTreatmentDate")));
 		}
 	}
 }

@@ -1,25 +1,23 @@
 package ict4mpower.childHealth.panels.growth;
 
 import ict4mpower.childHealth.SavingForm;
+import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 public class GrowthIndicatorsPanel extends DivisionPanel {
@@ -31,28 +29,7 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 	public GrowthIndicatorsPanel(String id) {
 		super(id, "title");
 		
-		//TODO Temporary
-		List<Indicator> indicators = new ArrayList<Indicator>();//null;
-		try {
-			indicators.add(new Indicator(1, 36, 51, 4.2f, df.parse("01/01/2011")));
-			indicators.add(new Indicator(2, 37, 54, 5.2f, df.parse("01/02/2011")));
-			indicators.add(new Indicator(3, 38, 59, 5.3f, df.parse("01/03/2011")));
-			indicators.add(new Indicator(4, 40, 62, 6f, df.parse("01/04/2011")));
-		} catch(Exception e) {
-			//
-		}
-		
-		list = new ListView<Indicator>("indicators", indicators) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(ListItem<Indicator> item) {
-				Indicator indi = item.getModelObject();
-				item.add(new IndicatorPanel("rowPanel", indi));
-			}
-		};
-		list.setOutputMarkupId(true);
-		add(list);
+		setOutputMarkupId(true);
 		
 		// Add form
 		final GrowthIndicatorsForm form = new GrowthIndicatorsForm("form");
@@ -62,15 +39,21 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			@Override
 			protected void onError(AjaxRequestTarget target) {}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
-				//TODO Temporary info
+				//TODO Temporary info on age
+				System.out.println("head: "+((TextField<Float>)form.getSaveList().get(1)).getConvertedInput()
+						+" height: "+((TextField<Float>)form.getSaveList().get(2)).getConvertedInput()
+						+" weight: "+((TextField<Float>)form.getSaveList().get(3)).getConvertedInput());
 				list.getModelObject().add(new Indicator(5,
-						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(0)).getValue()),
-						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(1)).getValue()),
-						Float.parseFloat(((FormComponent<?>)form.getSaveList().get(2)).getValue()),
-						new Date()));
-				target.add(GrowthIndicatorsPanel.this);
+						((TextField<Float>)form.getSaveList().get(1)).getConvertedInput(),
+						((TextField<Float>)form.getSaveList().get(2)).getConvertedInput(),
+						((TextField<Float>)form.getSaveList().get(3)).getConvertedInput(),
+						new Date(),
+						GrowthIndicatorsPanel.this));
+				target.add(GrowthIndicatorsPanel.this, GrowthIndicatorsPanel.class.getName().substring(
+						GrowthIndicatorsPanel.class.getName().lastIndexOf('.')+1)+"Frame");
 			}
 		});
 		add(form);
@@ -82,112 +65,72 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 		private static final long serialVersionUID = 1858236985096796569L;
 
 		public GrowthIndicatorsForm(String id) {
-			super(id, GrowthIndicatorsForm.class.getName());
+			super(id);
+
+			//TODO Temporary
+			List<Indicator> indicators = new ArrayList<Indicator>();
+			try {
+				indicators.add(new Indicator(1, 36, 51, 4.2f, df.parse("01/01/2011"), this));
+				indicators.add(new Indicator(2, 37, 54, 5.2f, df.parse("01/02/2011"), this));
+				indicators.add(new Indicator(3, 38, 59, 5.3f, df.parse("01/03/2011"), this));
+				indicators.add(new Indicator(4, 40, 62, 6f, df.parse("01/04/2011"), this));
+			} catch(Exception e) {
+				e.printStackTrace();
+				//
+			}
 			
-			GrowthIndicatorsData data = new GrowthIndicatorsData();
+			GrowthData data = GrowthData.instance();
+			// TODO Temporary
+			if(data.getIndicators() == null) {
+				data.setIndicators(indicators);
+			}
+			
+			list = new ListView<Indicator>("indicators", new PropertyModel<List<Indicator>>(data, "indicators")) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void populateItem(ListItem<Indicator> item) {
+					item.add(new IndicatorPanel("rowPanel", item.getModel()));
+				}
+			};
+			list.setOutputMarkupId(true);
+			add(list);
 			
 			// Input fields for todays values
-			add(new TextField<Float>("head", new PropertyModel<Float>(data, "head"), Float.class));
-			add(new TextField<Float>("height", new PropertyModel<Float>(data, "height"), Float.class));
-			add(new TextField<Float>("weight", new PropertyModel<Float>(data, "weight"), Float.class));
+			add(new TextField<Float>("head", new PropertyModel<Float>(data, "head")));
+			add(new TextField<Float>("height", new PropertyModel<Float>(data, "height")));
+			add(new TextField<Float>("weight", new PropertyModel<Float>(data, "weight")));
 		}
-		
-		@Override
-		protected void onSubmit() {}
-	}
-}
-
-class Indicator implements Serializable {
-	private static final long serialVersionUID = -9155283621010002742L;
-	
-	public int age;
-	public float headCircumference;
-	public float height;
-	public float weight;
-	public Date date;
-	
-	private static HashMap<Integer, Float> normal_headCircumference = new HashMap<Integer, Float>();
-	private static HashMap<Integer, Float> normal_height = new HashMap<Integer, Float>();
-	private static HashMap<Integer, Float> normal_weight = new HashMap<Integer, Float>();
-	
-	static {
-		normal_headCircumference.put(1, 37f);
-		normal_headCircumference.put(2, 38f);
-		normal_headCircumference.put(3, 40f);
-		normal_headCircumference.put(4, 41f);
-		normal_headCircumference.put(5, 45f);
-		
-		normal_height.put(1, 51f);
-		normal_height.put(2, 56f);
-		normal_height.put(3, 60f);
-		normal_height.put(4, 62f);
-		normal_height.put(5, 67f);
-		
-		normal_weight.put(1, 4.1f);
-		normal_weight.put(2, 5f);
-		normal_weight.put(3, 6f);
-		normal_weight.put(4, 6.2f);
-		normal_weight.put(5, 7f);
-	}
-	
-	public Indicator(int age, float headCircumference, float height, float weight, Date date) {
-		this.age = age;
-		this.headCircumference = headCircumference;
-		this.height = height;
-		this.weight = weight;
-		this.date = date;
-	}
-	
-	public float getBmi() {
-		return Math.round((this.weight/(Math.pow(this.height/100, 2)))*10)/10f;
-	}
-	
-	public float getNormalHeadCircumference() {
-		return normal_headCircumference.get(age);
-	}
-	
-	public float getNormalHeight() {
-		return normal_height.get(age);
-	}
-	
-	public float getNormalWeight() {
-		return normal_weight.get(age);
-	}
-	
-	public float getNormalBmi() {
-		return Math.round((normal_weight.get(age)/Math.pow(normal_height.get(age)/100, 2))*10)/10f;
 	}
 }
 
 class IndicatorPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
-	
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-	public IndicatorPanel(String id, Indicator indicator) {
+	public IndicatorPanel(String id, IModel<Indicator> indicator) {
 		super(id);
 		
 		// Add child's values
-		add(new Label("age", new Model<String>(indicator.age+" months")));
-		Label head = new Label("headCircumference", new Model<String>(indicator.headCircumference+" cm"));
+		add(new Label("age", new PropertyModel<String>(indicator, "age")));
+		Label head = new Label("headCircumference", new PropertyModel<String>(indicator, "headCircumference"));
 		//setClass(head, indicator.headCircumference, indicator.getNormalHeadCircumference());
 		add(head);
-		Label height = new Label("height", new Model<String>(indicator.height+" cm"));
+		Label height = new Label("height", new PropertyModel<String>(indicator, "height"));
 		//setClass(height, indicator.height, indicator.getNormalHeight());
 		add(height);
-		Label weight = new Label("weight", new Model<String>(indicator.weight+" kg"));
+		Label weight = new Label("weight", new PropertyModel<String>(indicator, "weight"));
 		//setClass(weight, indicator.weight, indicator.getNormalWeight());
 		add(weight);
-		Label bmi = new Label("bmi", new Model<Float>(indicator.getBmi()));
+		Label bmi = new Label("bmi", new PropertyModel<Float>(indicator, "bmi"));
 		//setClass(bmi, indicator.getBmi(), indicator.getNormalBmi());
 		add(bmi);
-		add(new Label("date", new Model<String>(df.format(indicator.date))));
+		add(new Label("date", new PropertyModel<String>(indicator, "date")));
 		
 		// Add normal values
-		add(new Label("headCircumference_normal", new Model<String>(indicator.getNormalHeadCircumference()+" cm")));
-		add(new Label("height_normal", new Model<String>(indicator.getNormalHeight()+" cm")));
-		add(new Label("weight_normal", new Model<String>(indicator.getNormalWeight()+" kg")));
-		add(new Label("bmi_normal", new Model<Float>(indicator.getNormalBmi())));
+		add(new Label("headCircumference_normal", new PropertyModel<String>(indicator, "normalHeadCircumference")));
+		add(new Label("height_normal", new PropertyModel<String>(indicator, "normalHeight")));
+		add(new Label("weight_normal", new PropertyModel<String>(indicator, "normalWeight")));
+		add(new Label("bmi_normal", new PropertyModel<Float>(indicator, "normalBmi")));
 	}
 
 //	private void setClass(Label label, float value, float normal) {

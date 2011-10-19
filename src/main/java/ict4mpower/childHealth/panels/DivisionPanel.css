@@ -128,3 +128,7 @@
 	display: none;
 	z-index: 50;
 }
+
+.check_info_panel {
+	margin: 5px 0;
+}

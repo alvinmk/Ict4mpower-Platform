@@ -12,31 +12,31 @@
 <wicket:extend>
 	<p class="subheader"><wicket:message key="previousVisits"/></p>
 	<!-- Table of growth values -->
-	<table>
-		<tr>
-			<th><wicket:message key="age"/></th>
-			<th colspan="2"><wicket:message key="headCircumference"/></th>
-			<th colspan="2"><wicket:message key="heightcm"/></th>
-			<th colspan="2"><wicket:message key="weightkg"/></th>
-			<th colspan="2"><wicket:message key="bmi"/></th>
-			<th><wicket:message key="date"/></th>
-		</tr>
-		
-		<tr class="table_subheading">
-			<th></th>
-			<th>Actual</th><th>Normal</th>
-			<th>Actual</th><th>Normal</th>
-			<th>Actual</th><th>Normal</th>
-			<th>Actual</th><th>Normal</th>
-			<th></th>
-		</tr>
-		<wicket:container wicket:id="indicators">
-			<tbody wicket:id="rowPanel"></tbody>
-		</wicket:container>
-	</table>
-	
-	<br/>
 	<form wicket:id="form">
+		<table>
+			<tr>
+				<th><wicket:message key="age"/></th>
+				<th colspan="2"><wicket:message key="headCircumference"/></th>
+				<th colspan="2"><wicket:message key="heightcm"/></th>
+				<th colspan="2"><wicket:message key="weightkg"/></th>
+				<th colspan="2"><wicket:message key="bmi"/></th>
+				<th><wicket:message key="date"/></th>
+			</tr>
+			
+			<tr class="table_subheading">
+				<th></th>
+				<th>Actual</th><th>Normal</th>
+				<th>Actual</th><th>Normal</th>
+				<th>Actual</th><th>Normal</th>
+				<th>Actual</th><th>Normal</th>
+				<th></th>
+			</tr>
+			<wicket:container wicket:id="indicators">
+				<tbody wicket:id="rowPanel"></tbody>
+			</wicket:container>
+		</table>
+		
+		<br/>
 		<p class="subheader"><wicket:message key="today"/></p>
 		<label for="head"><wicket:message key="headCircumference"/>:</label>
 		 <input type="text" wicket:id="head" name="head" size="5"/> <span><wicket:message key="cm"/></span>

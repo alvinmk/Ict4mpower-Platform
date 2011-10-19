@@ -14,20 +14,19 @@ public class GoalsAndTasks {
 		g.addGoal("Overview");
 		g.addTask("Overview", "Task1");
 		
-		g.addGoal("Child Health");
-		g.addTask("Child Health", "DashboardTask");
-		g.addTask("Child Health", "GrowthTask");
-		g.addTask("Child Health", "ImmunizationTask");
-		g.addTask("Child Health", "StatusPraesensTask");
-		g.addTask("Child Health", "MedicationsTask");
-		g.addTask("Child Health", "DevelopmentTask");
-		g.addTask("Child Health", "EducationTask");
-		g.addTask("Child Health", "FollowUpTask");
-		g.addTask("Child Health", "VisitSummaryTask");
+		g.addGoal("ChildHealth");
+		g.addTask("ChildHealth", "DashboardTask");
+		g.addTask("ChildHealth", "GrowthTask");
+		g.addTask("ChildHealth", "ImmunizationTask");
+		g.addTask("ChildHealth", "StatusPraesensTask");
+		g.addTask("ChildHealth", "MedicationsTask");
+		g.addTask("ChildHealth", "DevelopmentTask");
+		g.addTask("ChildHealth", "EducationTask");
+		g.addTask("ChildHealth", "FollowUpTask");
+		g.addTask("ChildHealth", "VisitSummaryTask");
 	}
 	
 	public Goals getGoals(){
 		return g;
 	}
-	
 }
