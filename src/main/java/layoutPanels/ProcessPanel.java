@@ -1,7 +1,5 @@
 package layoutPanels;
 
-
-import layout.GoalsAndTasks;
 import layout.Template;
 
 import org.apache.log4j.Logger;
@@ -52,6 +50,5 @@ public class ProcessPanel extends Panel {
 				
 			}		
 		});
-		
 	}
 }

@@ -7,6 +7,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 import ict4mpower.childHealth.SavingForm;
+import ict4mpower.childHealth.data.FollowUpData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 public class FollowUpPanel extends DivisionPanel {
@@ -28,16 +29,16 @@ public class FollowUpPanel extends DivisionPanel {
 		private static final long serialVersionUID = -2039157252043048544L;
 
 		public FollowUpForm(String id) {
-			super(id, FollowUpForm.class.getName());
+			super(id);
 			
-			FollowUpData data = new FollowUpData();
+			FollowUpData data = FollowUpData.instance();
 			
 			// Date field
-			date = new DatePicker<Date>("datePicker", new PropertyModel<Date>(data, "date"));
+			date = new DatePicker<Date>("date", new PropertyModel<Date>(data, "date"));
 			add(date);
 			
 			// Text area
-			message = new TextArea<String>("textArea", new PropertyModel<String>(data, "message"));
+			message = new TextArea<String>("message", new PropertyModel<String>(data, "message"));
 			add(message);
 		}
 	}

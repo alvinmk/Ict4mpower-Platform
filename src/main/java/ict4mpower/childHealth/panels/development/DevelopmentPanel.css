@@ -27,15 +27,15 @@
 	margin-top: 45px;
 }
 
-.well_developed {
+.divisionPanel td.well_developed {
 	background-color: #F0F0F0;
 }
 
-.stays_behind {
+.divisionPanel td.stays_behind {
 	background-color: #FFFFE1;
 }
 
-.not_developed {
+.divisionPanel td.not_developed {
 	background-color: #FFD7D7;
 }
 

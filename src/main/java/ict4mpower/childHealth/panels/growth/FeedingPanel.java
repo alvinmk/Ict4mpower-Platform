@@ -2,8 +2,8 @@ package ict4mpower.childHealth.panels.growth;
 
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
+import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
-import ict4mpower.childHealth.panels.SingleStringResourceData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,11 +37,11 @@ public class FeedingPanel extends DivisionPanel {
 		private static final long serialVersionUID = 7663790124524711200L;
 
 		public FeedingForm(String id) {
-			super(id, FeedingForm.class.getName());
+			super(id);
 			
-			SingleStringResourceData data = new SingleStringResourceData();
+			GrowthData data = GrowthData.instance();
 			
-			add(new DropDownChoice<StringResourceModel>("feeding", new PropertyModel<StringResourceModel>(data, "model"), FEEDING, new StringResourceModelChoiceRenderer()) {
+			add(new DropDownChoice<StringResourceModel>("feeding", new PropertyModel<StringResourceModel>(data, "feeding"), FEEDING, new StringResourceModelChoiceRenderer()) {
 				private static final long serialVersionUID = 1L;
 				
 				@Override

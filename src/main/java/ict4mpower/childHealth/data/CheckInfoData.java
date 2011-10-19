@@ -1,4 +1,4 @@
-package ict4mpower.childHealth.panels;
+package ict4mpower.childHealth.data;
 
 import java.io.Serializable;
 
@@ -7,8 +7,11 @@ import org.apache.wicket.model.StringResourceModel;
 public class CheckInfoData implements Serializable {
 	private static final long serialVersionUID = 4232181354140299404L;
 	
+	/** Whether this item is selected or not */
 	private boolean check;
+	/** Info text accompanying this item */
 	private String info;
+	/** Text label to describe this item */
 	private String label;
 	
 	public CheckInfoData(StringResourceModel label) {

@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import ict4mpower.childHealth.SavingForm;
-import ict4mpower.childHealth.panels.CheckInfoData;
+import ict4mpower.childHealth.data.CheckInfoData;
+import ict4mpower.childHealth.data.StatusPraesensData;
 import ict4mpower.childHealth.panels.CheckInfoPanel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
@@ -53,9 +55,15 @@ public class CheckUpPanel extends DivisionPanel {
 		private static final long serialVersionUID = 6330056812131097169L;
 
 		public CheckUpForm(String id) {
-			super(id, CheckUpForm.class.getName());
+			super(id);
 			
-			list = new ListView<CheckInfoData>("check_up", CHECK_UP) {
+			StatusPraesensData data = StatusPraesensData.instance();
+			// TODO Temporary
+			if(data.getCheckUp() == null) {
+				data.setCheckUp(CHECK_UP);
+			}
+			
+			list = new ListView<CheckInfoData>("checkUp", new PropertyModel<List<CheckInfoData>>(data, "checkUp")) {
 				private static final long serialVersionUID = 1L;
 
 				@Override

@@ -1,6 +1,7 @@
 package layout;
 
 
+import ict4mpower.AppSession;
 import layoutPanels.MenuPanel;
 import layoutPanels.ProcessPanel;
 import layoutPanels.StatePanel;
@@ -31,6 +32,12 @@ public class Template extends WebPage {
 		TaskList taskList;
 		
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
+
+		// Add goal and task names to session
+		AppSession session = (AppSession)getSession();
+		session.setGoal(goal);
+		session.setTask(parameters.get("taskname").toString());
+		
 		if(goal.equals("none")){
 			add( new Label("task", ""));
 			taskList = new TaskList();
@@ -47,7 +54,8 @@ public class Template extends WebPage {
 			else{
 				add( new Label("task", ""));
 			}
-		}		
+		}
+		
 		//The procespanel on top, uses the taskList to keep track of available tabs.
 		ProcessPanel p = new ProcessPanel("process", parameters, taskList );
 		add(p);

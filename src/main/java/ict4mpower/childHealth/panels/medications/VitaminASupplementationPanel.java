@@ -10,8 +10,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
+import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 public class VitaminASupplementationPanel extends DivisionPanel {
@@ -33,8 +35,14 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 			//
 		}
 		
+		MedicationsData data = MedicationsData.instance();
+		// TODO Temporary
+		if(data.getVitamins() == null) {
+			data.setVitamins(vitamins);
+		}
+		
 		// Add table items
-		add(new ListView<Medicine>("vitamins", vitamins) {
+		add(new ListView<Medicine>("vitamins", new PropertyModel<List<Medicine>>(data, "vitamins")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
