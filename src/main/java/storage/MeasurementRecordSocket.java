@@ -2,12 +2,11 @@ package storage;
 
 import java.util.Set;
 
-import storage.dight.MeasurementRecord;
 
-public class MeasurementRecordKlass {
+public class MeasurementRecordSocket {
 
 	public Set<Object> getMesurmentByType(String type, String patienId){
-		MeasurementRecordKlass m = new MeasurementRecordKlass();
+		MeasurementRecordSocket m = new MeasurementRecordSocket();
 		return m.getMesurmentByType(type, patienId);
 	}
 	
