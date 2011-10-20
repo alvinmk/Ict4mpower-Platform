@@ -6,7 +6,7 @@ import java.util.Set;
 
 //import storage.dight.MedicalRecord;
 
-public class DataEndPoint {
+public class MedicalRecordSocket {
 	/*
 	 * This takes an entry and stores it in the database.
 	 * Since it's singned it can no longer be edited. 
