@@ -19,14 +19,14 @@ public class AppSession extends WebSession{
 	private String[] roles;
 	private String currentVisit;
 	private List<String> allVisits; //A visit is a date and a point in time
-	private PatientInfo c;
+	private PatientInfo patientInfo;
 	
 	public PatientInfo getPatientInfo(){
-		return c;
+		return this.patientInfo;
 	}
 	
-	public void PatientInfo(PatientInfo c){
-		this.c = c;
+	public void setPatientInfo(PatientInfo patientInfo){
+		this.patientInfo = patientInfo;
 	}
 	
 	public AppSession(Request r){
