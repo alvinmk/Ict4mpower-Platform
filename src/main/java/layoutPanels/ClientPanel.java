@@ -1,5 +1,7 @@
 package layoutPanels;
 
+import ict4mpower.AppSession;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -8,8 +10,9 @@ public class ClientPanel extends Panel {
 
 	public ClientPanel(String id) {
 		super(id);
-		add( new Label("clientName", "CLIENT NAME"));
-		add( new Label("clientWarnings", "WARNINGS: WARNINGS"));
+		AppSession s = (AppSession) getSession();
+		add( new Label("clientName", s.getPatientInfo().getName() ));
+		add( new Label("clientWarnings", s.getPatientInfo().getWarnings() ));
 	}
 
 }
