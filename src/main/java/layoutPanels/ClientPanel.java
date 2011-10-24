@@ -28,32 +28,18 @@ public class ClientPanel extends Panel {
 		//final ModalWindow mw = new ModalWindow("patientDialog");
 		//mw.setTitle(new PropertyModel<String>(this ,"session.PatientInfo.getName()" ));
 		final Dialog patientDialog = new Dialog("patientDialog");
-		add(patientDialog);
 		Component childs = new ClientInfoPanel("patientData");
 		patientDialog.add(childs);
+		patientDialog.setTitle(s.getPatientInfo().getName());
 	
-		//Label patientName = new Label("clientName", s.getPatientInfo().getName() );
-		//new PropertyModel(this, "session.PatientInfo.Name")
-		
 		AjaxLink<String> patientName = new AjaxLink<String>("clientName", new PropertyModel<String>(this ,"session.PatientInfo.getName" )) {
 			private static final long serialVersionUID = -1999518640202002086L;
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				AppSession s1 = (AppSession) getSession();
-				Component childs = new ClientInfoPanel("patientData");
-				patientDialog.setTitle(s1.getPatientInfo().getName());
-				patientDialog.addOrReplace(childs);
 				patientDialog.open(target);
-				//mw.show(new AjaxRequestTarget(ClientInfoPanel.class));
-				
 			}
-
-			
-
-			
 		};
 
-		
 		add(patientName);		
 		add(patientDialog);
 		add( new Label("clientWarnings", s.getPatientInfo().getWarnings() ));
