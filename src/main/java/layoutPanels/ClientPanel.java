@@ -31,16 +31,16 @@ public class ClientPanel extends Panel {
 		Component childs = new ClientInfoPanel("patientData");
 		patientDialog.add(childs);
 		patientDialog.setTitle(s.getPatientInfo().getName());
-	
-		AjaxLink<String> patientName = new AjaxLink<String>("clientName", new PropertyModel<String>(this ,"session.PatientInfo.getName" )) {
+		AjaxLink<String> patientName = new AjaxLink<String>("clientName") {
 			private static final long serialVersionUID = -1999518640202002086L;
+			
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				patientDialog.open(target);
 			}
 		};
-
-		add(patientName);		
+		patientName.add(new Label("patientLinkLabel", s.getPatientInfo().getName() ));
+		add(patientName);
 		add(patientDialog);
 		add( new Label("clientWarnings", s.getPatientInfo().getWarnings() ));
 	}
