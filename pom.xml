@@ -32,25 +32,17 @@
 	</licenses>
 	<properties>
 		<wicket.version>1.5.0</wicket.version>
-		<wiquery.version>1.5-M1</wiquery.version>
+		<wiquery.version>1.5-SNAPSHOT</wiquery.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
 	</properties>
 	<dependencies>
-		<!--  WICKET DEPENDENCIES -->
-		<!--
-			OPTIONAL <dependency> <groupId>org.apache.wicket</groupId>
+		<dependency> 
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
-			<version>${wicket.version}</version> </dependency>
-		-->
-
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
-		<!-- WIQUERY DEPENDECIES -->
-		<!--  JUNIT DEPENDENCY FOR TESTING -->
-
-		<!--  JETTY DEPENDENCIES FOR TESTING  -->
-		<!-- OPEN ID DEPENDENCY -->
+			<version>${wicket.version}</version> 
+		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
     		<artifactId>wicket-core</artifactId>

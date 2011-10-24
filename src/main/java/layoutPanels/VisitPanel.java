@@ -17,8 +17,7 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		AppSession session = (AppSession) getSession();
-		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(session, "CurrentVisit"), session.getAllVisits());
-		//add( new Label("visitDate", "DATE"));
+		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), session.getAllVisits());
 		add(visits);
 		add( new Label("visitStage", "VISIT SIGNED"));
 	}
