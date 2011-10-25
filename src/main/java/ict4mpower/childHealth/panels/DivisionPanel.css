@@ -6,6 +6,7 @@
 }
 
 .divisionPanel fieldset {
+	position: relative;
 	border: 2px solid #AAA;
 	padding: 5px 15px;
 	margin: 5px;
@@ -14,10 +15,6 @@
 	-webkit-border-radius: 9px;
 	-moz-transition: background-color .5s linear .5;
 	transition: background-color .5s linear;
-}
-
-#fieldsetFrame {
-	background-color: #F2F2F2;
 }
 
 .divisionPanel legend {
@@ -125,10 +122,28 @@
 
 .saveText {
 	position: absolute;
-	display: none;
+	top: 30%;
+	left: 40%;
 	z-index: 50;
 }
 
 .check_info_panel {
 	margin: 5px 0;
+}
+
+.feedbackPanel li {
+	padding: 3px;
+}
+
+.feedbackPanelERROR span {
+	font-size: 11pt;
+	color: red;
+}
+
+.error {
+	border-color: red;
+}
+
+.error_border {
+	border: 2px solid red;
 }

@@ -14,7 +14,12 @@
 		<td class="vaccination_cell" wicket:id="age"/>
 		<td class="vaccination_cell" wicket:id="vaccine"/>
 		<td class="vaccination_status clearfix" wicket:id="status"/>
-		<td class="vaccination_cell" wicket:id="dateGiven"/>
+		<td class="vaccination_cell">
+			<span wicket:id="dateGiven"/>
+			<button type="button" wicket:id="giveToday">
+				<wicket:message key="give_today"/>
+			</button>
+		</td>
 	</tr>
 </wicket:panel>
 </html>

@@ -11,7 +11,6 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -21,7 +20,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import ict4mpower.childHealth.SavingForm;
-import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
 import ict4mpower.childHealth.data.DevelopmentData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
@@ -133,14 +131,14 @@ class MilestoneTests implements Serializable {
 	public String communication;
 	public String cognitive;
 	
-	public StringResourceModel grossChoice;
-	public StringResourceModel fineChoice;
-	public StringResourceModel commChoice;
-	public StringResourceModel cogChoice;
-	public StringResourceModel hearLeftChoice;
-	public StringResourceModel hearRightChoice;
-	public StringResourceModel eyeLeftChoice;
-	public StringResourceModel eyeRightChoice;
+	public String grossChoice;
+	public String fineChoice;
+	public String commChoice;
+	public String cogChoice;
+	public String hearLeftChoice;
+	public String hearRightChoice;
+	public String eyeLeftChoice;
+	public String eyeRightChoice;
 	
 	public MilestoneTests(int age, String grossMotor, String fineMotor,
 			String communication, String cognitive) {
@@ -210,19 +208,18 @@ class MilestonePanel extends Panel {
 class NextMilestonePanel extends DivisionPanel {
 	private static final long serialVersionUID = 2726451125512509536L;
 	
-	private static List<StringResourceModel> development;
+	private static List<String> development;
 	
-	public static short convert(StringResourceModel model) {
+	public static short convert(String model) {
 		int len = development.size();
 		for(int i=0; i<len; i++) {
 			if(development.get(i).equals(model)) {
-				return (short)(i-1);
+				return (short)(i);
 			}
 		}
 		return (short)-1;
 	}
 	
-	private StringResourceModel defaultChoice = new StringResourceModel("default", this, null);
 	private MilestoneTests tests;
 	
 	private NextMilestoneChoice grossMotor;
@@ -234,16 +231,15 @@ class NextMilestonePanel extends DivisionPanel {
 	private NextMilestoneChoice eyesightLeft;
 	private NextMilestoneChoice eyesightRight;
 
-	public NextMilestonePanel(String id, Form<?> form, Panel panel) {
+	public NextMilestonePanel(String id, SavingForm form, DivisionPanel panel) {
 		super(id, "nextMilestone");
 		
 		if(development == null) {
 			// Initiate choices list
 			 development = Arrays.asList(
-						new StringResourceModel("default", this, null),
-						new StringResourceModel("well_developed", this, null),
-						new StringResourceModel("stays_behind", this, null),
-						new StringResourceModel("not_developed", this, null)
+						"well_developed",
+						"stays_behind",
+						"not_developed"
 					);
 		}
 		
@@ -255,59 +251,57 @@ class NextMilestonePanel extends DivisionPanel {
 							"Hits two objects against each other",
 							null);
 		
-		StringResourceModelChoiceRenderer renderer = new StringResourceModelChoiceRenderer();
-		
 		add(new Label("age", new PropertyModel<String>(tests, "age")));
 		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(tests, "grossMotor"));
 		grossLabel.setEscapeModelStrings(false);
 		add(grossLabel);
 		this.grossMotor = new NextMilestoneChoice("select_gross",
-				new PropertyModel<StringResourceModel>(tests, "grossChoice"), development, renderer);
+				new PropertyModel<String>(tests, "grossChoice"), development);
 		add(this.grossMotor);
 		
 		Label fineLabel = new Label("fine_motor", new PropertyModel<String>(tests, "fineMotor"));
 		fineLabel.setEscapeModelStrings(false);
 		add(fineLabel);
 		this.fineMotor = new NextMilestoneChoice("select_fine",
-				new PropertyModel<StringResourceModel>(tests, "fineChoice"), development, renderer);
+				new PropertyModel<String>(tests, "fineChoice"), development);
 		add(this.fineMotor);
 		
 		Label commLabel = new Label("communication", new PropertyModel<String>(tests, "communication"));
 		commLabel.setEscapeModelStrings(false);
 		add(commLabel);
 		this.communication = new NextMilestoneChoice("select_comm",
-				new PropertyModel<StringResourceModel>(tests, "commChoice"), development, renderer);
+				new PropertyModel<String>(tests, "commChoice"), development);
 		add(this.communication);
 		
 		Label cogLabel = new Label("cognitive", new PropertyModel<String>(tests, "cognitive"));
 		cogLabel.setEscapeModelStrings(false);
 		add(cogLabel);
 		this.cognitive = new NextMilestoneChoice("select_cog",
-				new PropertyModel<StringResourceModel>(tests, "cogChoice"), development, renderer);
+				new PropertyModel<String>(tests, "cogChoice"), development);
 		add(this.cognitive);
 		
 		Label hearLeftLabel = new Label("hearing_left", new StringResourceModel("left", this, null));
 		add(hearLeftLabel);
 		this.hearingLeft = new NextMilestoneChoice("select_hear_left",
-				new PropertyModel<StringResourceModel>(tests, "hearLeftChoice"), development, renderer);
+				new PropertyModel<String>(tests, "hearLeftChoice"), development);
 		add(this.hearingLeft);
 		
 		Label hearRightLabel = new Label("hearing_right", new StringResourceModel("right", this, null));
 		add(hearRightLabel);
 		this.hearingRight = new NextMilestoneChoice("select_hear_right",
-				new PropertyModel<StringResourceModel>(tests, "hearRightChoice"), development, renderer);
+				new PropertyModel<String>(tests, "hearRightChoice"), development);
 		add(this.hearingRight);
 		
 		Label eyeLeftLabel = new Label("eyesight_left", new StringResourceModel("left", this, null));
 		add(eyeLeftLabel);
 		this.eyesightLeft = new NextMilestoneChoice("select_eye_left",
-				new PropertyModel<StringResourceModel>(tests, "eyeLeftChoice"), development, renderer);
+				new PropertyModel<String>(tests, "eyeLeftChoice"), development);
 		add(this.eyesightLeft);
 		
 		Label eyeRightLabel = new Label("eyesight_right", new StringResourceModel("right", this, null));
 		add(eyeRightLabel);
 		this.eyesightRight = new NextMilestoneChoice("select_eye_right",
-				new PropertyModel<StringResourceModel>(tests, "eyeRightChoice"), development, renderer);
+				new PropertyModel<String>(tests, "eyeRightChoice"), development);
 		add(this.eyesightRight);
 	}
 	
@@ -315,11 +309,11 @@ class NextMilestonePanel extends DivisionPanel {
 		return this.tests;
 	}
 	
-	class NextMilestoneChoice extends DropDownChoice<StringResourceModel> {
+	class NextMilestoneChoice extends DropDownChoice<String> {
 		private static final long serialVersionUID = 2632359447755639947L;
 
-		public NextMilestoneChoice(String id, IModel<StringResourceModel> model, List<StringResourceModel> list, StringResourceModelChoiceRenderer renderer) {
-			super(id, model, list, renderer);
+		public NextMilestoneChoice(String id, IModel<String> model, List<String> list) {
+			super(id, model, list);
 			add(new AjaxFormComponentUpdatingBehavior("onchange") {
 				private static final long serialVersionUID = 1L;
 
@@ -330,8 +324,8 @@ class NextMilestonePanel extends DivisionPanel {
 		}
 		
 		@Override
-		protected CharSequence getDefaultChoice(String selectedValue) {
-			return defaultChoice.getObject();
+		protected boolean localizeDisplayValues() {
+			return true;
 		}
 	}
 }

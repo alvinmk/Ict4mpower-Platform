@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">  
+<wicket:head>
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="ImmunizationDialogPanel.css"></link>
+	</wicket:link>
+</wicket:head>
+
+<wicket:panel>
+	<div id="vaccine_dialog">
+		<form wicket:id="form">
+			<label for="text"><span wicket:id="label_text"/></label><br/>
+			<input type="text" name="text" wicket:id="text"/>
+			 <select wicket:id="calType"/><br/><br/>
+			<button type="button" wicket:id="confirmButton"><wicket:message key="confirm_button"/></button>
+		</form>
+	</div>
+</wicket:panel>
+</html>
