@@ -13,6 +13,10 @@
          <name>WiQuery repository</name>
          <url>https://wiquery.googlecode.com/svn/repo/</url>
      </repository>
+      <repository>
+    	<id>enhancedwickettester</id>
+    	<url>http://enhancedwickettester.googlecode.com/svn/repo</url>
+  	</repository>     
     </repositories>
 	<description></description>
 	<!--
@@ -123,6 +127,12 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>r09</version>
+		</dependency>
+		<dependency>
+  			<groupId>pl.rabbitsoftware</groupId>
+  			<artifactId>enhancedwickettester</artifactId>
+  			<version>1.0.0</version>
+  			<scope>test</scope>
 		</dependency>
 		<dependency>
     		<groupId>commons-httpclient</groupId>

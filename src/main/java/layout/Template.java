@@ -44,7 +44,6 @@ public class Template extends WebPage {
 			taskList = new TaskList();
 		}
 		else{
-			
 			String task = (String) (parameters.get("taskname").toString() != null ? parameters.get("taskname").toString() : "none");
 			log.debug("goal is " +goal +" Finding task " +task);
 			taskList = gt.getGoals().getTasks(goal);
