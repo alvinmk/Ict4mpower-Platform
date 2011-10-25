@@ -1,28 +1,32 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.childHealth.Callback;
+import ict4mpower.childHealth.ExtendableDropDownChoice;
 import ict4mpower.childHealth.SavingForm;
-import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
+import ict4mpower.childHealth.panels.TextDialog;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.CloseButtonCallback;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
 public class FeedingPanel extends DivisionPanel {
 	private static final long serialVersionUID = 4179450386998797319L;
 	
-	private final StringResourceModel defaultChoice = new StringResourceModel("dropdown.choice.null", this, null);
-	private final List<StringResourceModel> FEEDING = Arrays.asList(new StringResourceModel[] {
-			defaultChoice,
-			new StringResourceModel("breast", this, null),
-			new StringResourceModel("replacement", this, null),
-			new StringResourceModel("complementary", this, null),
-			new StringResourceModel("mixed", this, null),
-			new StringResourceModel("other", this, null)});
+	private List<String> feeding = new ArrayList<String>(
+			Arrays.asList(new String[] {
+			"breast",
+			"replacement",
+			"complementary",
+			"mixed",
+			"other"}));
 
 	public FeedingPanel(String id) {
 		super(id, "title");
@@ -39,14 +43,58 @@ public class FeedingPanel extends DivisionPanel {
 		public FeedingForm(String id) {
 			super(id);
 			
-			GrowthData data = GrowthData.instance();
+			final GrowthData data = GrowthData.instance();
 			
-			add(new DropDownChoice<StringResourceModel>("feeding", new PropertyModel<StringResourceModel>(data, "feeding"), FEEDING, new StringResourceModelChoiceRenderer()) {
+			// Dialog
+			final TextDialog dialog = new TextDialog("dialog");
+			
+			add(dialog, false);
+			
+			final ExtendableDropDownChoice<String> feedingChoice =
+					new ExtendableDropDownChoice<String>("feeding",
+					new PropertyModel<String>(data, "feeding"), feeding);
+			add(feedingChoice);
+			feedingChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 				private static final long serialVersionUID = 1L;
-				
+
 				@Override
-				protected CharSequence getDefaultChoice(String arg0) {
-					return defaultChoice.getObject();
+				protected void onUpdate(AjaxRequestTarget target) {
+					System.out.println("feeding "+feedingChoice.getConvertedInput());
+					if(feedingChoice.getConvertedInput() == null) return;
+					if(feedingChoice.getConvertedInput().equals("other")) {
+						// Show input dialog
+						dialog.setTitle(new StringResourceModel("other_feeding", FeedingPanel.this, null));
+						dialog.addOnSubmit(new Callback() {
+							private static final long serialVersionUID = 1L;
+
+							public boolean call(AjaxRequestTarget target) {
+								final String text = dialog.getText();
+								if(text == null || text.isEmpty()) {
+									dialog.error(target, "feeding_name_error");
+									return false;
+								}
+								feeding.add(feeding.size()-1, text);
+								data.setFeeding(text);
+								feedingChoice.modelChanged();
+								target.add(feedingChoice);
+								dialog.close(target);
+								return true;
+							}
+						});
+						dialog.setLabel(getString("feeding_name"));
+						dialog.setCloseButtonCallback(new CloseButtonCallback() {
+							private static final long serialVersionUID = 1L;
+
+							public boolean onCloseButtonClicked(AjaxRequestTarget target) {
+								data.setFeeding(null);
+								feedingChoice.modelChanged();
+								target.add(feedingChoice);
+								return true;
+							}
+						});
+						dialog.show(target);
+					}
+					target.add(feedingChoice);
 				}
 			});
 		}

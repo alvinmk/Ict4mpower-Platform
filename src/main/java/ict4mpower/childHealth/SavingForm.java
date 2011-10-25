@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -17,6 +19,7 @@ public class SavingForm extends Form<ValueMap> {
 	private static final long serialVersionUID = 8931477114572051143L;
 	
 	private List<Component> saveList = new ArrayList<Component>();
+	private List<FormComponent<?>> validateList = new ArrayList<FormComponent<?>>();
 	
 	public SavingForm(String id) {
 		super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
@@ -28,26 +31,37 @@ public class SavingForm extends Form<ValueMap> {
 	
 	@SuppressWarnings("rawtypes")
 	public MarkupContainer add(Component child, boolean save) {
+		addFormComponents(child);
 		if(save) {
 			// Check to see if there is a value for this component in the session store
-			System.out.println("Adding "+getSaveName(child)+" value: "+getSession().getAttribute(getSaveName(child)));
-			if(getSession().getAttribute(getSaveName(child)) != null) {
+			System.out.println("Adding "+getSaveName()+" value: "+getSession().getAttribute(getSaveName()));
+			if(getSession().getAttribute(getSaveName()) != null) {
 				// Set value for component
-				child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName(child)), child.getId()));
+				child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName()), child.getId()));
 			}
 			else {
 				// TODO Build session value from database
 			}
 			// Add to save list
-			System.out.println("Adding to saveList: "+getSaveName(child));
+			System.out.println("Adding to saveList: "+getSaveName());
 			saveList.add(child);
 		}
 		return super.add(child);
 	}
 	
-	private String getSaveName(Component child) {
+	private void addFormComponents(Component c) {
+		if(c instanceof FormComponent) {
+			validateList.add((FormComponent<?>) c);
+		}
+		else if(c instanceof Panel) {
+			for(int i=0; i<((Panel)c).size(); i++) {
+				addFormComponents(((Panel)c).get(i));
+			}
+		}
+	}
+	
+	private String getSaveName() {
 		return ((AppSession)getSession()).getGoal()+":"+((AppSession)getSession()).getTask();
-				//saveNamePath+"."+child.getId();
 	}
 	
 	public List<Component> getSaveList() {
@@ -57,12 +71,16 @@ public class SavingForm extends Form<ValueMap> {
 	@Override
 	protected void onSubmit() {
 		for(Component c : saveList) {
-			String id = getSaveName(c);
-			System.out.println("name: "+id.substring(id.lastIndexOf('.')+1));
+			String id = getSaveName();
+			System.out.println("name: "+id.substring(id.lastIndexOf('.')+1)+" component: "+c.getId());
 			// Get the model target
 			Serializable val = (Serializable) ((PropertyModel<?>)c.getDefaultModel()).getTarget();
 			System.out.println("Saving in session: "+id+" with value: "+val);
 			getSession().setAttribute(id, val);
 		}
+	}
+
+	public List<FormComponent<?>> getValidateList() {
+		return validateList;
 	}
 }

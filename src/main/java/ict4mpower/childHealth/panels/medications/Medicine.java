@@ -1,32 +1,42 @@
 package ict4mpower.childHealth.panels.medications;
 
+import ict4mpower.Person;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-public class Medicine implements Serializable {
+public class Medicine implements Serializable, Comparable<Medicine> {
 	private static final long serialVersionUID = -4299959951236886609L;
 	
-	private String age; //TODO remove
+	private Person person;
 	private String name;
-	private String dose;
 	private Date dueDate;
 	private Date givenDate;
-	private Panel panel;
+	private String dosage;
+	private String serialNr;
+	private Component parent;
 	// For other medications
 	private String form;
 	private String reason;
 	private String instructions;
 	
-	public Medicine(String age, String name, String dose, Date dueDate, Date givenDate, Panel panel) {
-		this.age = age;
+	public Medicine(Person p, String name, int calField, int calAdd, Date givenDate, String dosage, String serialNr, Component parent) {
+		this.person = p;
 		this.name = name;
-		this.dose = dose;
-		this.dueDate = dueDate;
+		this.dosage = dosage;
+		this.serialNr = serialNr;
+		// Calculate due date
+		Calendar birth = Calendar.getInstance();
+		birth.setTime(person.getBirth());
+		birth.add(calField, calAdd);
+		this.dueDate = birth.getTime();
 		this.givenDate = givenDate;
-		this.panel = panel;
+		this.parent = parent;
 	}
 	
 	/**
@@ -36,37 +46,90 @@ public class Medicine implements Serializable {
 	 * @param dose
 	 * @param reason
 	 * @param instructions
-	 * @param panel
+	 * @param parent
 	 */
-	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate, Panel panel) {
+	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate, Component parent) {
 		this.name = name;
 		this.form = form;
-		this.dose = dose;
+		this.dosage = dose;
 		this.reason = reason;
 		this.instructions = instructions;
 		this.givenDate = givenDate;
-		this.panel = panel;
+		this.parent = parent;
 	}
 	
-	public String getAge() {
-		if(age.equalsIgnoreCase("0")) return new StringResourceModel("at_birth", panel, null).getObject();
-		else if(age.contains("w")) {
-			// Weeks
-			return age.replace("w", " "+new StringResourceModel("weeks", panel, null).getObject());
+	public String getDueAge() {
+		return getAgeValue().getObject();
+	}
+	
+	public StringResourceModel getAgeValue() {
+		Object[] arr = getAccurateAgeArray();
+		return new StringResourceModel((String)arr[0], parent,
+				(arr[1] == null ? null : new Model<Float>((float)(0.5f*Math.floor((Float)arr[1]/0.5f)))));
+	}
+	
+	public Object[] getAccurateAgeArray() {
+		Calendar due = Calendar.getInstance();
+		due.setTime(dueDate);
+		Calendar birth = Calendar.getInstance();
+		birth.setTime(person.getBirth());
+		int years = due.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+		int months = due.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
+		int days = due.get(Calendar.DAY_OF_MONTH) - birth.get(Calendar.DAY_OF_MONTH);
+		int extraDays = 0;
+		
+		// Check days
+		if(days < 0) {
+			months += years*12-1;
 		}
-		else if(age.contains("m")) {
-			// Months
-			return age.replace("m", " "+new StringResourceModel("months", panel, null).getObject());
+		else {
+			months += years*12;
 		}
-		else return "Error!";
+		Calendar b = (Calendar) birth.clone();
+		b.add(Calendar.MONTH, months);
+		extraDays = due.get(Calendar.DAY_OF_MONTH) - b.get(Calendar.DAY_OF_MONTH);
+		if(extraDays<0) {
+			extraDays += b.getActualMaximum(Calendar.DAY_OF_MONTH);
+		}
+		if(months < 3) {
+			// Less than 3 months old
+			int weeks = due.get(Calendar.WEEK_OF_YEAR) - birth.get(Calendar.WEEK_OF_YEAR);
+			if(weeks == 0) {
+				// At birth
+				return new Object[]{"at_birth", null};
+			}
+			if(weeks<0) {
+				weeks += birth.getActualMaximum(Calendar.WEEK_OF_YEAR);
+			}
+			b = (Calendar) birth.clone();
+			b.add(Calendar.WEEK_OF_YEAR, weeks);
+			extraDays = due.get(Calendar.DAY_OF_WEEK) - b.get(Calendar.DAY_OF_WEEK);
+			if(extraDays<0) {
+				extraDays += 7;
+				weeks -= 1;
+			}
+			return new Object[]{"weeks", weeks+extraDays/7f};
+		}
+		else if(months >= 6) {
+			// More than or equal to 2 years old, use years
+			return new Object[]{"years", months/12f+extraDays/(float)due.getActualMaximum(Calendar.DAY_OF_YEAR)};
+		}
+		else {
+			// More than or equal to 3 months old but less than 6 months old, use months
+			return new Object[]{"months", months+extraDays/(float)due.getActualMaximum(Calendar.DAY_OF_MONTH)};
+		}
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public String getDose() {
-		return dose;
+	public String getDosage() {
+		return dosage;
+	}
+
+	public void setDosage(String dosage) {
+		this.dosage = dosage;
 	}
 	
 	public String getStatus() {
@@ -87,6 +150,10 @@ public class Medicine implements Serializable {
 		return givenDate;
 	}
 	
+	public void setGivenDate(Date date) {
+		this.givenDate = date;
+	}
+	
 	public String getForm() {
 		return form;
 	}
@@ -97,5 +164,17 @@ public class Medicine implements Serializable {
 	
 	public String getInstructions() {
 		return instructions;
+	}
+
+	public String getSerialNr() {
+		return serialNr;
+	}
+
+	public void setSerialNr(String serialNr) {
+		this.serialNr = serialNr;
+	}
+
+	public int compareTo(Medicine other) {
+		return this.dueDate.compareTo(other.dueDate);
 	}
 }

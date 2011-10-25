@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.model.StringResourceModel;
-
 /**
  * Data for the Growth task
  * @author Joakim Lindskog
@@ -27,50 +25,23 @@ public class GrowthData implements Serializable {
 	
 	// Growth indicators
 	private List<Indicator>	indicators;
-	private float head;
-	private float height;
-	private float weight;
 	
 	// Feeding
-	private StringResourceModel feeding;
+	private String feeding;
 	
 	// PMTCT status
-	private StringResourceModel pmtct;
-	private StringResourceModel hivTestRadio;
-	private StringResourceModel initTreatmentRadio;
+	private String pmtct;
+	private String hivTestRadio;
+	private String initTreatmentRadio;
 	private Date initTreatmentDate;
 	
 	private GrowthData() {}
-	
-	public void setHead(float head) {
-		this.head = head;
-	}
-	
-	public float getHead() {
-		return head;
-	}
-	
-	public void setHeight(float height) {
-		this.height = height;
-	}
-	
-	public float getHeight() {
-		return height;
-	}
-	
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
-	
-	public float getWeight() {
-		return weight;
-	}
 
-	public StringResourceModel getFeeding() {
+	public String getFeeding() {
 		return feeding;
 	}
 
-	public void setFeeding(StringResourceModel feeding) {
+	public void setFeeding(String feeding) {
 		this.feeding = feeding;
 	}
 
@@ -82,27 +53,27 @@ public class GrowthData implements Serializable {
 		this.indicators = indicators;
 	}
 	
-	public void setPmtct(StringResourceModel pmtct) {
+	public void setPmtct(String pmtct) {
 		this.pmtct = pmtct;
 	}
 	
-	public StringResourceModel getPmtct() {
+	public String getPmtct() {
 		return pmtct;
 	}
 
-	public StringResourceModel getHivTestRadio() {
+	public String getHivTestRadio() {
 		return hivTestRadio;
 	}
 
-	public void setHivTestRadio(StringResourceModel hivTestRadio) {
+	public void setHivTestRadio(String hivTestRadio) {
 		this.hivTestRadio = hivTestRadio;
 	}
 
-	public StringResourceModel getInitTreatmentRadio() {
+	public String getInitTreatmentRadio() {
 		return initTreatmentRadio;
 	}
 
-	public void setInitTreatmentRadio(StringResourceModel initTreatmentRadio) {
+	public void setInitTreatmentRadio(String initTreatmentRadio) {
 		this.initTreatmentRadio = initTreatmentRadio;
 	}
 

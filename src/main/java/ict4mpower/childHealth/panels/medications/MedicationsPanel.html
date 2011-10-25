@@ -15,7 +15,12 @@
 		<td class="medications_cell" wicket:id="name"/>
 		<td class="medications_cell" wicket:id="dose"/>
 		<td class="medications_status clearfix" wicket:id="status"/>
-		<td class="medications_cell" wicket:id="dateGiven"/>
+		<td class="medications_cell">
+			<span wicket:id="dateGiven"/>
+			<button type="button" wicket:id="giveToday">
+				<wicket:message key="give_today"/>
+			</button>
+		</td>
 	</tr>
 </wicket:panel>
 </html>

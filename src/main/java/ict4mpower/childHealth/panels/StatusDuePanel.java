@@ -25,7 +25,7 @@ public class StatusDuePanel extends StatusPanel {
 		
 		PageParameters pp = new PageParameters();
 		pp.set("taskname", "FollowUpTask");
-		pp.set("goalname", "Child Health");
+		pp.set("goalname", "ChildHealth");
 		BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("link", Template.class, pp);
 		add(link);
 	}

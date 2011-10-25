@@ -10,26 +10,28 @@
 </wicket:head>
 
 <wicket:extend>
-	<!-- Table of medications -->
-	<table>
-		<tr>
-			<th><wicket:message key="age"/></th>
-			<th><wicket:message key="name"/></th>
-			<th><wicket:message key="dose"/></th>
-			<th class="action_taken_status"><wicket:message key="status"/></th>
-			<th><wicket:message key="date_given"/></th>
-		</tr>
+	<form wicket:id="form">
+		<!-- Table of medications -->
+		<table>
+			<tr>
+				<th><wicket:message key="age"/></th>
+				<th><wicket:message key="name"/></th>
+				<th><wicket:message key="dose"/></th>
+				<th class="action_taken_status"><wicket:message key="status"/></th>
+				<th><wicket:message key="date_given"/></th>
+			</tr>
+			
+			<wicket:container wicket:id="deworming">
+				<tbody wicket:id="rowPanel"></tbody>
+			</wicket:container>
+		</table>
 		
-		<wicket:container wicket:id="deworming">
-			<tbody wicket:id="rowPanel"></tbody>
-		</wicket:container>
-	</table>
-	
-	<br/>
-	<!-- Button for giving medications -->
-	<button wicket:id="giveMedication"><wicket:message key="give_deworming"/></button>
-	
-	<!-- Form for giving medications -->
-	<div wicket:id="giveMedicationPanel"/>
+		<br/>
+		<!-- Button for giving medications -->
+		<button wicket:id="giveMedication"><wicket:message key="give_deworming"/></button>
+		
+		<!-- Form for giving medications -->
+		<div wicket:id="giveMedicationPanel"/>
+	</form>
 </wicket:extend>
 </html>

@@ -11,16 +11,35 @@
 }
 
 #label_head {
-	left: 650px;
-	top: 260px;
+	left: 40%;
+	top: 175px;
 }
 
 #label_length {
-	left: 650px;
-	top: 440px;
+	left: 40%;
+	top: 365px;
 }
 
 #label_weight {
-	left: 650px;
-	top: 580px;
+	left: 40%;
+	top: 500px;
+}
+
+span.weeks, span.months, span.years {
+	font-family: Arial, sans-serif;
+	font-size: 14pt;
+	margin: 0 30px;
+}
+
+span.weeks {
+	color: green;
+	margin-left: 10%;
+}
+
+span.months {
+	color: red;
+}
+
+span.years {
+	color: blue;
 }

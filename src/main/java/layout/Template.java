@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import tasks.Task;
@@ -24,9 +25,9 @@ public class Template extends WebPage {
 	static final Logger log = Logger.getLogger(Template.class);
 	
 	public Template(final PageParameters parameters) {
-	
+		add(new Label("title", new StringResourceModel("application_title", this, null)));
 		
-		//Parse the parameter and add the coresponding tab
+		//Parse the parameter and add the corresponding tab
 		//If no argument set use first tab
 		GoalsAndTasks gt = new GoalsAndTasks();
 		TaskList taskList;
@@ -56,7 +57,7 @@ public class Template extends WebPage {
 			}
 		}
 		
-		//The procespanel on top, uses the taskList to keep track of available tabs.
+		//The processpanel on top, uses the taskList to keep track of available tabs.
 		ProcessPanel p = new ProcessPanel("process", parameters, taskList );
 		add(p);
 		
@@ -75,9 +76,5 @@ public class Template extends WebPage {
 		FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
 		
 	    add(feedbackPanel);
-	    info("Here we go!");
-		
 	}
-	
-	
 }

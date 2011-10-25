@@ -20,7 +20,7 @@ public class OtherMedicationsRowPanel extends Panel {
 		add(drugLabel);
 		Label formLabel = new Label("row_form", new Model<String>(medicine.getForm()));
 		add(formLabel);
-		Label doseLabel = new Label("row_dose", new Model<String>(medicine.getDose()));
+		Label doseLabel = new Label("row_dose", new Model<String>(medicine.getDosage()));
 		add(doseLabel);
 		Label reasonsLabel = new Label("row_reason", new Model<String>(medicine.getReason()));
 		add(reasonsLabel);

@@ -10,10 +10,12 @@
 </wicket:head>
 
 <wicket:extend>
-	<select wicket:id="age"/>
-	 <select wicket:id="vaccine"/>
-	 <select wicket:id="dosage"/>
+	<select wicket:id="age" id="selectAge"/>
+	 <select wicket:id="vaccine" id="selectVaccine"/>
+	 <select wicket:id="dosage" id="selectDosage"/>
 	 <span><wicket:message key="vaccine_serial_number"/>:
 	 <input type="text" wicket:id="vaccine_sn"/></span>
+	 
+	 <div wicket:id="dialog"/>
 </wicket:extend>
 </html>

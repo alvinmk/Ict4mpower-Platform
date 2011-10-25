@@ -1,19 +1,23 @@
 package ict4mpower.childHealth.panels;
 
+import ict4mpower.childHealth.SavingForm;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.odlabs.wiquery.core.events.Event;
-import org.odlabs.wiquery.core.events.MouseEvent;
-import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
-import org.odlabs.wiquery.core.javascript.JsScope;
+import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.effects.EffectBehavior;
+import org.odlabs.wiquery.core.effects.EffectSpeed;
+import org.odlabs.wiquery.core.effects.fading.FadeOut;
+import org.odlabs.wiquery.ui.effects.EffectsHelper;
+import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
 /**
  * DivisionPanel is a specific part of a task
@@ -23,23 +27,51 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 public class DivisionPanel extends Panel {
 	private static final long serialVersionUID = 6902627708947338092L;
 	
-	private StringResourceModel title = null;
 	private Button saveButton;
 	private Label saveLabel;
-	private String frame;
+	private FeedbackPanel feedback;
+	private WebMarkupContainer fieldset;
+	private EffectBehavior highlightEffect = new EffectBehavior(new HighlightEffect(HighlightEffect.Mode.show, "'#77ED45'", 1500)) {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public void contribute(
+				WiQueryResourceManager wiQueryResourceManager) {
+			EffectsHelper.highlight(wiQueryResourceManager);
+		}
+		
+		public boolean isTemporary(Component component) {
+			return true;
+		}
+	};
+	private EffectBehavior fadeEffect = new EffectBehavior(new FadeOut(EffectSpeed.SLOW)) {
+		private static final long serialVersionUID = 1L;
+		
+		public boolean isTemporary(Component component) {
+			return true;
+		}
+	};
 
 	public DivisionPanel(String id, String titleId, boolean savable) {
 		super(id);
 		setOutputMarkupId(true);
 		
-		this.title = new StringResourceModel(titleId, this, null);
-		add(new Label("title", this.title));
+		fieldset = new WebMarkupContainer("fieldset");
+		fieldset.setOutputMarkupId(true);
+		super.add(fieldset);
+		
+		add(new Label("title", new StringResourceModel(titleId, this, null)));
+		
+		feedback = new FeedbackPanel("feedback");
+		add(feedback);
 		
 		saveButton = new Button("saveButton");
 		saveButton.setVisible(savable);
-		add(saveButton);
+		super.add(saveButton);
 		
 		saveLabel = new Label("saveText", new StringResourceModel("saveText", this, null));
+		saveLabel.setOutputMarkupPlaceholderTag(true);
+		saveLabel.setVisible(false);
 		add(saveLabel);
 	}
 	
@@ -47,48 +79,42 @@ public class DivisionPanel extends Panel {
 		this(id, titleId, true);
 	}
 	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		if(frame != null) {
-			// Import highlight effect
-			response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.core.js"));
-			response.renderJavaScriptReference(new PackageResourceReference(DivisionPanel.class, "jquery.effects.highlight.js"));
-			// Set position of save feedback text
-			response.renderOnDomReadyJavaScript("var fs = $('#"+frame+" fieldset');"
-	        		+"$('#"+frame+"SaveText').offset({left: fs.position().left+"
-	        		+"fs.width()/2, top: fs.position().top+fs.height()/2});");
-		}
+	public void setForm(final SavingForm form, final DivisionPanel panel) {
+		saveButton.add(new AjaxFormValidatingBehavior(form, "onclick") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onError(AjaxRequestTarget target) {
+				target.add(form);
+			}
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+				panel.getFieldset().add(highlightEffect);
+				panel.getSaveLabel().setVisible(true);
+				panel.getSaveLabel().add(fadeEffect);
+				target.add(panel.getFieldset());
+				target.add(panel.getSaveLabel());
+				target.add(form);
+			}
+		});
 	}
 	
-	public void setForm(final Form<?> form, Panel panel) {
-		// Get only class name
-		frame = panel.getClass().getName().substring(panel.getClass().getName().lastIndexOf('.')+1)+"Frame";
-		panel.add(AttributeAppender.replace("id", frame));
-		saveLabel.add(AttributeAppender.replace("id", frame+"SaveText"));
-		
-		saveButton.add(new AjaxFormSubmitBehavior(form, "onclick") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onError(AjaxRequestTarget target) {}
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {}
-		});
-		saveButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-            public JsScope callback() {
-                return JsScope.quickScope(
-                		"var fs = $('#"+frame+" fieldset');"
-                		+"var st = $('#"+frame+"SaveText');"
-                		+"st.stop(true, true); fs.stop(true, true);"
-                		+"fs.effect('highlight', {color: '#77ED45'}, 1500);"
-                		+"st.show();"
-                		+"st.fadeOut(1500);");
-            }
-		}));
+	@Override
+	public MarkupContainer add(Component... childs) {
+		return fieldset.add(childs);
+	}
+	
+	@Override
+	public MarkupContainer addOrReplace(Component... childs) {
+		return fieldset.addOrReplace(childs);
+	}
+	
+	public WebMarkupContainer getFieldset() {
+		return fieldset;
+	}
+	
+	public Label getSaveLabel() {
+		return saveLabel;
 	}
 }

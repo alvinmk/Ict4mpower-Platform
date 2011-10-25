@@ -17,7 +17,7 @@
 			<tr>
 				<th><wicket:message key="age"/></th>
 				<th colspan="2"><wicket:message key="headCircumference"/></th>
-				<th colspan="2"><wicket:message key="heightcm"/></th>
+				<th colspan="2"><wicket:message key="lengthcm"/></th>
 				<th colspan="2"><wicket:message key="weightkg"/></th>
 				<th colspan="2"><wicket:message key="bmi"/></th>
 				<th><wicket:message key="date"/></th>
@@ -37,13 +37,7 @@
 		</table>
 		
 		<br/>
-		<p class="subheader"><wicket:message key="today"/></p>
-		<label for="head"><wicket:message key="headCircumference"/>:</label>
-		 <input type="text" wicket:id="head" name="head" size="5"/> <span><wicket:message key="cm"/></span>
-		<label for="height"><wicket:message key="height"/>:</label>
-		 <input type="text" wicket:id="height" name="height" size="5"/> <span><wicket:message key="cm"/></span>
-		<label for="weight"><wicket:message key="weight"/>:</label>
-		 <input type="text" wicket:id="weight" name="weight" size="5"/> <span><wicket:message key="kg"/></span>
+		<div wicket:id="today"/>
 	</form>
 </wicket:extend>
 </html>

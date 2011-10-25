@@ -1,32 +1,30 @@
 package ict4mpower.childHealth.panels.growth;
 
 import ict4mpower.childHealth.SavingForm;
-import ict4mpower.childHealth.StringResourceModelChoiceRenderer;
+import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 public class PMTCTRecordPanel extends DivisionPanel {
 	private static final long serialVersionUID = 3074630914459300687L;
 	
-	private final StringResourceModel defaultChoice = new StringResourceModel("dropdown.choice.null", this, null);
-	private final List<StringResourceModel> PMTCT = Arrays.asList(new StringResourceModel[] {
-			defaultChoice,
-			new StringResourceModel("t", this, null),
-			new StringResourceModel("tr", this, null),
-			new StringResourceModel("trr", this, null),
-			new StringResourceModel("trrd", this, null),
-			new StringResourceModel("trrdm", this, null),
-			new StringResourceModel("trrdmdb", this, null)});
+	private final List<String> PMTCT = Arrays.asList(new String[] {
+			"t",
+			"tr",
+			"trr",
+			"trrd",
+			"trrdm",
+			"trrdmdb"});
 
 	public PMTCTRecordPanel(String id) {
 		super(id, "title");
@@ -43,33 +41,60 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		public PMTCTRecordForm(String id) {
 			super(id);
 			
+			add(new FeedbackPanel("formFeedback"), false);
+			
 			GrowthData data = GrowthData.instance();
 			
 			// PMTCT drop down
-			add(new DropDownChoice<StringResourceModel>("pmtct", new PropertyModel<StringResourceModel>(data, "pmtct"),
-					PMTCT, new StringResourceModelChoiceRenderer()) {
+			DropDownChoice<String> pmtct = new DropDownChoice<String>("pmtct", new PropertyModel<String>(data, "pmtct"),
+					PMTCT) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected CharSequence getDefaultChoice(String arg0) {
-					return defaultChoice.getObject();
+				protected boolean localizeDisplayValues() {
+					return true;
 				}
-			});
-			// Other choices
-			RadioChoice<StringResourceModel> rc1 = new RadioChoice<StringResourceModel>("hivTestRadio",
-					new PropertyModel<StringResourceModel>(data, "hivTestRadio"),
-					Arrays.asList(new StringResourceModel[]{new StringResourceModel("hivtest_reactive", this, null), new StringResourceModel("hivtest_non-reactive", this, null)}),
-					new StringResourceModelChoiceRenderer());
+			};
+			add(pmtct);
+			
+			// HIV test of child
+			RadioChoice<String> rc1 = new RadioChoice<String>("hivTestRadio",
+					new PropertyModel<String>(data, "hivTestRadio"),
+					Arrays.asList(
+							new String[]{"hivtest_reactive", "hivtest_non-reactive"})) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected boolean localizeDisplayValues() {
+					return true;
+				}
+			};
 			rc1.setSuffix(" ");
 			add(rc1);
-			RadioChoice<StringResourceModel> rc2 = new RadioChoice<StringResourceModel>("initTreatmentRadio",
-					new PropertyModel<StringResourceModel>(data, "initTreatmentRadio"),
-					Arrays.asList(new StringResourceModel[]{new StringResourceModel("init_treatment_yes", this, null), new StringResourceModel("init_treatment_no", this, null)}),
-					new StringResourceModelChoiceRenderer());
+			
+			// Initiation of treatment
+			RadioChoice<String> rc2 = new RadioChoice<String>("initTreatmentRadio",
+					new PropertyModel<String>(data, "initTreatmentRadio"),
+					Arrays.asList(new String[]{"init_treatment_yes", "init_treatment_no"})) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				protected boolean localizeDisplayValues() {
+					return true;
+				}
+			};
 			rc2.setSuffix(" ");
 			add(rc2);
+			
 			// Date of initiation of treatment
-			add(new DatePicker<Date>("initTreatmentDate", new PropertyModel<Date>(data, "initTreatmentDate")));
+			DatePicker<Date> datePicker = new DatePicker<Date>("initTreatmentDate", new PropertyModel<Date>(data, "initTreatmentDate"), Date.class);
+			datePicker.add(new ValidationClassBehavior());
+			add(datePicker);
+		}
+		
+		@Override
+		protected void onSubmit() {
+			super.onSubmit();
 		}
 	}
 }
