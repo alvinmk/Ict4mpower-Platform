@@ -7,9 +7,14 @@
 	xml:lang="en" 
 	lang="en">  
 <wicket:head>
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="SpecialCarePanel.css"></link>
+	</wicket:link>
 </wicket:head>
 
 <wicket:extend>
-	<span wicket:id="reasonsText"></span>
+	<wicket:container wicket:id="reasonsList">
+		<span wicket:id="rowPanel"/>
+	</wicket:container>
 </wicket:extend>
 </html>
