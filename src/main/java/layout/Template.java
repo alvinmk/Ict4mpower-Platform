@@ -61,7 +61,7 @@ public class Template extends WebPage {
 		ProcessPanel p = new ProcessPanel("process", parameters, taskList );
 		add(p);
 		
-		MenuPanel m = new MenuPanel("menu", parameters, gt.getGoals().getGoals());
+		MenuPanel m = new MenuPanel("menu", parameters, gt.getGoals());
 		add(m);
 		
 		//A panel that keeps track of the user and the users information

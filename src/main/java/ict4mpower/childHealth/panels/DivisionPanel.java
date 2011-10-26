@@ -1,6 +1,7 @@
 package ict4mpower.childHealth.panels;
 
 import ict4mpower.childHealth.SavingForm;
+import ict4mpower.childHealth.panels.development.MilestoneTests;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.effects.EffectBehavior;
@@ -79,6 +81,11 @@ public class DivisionPanel extends Panel {
 		this(id, titleId, true);
 	}
 	
+	public DivisionPanel(String id, IModel<MilestoneTests> model, String string) {
+		this(id, string);
+		this.setDefaultModel(model);
+	}
+
 	public void setForm(final SavingForm form, final DivisionPanel panel) {
 		saveButton.add(new AjaxFormValidatingBehavior(form, "onclick") {
 			private static final long serialVersionUID = 1L;

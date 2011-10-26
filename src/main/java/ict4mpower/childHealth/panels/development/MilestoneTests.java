@@ -1,4 +1,4 @@
-package ict4mpower.childHealth.panels.medications;
+package ict4mpower.childHealth.panels.development;
 
 import ict4mpower.Person;
 
@@ -12,53 +12,41 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-public class Medicine implements Serializable, Comparable<Medicine> {
-	private static final long serialVersionUID = -4299959951236886609L;
+public class MilestoneTests implements Serializable, Cloneable {
+	private static final long serialVersionUID = 4401388786490151969L;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	private Person person;
-	private String name;
 	private Date dueDate;
-	private Date givenDate;
-	private String dosage;
-	private String serialNr;
-	private Component parent;
-	// For other medications
-	private String form;
-	private String reason;
-	private String instructions;
+	public String grossMotor;
+	public String fineMotor;
+	public String communication;
+	public String cognitive;
 	
-	public Medicine(Person p, String name, int calField, int calAdd, Date givenDate, String dosage, String serialNr, Component parent) {
-		this.person = p;
-		this.name = name;
-		this.dosage = dosage;
-		this.serialNr = serialNr;
+	public String grossChoice;
+	public String fineChoice;
+	public String commChoice;
+	public String cogChoice;
+	public String hearLeftChoice;
+	public String hearRightChoice;
+	public String eyeLeftChoice;
+	public String eyeRightChoice;
+	
+	private Component parent;
+	
+	public MilestoneTests(Person person, int calField, int calAdd, String grossMotor, String fineMotor,
+			String communication, String cognitive, Component parent) {
+		this.person = person;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
 		birth.setTime(person.getBirth());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
-		this.givenDate = givenDate;
-		this.parent = parent;
-	}
-	
-	/**
-	 * Constructor for other medications
-	 * @param name
-	 * @param form
-	 * @param dose
-	 * @param reason
-	 * @param instructions
-	 * @param parent
-	 */
-	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate, Component parent) {
-		this.name = name;
-		this.form = form;
-		this.dosage = dose;
-		this.reason = reason;
-		this.instructions = instructions;
-		this.givenDate = givenDate;
+		this.grossMotor = grossMotor;
+		this.fineMotor = fineMotor;
+		this.communication = communication;
+		this.cognitive = cognitive;
 		this.parent = parent;
 	}
 	
@@ -69,7 +57,7 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	public StringResourceModel getAgeValue() {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
-				(arr[1] == null ? null : new Model<Float>((float)(0.5f*Math.floor((Float)arr[1]/0.5f)))));
+				(arr[1] == null ? null : new Model<Integer>((int)Math.floor((Float)arr[1]))));
 	}
 	
 	public Object[] getAccurateAgeArray() {
@@ -114,75 +102,45 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 			}
 			return new Object[]{"weeks", weeks+extraDays/7f};
 		}
-		else if(months >= 6) {
+		else if(months >= 24) {
 			// More than or equal to 2 years old, use years
 			return new Object[]{"years", months/12f+extraDays/(float)due.getActualMaximum(Calendar.DAY_OF_YEAR)};
 		}
 		else {
-			// More than or equal to 3 months old but less than 6 months old, use months
+			// More than or equal to 3 months old, use months
 			return new Object[]{"months", months+extraDays/(float)due.getActualMaximum(Calendar.DAY_OF_MONTH)};
 		}
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public String getDosage() {
-		return dosage;
+	public String getDueDateString() {
+		return df.format(this.dueDate);
 	}
 
-	public void setDosage(String dosage) {
-		this.dosage = dosage;
-	}
-	
-	public String getStatus() {
-		if(givenDate == null) {
-			if(dueDate.before(new Date())) {
-				return "missed";
-			}
-			else return "due";
-		}
-		else return "taken";
-	}
-	
 	public Date getDueDate() {
 		return dueDate;
 	}
 	
-	public Date getGivenDate() {
-		return givenDate;
+	public void setDueDate(Date date) {
+		this.dueDate = date;
 	}
 	
-	public void setGivenDate(Date date) {
-		this.givenDate = date;
+	public void resetChoices() {
+		this.grossChoice = null;
+		this.fineChoice = null;
+		this.commChoice = null;
+		this.cogChoice = null;
+		this.hearLeftChoice = null;
+		this.hearRightChoice = null;
+		this.eyeLeftChoice = null;
+		this.eyeRightChoice = null;
 	}
 	
-	public String getGivenDateString() {
-		return df.format(givenDate);
-	}
-	
-	public String getForm() {
-		return form;
-	}
-	
-	public String getReason() {
-		return reason;
-	}
-	
-	public String getInstructions() {
-		return instructions;
-	}
-
-	public String getSerialNr() {
-		return serialNr;
-	}
-
-	public void setSerialNr(String serialNr) {
-		this.serialNr = serialNr;
-	}
-
-	public int compareTo(Medicine other) {
-		return this.dueDate.compareTo(other.dueDate);
+	@Override
+	protected MilestoneTests clone()  {
+		try {
+			return (MilestoneTests) super.clone();
+		} catch(CloneNotSupportedException e) {
+			return null;
+		}
 	}
 }

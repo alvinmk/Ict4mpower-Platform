@@ -63,10 +63,10 @@ public class TestTemplatePage extends TestCase
 	public void testProcess(){		
 		PageParameters pp = new PageParameters();
 		GoalsAndTasks gt = new GoalsAndTasks();
-		ProcessPanel p = new ProcessPanel("process", pp, gt.getGoals().getTasks("patients"));
+		ProcessPanel p = new ProcessPanel("process", pp, gt.getGoals().getTasks("ChildHealth"));
 		tester.startComponentInPage(p);	
-		tester.assertContains("Task1");
-		tester.assertContains("Task2");
+		tester.assertContains("DashboardTask");
+		tester.assertContains("GrowthTask");
 	}
 
 	public void testClientPanel(){
@@ -89,10 +89,10 @@ public class TestTemplatePage extends TestCase
 	public void testMenu(){
 		PageParameters pp = new PageParameters();
 		GoalsAndTasks gt = new GoalsAndTasks();
-		MenuPanel m = new MenuPanel("menu", pp, gt.getGoals().getGoals());
+		MenuPanel m = new MenuPanel("menu", pp, gt.getGoals());
 		tester.startComponent(m);
-		tester.assertContains("patient");
-		tester.assertContains("overview");
+		tester.assertContains("ChildHealth");
+		tester.assertContains("Demographics");
 	}
 
 }

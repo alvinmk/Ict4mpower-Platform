@@ -64,7 +64,7 @@ public class MedicationsPanel extends Panel {
 		}
 		add(statusPanel);
 		
-		Label label = new Label("dateGiven", new PropertyModel<String>(medicine, "givenDate"));
+		Label label = new Label("dateGiven", new PropertyModel<String>(medicine, "givenDateString"));
 		label.setOutputMarkupPlaceholderTag(true);
 		AjaxLink<String> button = new AjaxLink<String>("giveToday") {
 			private static final long serialVersionUID = -3622074638128564454L;

@@ -7,13 +7,11 @@ public class GoalsAndTasks {
 	private Goals g = new Goals();
 	
 	public GoalsAndTasks(){
-		g.addGoal("patients");
-		g.addTask("patients", "Task1");
-		g.addTask("patients", "Task2");
+		// Demographics
+		g.addGoal("Demographics");
+		g.addTask("Demographics", "AdditionalInfoTask");
 		
-		g.addGoal("Overview");
-		g.addTask("Overview", "Task1");
-		
+		// Main part
 		g.addGoal("ChildHealth");
 		g.addTask("ChildHealth", "DashboardTask");
 		g.addTask("ChildHealth", "GrowthTask");

@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels;
 
+import ict4mpower.childHealth.data.FollowUpData;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,7 +9,7 @@ import java.util.Date;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -23,10 +25,20 @@ public class StatusDuePanel extends StatusPanel {
 		
 		add(new Label("label", new StringResourceModel("due", new Model<DateModel>(model))));
 		
-		PageParameters pp = new PageParameters();
+		final PageParameters pp = new PageParameters();
 		pp.set("taskname", "FollowUpTask");
 		pp.set("goalname", "ChildHealth");
-		BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("link", Template.class, pp);
+		Link<Template> link = new Link<Template>("link") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				FollowUpData data = FollowUpData.instance();
+				data.setDate(dueDate);
+				setResponsePage(Template.class, pp);
+			}
+		};
+		// Add link text
 		add(link);
 	}
 }
