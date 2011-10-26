@@ -38,19 +38,11 @@
 		<log4j.version>1.2.14</log4j.version>
 	</properties>
 	<dependencies>
-		<!--  WICKET DEPENDENCIES -->
-		<!--
-			OPTIONAL <dependency> <groupId>org.apache.wicket</groupId>
+		<dependency> 
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
-			<version>${wicket.version}</version> </dependency>
-		-->
-
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
-		<!-- WIQUERY DEPENDECIES -->
-		<!--  JUNIT DEPENDENCY FOR TESTING -->
-
-		<!--  JETTY DEPENDENCIES FOR TESTING  -->
-		<!-- OPEN ID DEPENDENCY -->
+			<version>${wicket.version}</version> 
+		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
     		<artifactId>wicket-core</artifactId>
