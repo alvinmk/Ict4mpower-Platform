@@ -1,16 +1,19 @@
 package ict4mpower.childHealth.panels.development;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
+import layout.Template;
+
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -18,9 +21,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import ict4mpower.Person;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.DevelopmentData;
+import ict4mpower.childHealth.data.FollowUpData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 public class DevelopmentPanel extends DivisionPanel {
@@ -28,62 +34,30 @@ public class DevelopmentPanel extends DivisionPanel {
 	
 	private ListView<Milestone> list;
 	private NextMilestonePanel nextPanel;
+	private MilestoneTests current;
 	
 	// TODO Temporary
+	Person p = Person.getPerson();
 	private List<MilestoneTests> tests = Arrays.asList(
-			new MilestoneTests[]{
-					new MilestoneTests(4, "Symmetric spontaneous motor skills",
-							null, "Follows objects with eyes", null),
-					new MilestoneTests(6, "Holds up the head lying on stomach<br/>Opens hands",
-							null, "Smiles at parents<br/>Responds to sounds", null),
-					new MilestoneTests(24, "Turns around<br/>Pulls self up towards a sitting position",
+					new MilestoneTests(p, Calendar.WEEK_OF_YEAR, 4, "Symmetric spontaneous motor skills",
+							null, "Follows objects with eyes", null, this),
+					new MilestoneTests(p, Calendar.WEEK_OF_YEAR, 6, "Holds up the head lying on stomach<br/>Opens hands",
+							null, "Smiles at parents<br/>Responds to sounds", null, this),
+					new MilestoneTests(p, Calendar.MONTH, 6, "Turns around<br/>Pulls self up towards a sitting position",
 							"Transfers objects from one hand to the other",
 							"Looks for the dropped object<br/>Makes double syllable sounds such as 'mumum' and 'dada'",
-							null),
-					new MilestoneTests(40, "Rises, walks with support",
+							null, this),
+					new MilestoneTests(p, Calendar.MONTH, 10, "Rises, walks with support",
 							"Picks up objects with pincergrasp",
 							"Hits two objects against each other",
-							null)
-			});
+							null, this)
+			);
 
 	public DevelopmentPanel(String id) {
 		super(id, "title", false);
 		
 		DevelopmentForm form = new DevelopmentForm("form");
-		form.add(new AjaxFormSubmitBehavior("onsubmit") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onError(AjaxRequestTarget target) {
-				System.out.println("Error");
-			}
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				MilestoneTests t = nextPanel.getTests();
-				//TODO Temporary info on age - get due date from database
-				System.out.println("gross: "+NextMilestonePanel.convert(t.grossChoice)
-						+" fine: "+NextMilestonePanel.convert(t.fineChoice)
-						+" communication: "+NextMilestonePanel.convert(t.commChoice)
-						+" cognitive: "+NextMilestonePanel.convert(t.cogChoice)
-						+" hearing: "+new Short[]{NextMilestonePanel.convert(t.hearLeftChoice),NextMilestonePanel.convert(t.hearRightChoice)}.toString()
-						+" eyesight: "+new Short[]{NextMilestonePanel.convert(t.eyeLeftChoice),NextMilestonePanel.convert(t.eyeRightChoice)}.toString());
-				
-				list.getModelObject().add(new Milestone(tests.get(3),
-					NextMilestonePanel.convert(t.grossChoice),
-					NextMilestonePanel.convert(t.fineChoice),
-					NextMilestonePanel.convert(t.commChoice),
-					NextMilestonePanel.convert(t.cogChoice),
-					new Short[]{NextMilestonePanel.convert(t.hearLeftChoice),NextMilestonePanel.convert(t.hearRightChoice)},
-					new Short[]{NextMilestonePanel.convert(t.eyeLeftChoice),NextMilestonePanel.convert(t.eyeRightChoice)}));
-				target.add(DevelopmentPanel.this, DevelopmentPanel.class.getName().substring(
-						DevelopmentPanel.class.getName().lastIndexOf('.')+1)+"Frame");
-			}
-		});
 		add(form);
-		
-		nextPanel = new NextMilestonePanel("nextMilestonePanel", form, this);
-		add(nextPanel);
 	}
 	
 	private class DevelopmentForm extends SavingForm {
@@ -97,7 +71,6 @@ public class DevelopmentPanel extends DivisionPanel {
 			try {
 				milestones.add(new Milestone(tests.get(0), (short)0, (short)0, (short)0, (short)0, new Short[]{0,0}, new Short[]{0,0}));
 				milestones.add(new Milestone(tests.get(1), (short)1, (short)0, (short)1, (short)0, new Short[]{0,0}, new Short[]{0,0}));
-				milestones.add(new Milestone(tests.get(2), (short)2, (short)2, (short)0, (short)0, new Short[]{2,2}, new Short[]{2,1}));
 			} catch(Exception e) {
 				//
 			}
@@ -113,94 +86,111 @@ public class DevelopmentPanel extends DivisionPanel {
 
 				@Override
 				protected void populateItem(ListItem<Milestone> item) {
-					Milestone indi = item.getModelObject();
-					item.add(new MilestonePanel("rowPanel", indi));
+					item.add(new MilestonePanel("rowPanel", item.getModel()));
 				}
 			};
 			add(list);
+			
+			//TODO Temporary
+			current = tests.get(data.getMilestones().size()).clone();
+			
+			nextPanel = new NextMilestonePanel("nextMilestonePanel", this, DevelopmentPanel.this, current);
+			nextPanel.setOutputMarkupId(true);
+			add(nextPanel, false);
 		}
-	}
-}
-
-class MilestoneTests implements Serializable {
-	private static final long serialVersionUID = 4401388786490151969L;
-	
-	public int age;
-	public String grossMotor;
-	public String fineMotor;
-	public String communication;
-	public String cognitive;
-	
-	public String grossChoice;
-	public String fineChoice;
-	public String commChoice;
-	public String cogChoice;
-	public String hearLeftChoice;
-	public String hearRightChoice;
-	public String eyeLeftChoice;
-	public String eyeRightChoice;
-	
-	public MilestoneTests(int age, String grossMotor, String fineMotor,
-			String communication, String cognitive) {
-		this.age = age;
-		this.grossMotor = grossMotor;
-		this.fineMotor = fineMotor;
-		this.communication = communication;
-		this.cognitive = cognitive;
-	}
-	
-	public String getAge() {
-		return this.age + " weeks";
+		
+		@Override
+		protected void onSubmit() {
+			super.onSubmit();
+			
+			MilestoneTests t = nextPanel.getTests();
+			//TODO Temporary info on age - get due date from database
+			System.out.println("gross: "+NextMilestonePanel.convert(t.grossChoice)
+					+" fine: "+NextMilestonePanel.convert(t.fineChoice)
+					+" communication: "+NextMilestonePanel.convert(t.commChoice)
+					+" cognitive: "+NextMilestonePanel.convert(t.cogChoice)
+					+" hearing: "+new Short[]{NextMilestonePanel.convert(t.hearLeftChoice),NextMilestonePanel.convert(t.hearRightChoice)}.toString()
+					+" eyesight: "+new Short[]{NextMilestonePanel.convert(t.eyeLeftChoice),NextMilestonePanel.convert(t.eyeRightChoice)}.toString());
+			
+			List<Milestone> l = list.getModelObject();
+			
+			// Add saved milestone to table
+			if(l.size() < tests.size()) {
+				l.add(new Milestone(tests.get(l.size()),
+					NextMilestonePanel.convert(t.grossChoice),
+					NextMilestonePanel.convert(t.fineChoice),
+					NextMilestonePanel.convert(t.commChoice),
+					NextMilestonePanel.convert(t.cogChoice),
+					new Short[]{NextMilestonePanel.convert(t.hearLeftChoice),NextMilestonePanel.convert(t.hearRightChoice)},
+					new Short[]{NextMilestonePanel.convert(t.eyeLeftChoice),NextMilestonePanel.convert(t.eyeRightChoice)}));
+				// Show next milestone in lower panel
+				if(l.size() < tests.size()) {
+					MilestoneTests mt = tests.get(l.size());
+					nextPanel.getTests().resetChoices();
+					current.setDueDate(mt.getDueDate());
+					current.grossMotor = mt.grossMotor;
+					current.fineMotor = mt.fineMotor;
+					current.communication = mt.communication;
+					current.cognitive = mt.cognitive;
+				}
+				else {
+					// No more milestones
+					nextPanel.setVisible(false);
+				}
+			}
+		}
 	}
 }
 
 class MilestonePanel extends Panel {
 	private static final long serialVersionUID = 3885944576231374282L;
 
-	public MilestonePanel(String id, Milestone milestone) {
+	public MilestonePanel(String id, IModel<Milestone> milestone) {
 		super(id);
 		
 		// Add milestone values
-		add(new Label("age", new Model<String>(milestone.tests.getAge())));
+		add(new Label("age", new Model<String>(milestone.getObject().tests.getDueAge())));
 		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(milestone, "tests.grossMotor"));
-		setClass(grossLabel, milestone.grossMotor);
+		setClass(grossLabel, milestone.getObject().grossMotor);
 		grossLabel.setEscapeModelStrings(false);
 		add(grossLabel);
 		Label fineLabel = new Label("fine_motor", new PropertyModel<String>(milestone, "tests.fineMotor"));
-		setClass(fineLabel, milestone.fineMotor);
+		setClass(fineLabel, milestone.getObject().fineMotor);
 		fineLabel.setEscapeModelStrings(false);
 		add(fineLabel);
 		Label commLabel = new Label("communication", new PropertyModel<String>(milestone, "tests.communication"));
-		setClass(commLabel, milestone.communication);
+		setClass(commLabel, milestone.getObject().communication);
 		commLabel.setEscapeModelStrings(false);
 		add(commLabel);
 		Label cogLabel = new Label("cognitive", new PropertyModel<String>(milestone, "tests.cognitive"));
-		setClass(cogLabel, milestone.cognitive);
+		setClass(cogLabel, milestone.getObject().cognitive);
 		cogLabel.setEscapeModelStrings(false);
 		add(cogLabel);
 		Label hearLeftLabel = new Label("hearing_left", new StringResourceModel("left", this, null));
-		setClass(hearLeftLabel, milestone.hearing[0]);
+		setClass(hearLeftLabel, milestone.getObject().hearing[0]);
 		add(hearLeftLabel);
 		Label hearRightLabel = new Label("hearing_right", new StringResourceModel("right", this, null));
-		setClass(hearRightLabel, milestone.hearing[1]);
+		setClass(hearRightLabel, milestone.getObject().hearing[1]);
 		add(hearRightLabel);
 		Label eyeLeftLabel = new Label("eyesight_left", new StringResourceModel("left", this, null));
-		setClass(eyeLeftLabel, milestone.eyesight[0]);
+		setClass(eyeLeftLabel, milestone.getObject().eyesight[0]);
 		add(eyeLeftLabel);
 		Label eyeRightLabel = new Label("eyesight_right", new StringResourceModel("right", this, null));
-		setClass(eyeRightLabel, milestone.eyesight[1]);
+		setClass(eyeRightLabel, milestone.getObject().eyesight[1]);
 		add(eyeRightLabel);
 	}
 	
 	private void setClass(Label label, short value) {
-		if(value == 2) {
-			label.add(AttributeModifier.replace("class", "not_developed"));
-		}
-		else if(value == 1) {
-			label.add(AttributeModifier.replace("class", "stays_behind"));
-		}
-		else {
-			label.add(AttributeModifier.replace("class", "well_developed"));
+		switch(value) {
+			case 2:
+				label.add(AttributeModifier.replace("class", "not_developed"));
+				break;
+			case 1:
+				label.add(AttributeModifier.replace("class", "stays_behind"));
+				break;
+			default:
+				label.add(AttributeModifier.replace("class", "well_developed"));
+				break;
 		}
 	}
 }
@@ -221,6 +211,7 @@ class NextMilestonePanel extends DivisionPanel {
 	}
 	
 	private MilestoneTests tests;
+	private List<Component> updateList = new ArrayList<Component>();
 	
 	private NextMilestoneChoice grossMotor;
 	private NextMilestoneChoice fineMotor;
@@ -231,8 +222,10 @@ class NextMilestonePanel extends DivisionPanel {
 	private NextMilestoneChoice eyesightLeft;
 	private NextMilestoneChoice eyesightRight;
 
-	public NextMilestonePanel(String id, SavingForm form, DivisionPanel panel) {
+	public NextMilestonePanel(String id, SavingForm form, DivisionPanel panel, MilestoneTests tests) {
 		super(id, "nextMilestone");
+		
+		this.tests = tests;
 		
 		if(development == null) {
 			// Initiate choices list
@@ -245,22 +238,40 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		setForm(form, panel);
 		
-		//TODO Temporary
-		tests = new MilestoneTests(40, "Rises, walks with support",
-							"Picks up objects with pincergrasp",
-							"Hits two objects against each other",
-							null);
-		
-		add(new Label("age", new PropertyModel<String>(tests, "age")));
-		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(tests, "grossMotor"));
+		Label ageLabel = new Label("age", new PropertyModel<String>(this.tests, "dueAge"));
+		ageLabel.setOutputMarkupId(true);
+		updateList.add(ageLabel);
+		add(ageLabel);
+		// Add link to follow-up
+		final PageParameters pp = new PageParameters();
+		pp.set("taskname", "FollowUpTask");
+		pp.set("goalname", "ChildHealth");
+		Link<Template> link = new Link<Template>("link") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				FollowUpData data = FollowUpData.instance();
+				data.setDate(NextMilestonePanel.this.tests.getDueDate());
+				setResponsePage(Template.class, pp);
+			}
+		};
+		// Add link text
+		Label dueDateLabel = new Label("dateLink", new PropertyModel<String>(this.tests, "dueDateString"));
+		updateList.add(dueDateLabel);
+		link.add(dueDateLabel);
+		add(link);
+		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(this.tests, "grossMotor"));
 		grossLabel.setEscapeModelStrings(false);
+		updateList.add(grossLabel);
 		add(grossLabel);
 		this.grossMotor = new NextMilestoneChoice("select_gross",
 				new PropertyModel<String>(tests, "grossChoice"), development);
 		add(this.grossMotor);
 		
-		Label fineLabel = new Label("fine_motor", new PropertyModel<String>(tests, "fineMotor"));
+		Label fineLabel = new Label("fine_motor", new PropertyModel<String>(this.tests, "fineMotor"));
 		fineLabel.setEscapeModelStrings(false);
+		updateList.add(fineLabel);
 		add(fineLabel);
 		this.fineMotor = new NextMilestoneChoice("select_fine",
 				new PropertyModel<String>(tests, "fineChoice"), development);
@@ -268,6 +279,7 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		Label commLabel = new Label("communication", new PropertyModel<String>(tests, "communication"));
 		commLabel.setEscapeModelStrings(false);
+		updateList.add(commLabel);
 		add(commLabel);
 		this.communication = new NextMilestoneChoice("select_comm",
 				new PropertyModel<String>(tests, "commChoice"), development);
@@ -275,6 +287,7 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		Label cogLabel = new Label("cognitive", new PropertyModel<String>(tests, "cognitive"));
 		cogLabel.setEscapeModelStrings(false);
+		updateList.add(cogLabel);
 		add(cogLabel);
 		this.cognitive = new NextMilestoneChoice("select_cog",
 				new PropertyModel<String>(tests, "cogChoice"), development);

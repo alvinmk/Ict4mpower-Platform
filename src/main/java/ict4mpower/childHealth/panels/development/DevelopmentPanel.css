@@ -27,6 +27,10 @@
 	margin-top: 45px;
 }
 
+#age_column {
+	min-width: 70px;
+}
+
 .divisionPanel td.well_developed {
 	background-color: #F0F0F0;
 }

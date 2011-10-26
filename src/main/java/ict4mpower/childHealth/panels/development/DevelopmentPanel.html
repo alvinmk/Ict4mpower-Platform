@@ -22,7 +22,7 @@
 	<form wicket:id="form">
 		<table id="milestones_table">
 			<tr>
-				<th><wicket:message key="age"/></th>
+				<th id="age_column"><wicket:message key="age"/></th>
 				<th><wicket:message key="gross_motor"/></th>
 				<th><wicket:message key="fine_motor"/></th>
 				<th><wicket:message key="communication"/></th>
@@ -35,8 +35,8 @@
 				<tbody wicket:id="rowPanel"></tbody>
 			</wicket:container>
 		</table>
-	</form>
 	
-	<div wicket:id="nextMilestonePanel"/>
+		<div wicket:id="nextMilestonePanel"/>
+	</form>
 </wicket:extend>
 </html>

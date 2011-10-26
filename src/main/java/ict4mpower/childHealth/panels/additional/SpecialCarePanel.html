@@ -6,16 +6,12 @@
 	xmlns:wicket="http://wicket.sourceforge.net/" 
 	xml:lang="en" 
 	lang="en">  
-<wicket:head>
-</wicket:head>
-
-<body>
-	<wicket:panel>
-		<div><p>Content 1</p></div>
+	<wicket:head>
+	</wicket:head>
+	
+	<wicket:extend>
 		<form wicket:id="form">
-			<input wicket:id="button1" type="submit" value="SE"></input>
-			<input wicket:id="personName" type="Text"></input>
+			<span wicket:id="reasons"/>
 		</form>
-	</wicket:panel>
-</body>
+	</wicket:extend>
 </html>

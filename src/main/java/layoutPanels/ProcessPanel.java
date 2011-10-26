@@ -38,7 +38,7 @@ public class ProcessPanel extends Panel {
 				if( task.equals(selectedTask) ){
 					item.add(new AttributeAppender("class", new Model<String>("selected"), " "));					
 				}
-				org.apache.wicket.request.mapper.parameter.PageParameters pp = new PageParameters();
+				PageParameters pp = new PageParameters();
 				pp.set("taskname",task);
 				pp.set("goalname", selectedgoal);
 				BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
