@@ -11,7 +11,7 @@ public class DataEndPoint {
 	 * This takes an entry and stores it in the database.
 	 * Since it's singned it can no longer be edited. 
 	 */
-	public String SignEntry(Object o,String patientId, long visitId, String app){
+	public String signEntry(Object o,String patientId, long visitId, String app){
 		String type = o.getClass().getName();
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.newEntry(o, type, app, patientId, visitId);
