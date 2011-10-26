@@ -2,8 +2,8 @@ package storage;
 
 import org.apache.wicket.model.PropertyModel;
 
-public class personModel<T> extends PropertyModel<T>{
-	public personModel(Object modelObject, String expression) {
+public class PersonModel<T> extends PropertyModel<T>{
+	public PersonModel(Object modelObject, String expression) {
 		super(modelObject, expression);
 		// TODO Auto-generated constructor stub
 	}

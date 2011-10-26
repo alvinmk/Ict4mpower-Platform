@@ -21,7 +21,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 
-import pl.rabbitsoftware.EnhancedWicketTester;
+//import pl.rabbitsoftware.EnhancedWicketTester;
 
 
 /**
@@ -30,7 +30,7 @@ import pl.rabbitsoftware.EnhancedWicketTester;
 public class TestTemplatePage extends TestCase
 {
 	private WicketTester tester;
-	EnhancedWicketTester enhanced = new EnhancedWicketTester(tester);
+	//EnhancedWicketTester enhanced = new EnhancedWicketTester(tester);
 
 	@Override
 	public void setUp()
