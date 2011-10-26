@@ -1,0 +1,20 @@
+table.palette {
+	border: 0 none;
+}
+
+table.palette td, table.palette td.header {
+	border: 0 none;
+	background-color: transparent;
+}
+
+table.palette td.header span {
+	font-size: small;
+}
+
+table.palette td.pane select {
+	width: 300px;
+}
+
+table.palette td.buttons {
+	vertical-align: middle;
+}
