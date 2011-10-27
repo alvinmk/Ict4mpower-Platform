@@ -10,6 +10,50 @@
 </wicket:head>
 
 <wicket:extend>
-	<span wicket:id="test"/>
+	<ul id="summary">
+		<li>
+			<fieldset>
+				<label for="growth"><wicket:message key="growth"/></label>
+				<input type="checkbox" id="growth" wicket:id="growthCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="growth_indicators"/>:</td>
+							<td><wicket:message key="growth_head"/> - <span wicket:id="growthHead"/>;
+							 <wicket:message key="growth_length"/> - <span wicket:id="growthLength"/>;
+							 <wicket:message key="growth_weight"/> - <span wicket:id="growthWeight"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="growth_feeding"/>:</td>
+							<td><span wicket:id="growthFeeding"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="growth_pmtct"/></td>
+							<td><span wicket:id="growthPMTCT"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li>
+			<fieldset>
+				<label for="followUp"><wicket:message key="follow_up"/></label>
+				<input type="checkbox" id="followUp" wicket:id="followUpCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="follow_up_time"/>:</td>
+							<td><span wicket:id="followUpDate"/> <wicket:message key="at"/>
+							 <span wicket:id="followUpTime"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="follow_up_note"/>:</td>
+							<td><span wicket:id="followUpNote"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+	</ul>
 </wicket:extend>
 </html>

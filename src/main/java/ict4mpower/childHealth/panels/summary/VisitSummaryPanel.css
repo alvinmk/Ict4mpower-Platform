@@ -1,0 +1,41 @@
+#summary li input {
+    position: absolute;
+    left: 0;
+    margin-left: 0;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+    height: 1em;
+    width: 1em;
+    top: 0;
+}
+
+#summary li label {
+    cursor: pointer;
+    display: block;
+    padding: 3px 5px;
+    font-size: small;
+    font-weight: bold;
+    color: #1C94C4;
+}
+
+#summary li input + div {
+    height: 0;
+    overflow: hidden;
+    padding: 5px;
+    font-size: smaller;
+}
+
+#summary li input:checked + div {
+	height: auto;
+	margin: 0 0 0.125em;
+}
+
+#summary table, #summary tr, #summary td {
+	border: 0 none;
+	background: transparent;
+}
+
+#summary td {
+	text-align: left;
+}
