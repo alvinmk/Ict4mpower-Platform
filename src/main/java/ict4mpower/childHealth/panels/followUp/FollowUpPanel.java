@@ -2,10 +2,12 @@ package ict4mpower.childHealth.panels.followUp;
 
 import java.util.Date;
 
+import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.convert.IConverter;
 import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 import ict4mpower.childHealth.SavingForm;
@@ -37,10 +39,18 @@ public class FollowUpPanel extends DivisionPanel {
 			FollowUpData data = FollowUpData.instance();
 			
 			// Feedback panel
-			add(new FeedbackPanel("feedback"));
+			add(new FeedbackPanel("feedback"), false);
 			
 			// Date field
-			date = new DatePicker<Date>("date", new PropertyModel<Date>(data, "date"));
+			date = new DatePicker<Date>("date", new PropertyModel<Date>(data, "date")) {
+				private static final long serialVersionUID = 1L;
+
+				@SuppressWarnings("unchecked")
+				@Override
+				public <C> IConverter<C> getConverter(Class<C> type) {
+					return (IConverter<C>) new PatternDateConverter("dd/mm/yy", false);
+				}
+			};
 			date.setDateFormat("dd/mm/yy");
 			date.setRequired(true);
 			date.add(new ValidationClassBehavior());
