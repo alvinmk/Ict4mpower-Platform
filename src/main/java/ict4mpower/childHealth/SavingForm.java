@@ -26,18 +26,32 @@ public class SavingForm extends Form<ValueMap> {
 	}
 	
 	public MarkupContainer add(Component child) {
-		return add(child, true);
+		return add(child, true, null);
+	}
+	
+	public MarkupContainer add(Component child, String id) {
+		return add(child, true, id);
+	}
+	
+	public MarkupContainer add(Component child, boolean save) {
+		return add(child, save, null);
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public MarkupContainer add(Component child, boolean save) {
+	public MarkupContainer add(Component child, boolean save, String id) {
 		addFormComponents(child);
 		if(save) {
 			// Check to see if there is a value for this component in the session store
 			System.out.println("Adding "+getSaveName()+" value: "+getSession().getAttribute(getSaveName()));
 			if(getSession().getAttribute(getSaveName()) != null) {
 				// Set value for component
-				child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName()), child.getId()));
+				if(id == null) {
+					child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName()), child.getId()));
+				}
+				else {
+					System.out.println("data saved "+getSession().getAttribute(getSaveName()));
+					child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName()), id));
+				}
 			}
 			else {
 				// TODO Build session value from database
