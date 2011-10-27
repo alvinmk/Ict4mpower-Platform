@@ -1,6 +1,7 @@
 package layoutPanels;
 
 
+import layout.GoalsAndTasks;
 import layout.Template;
 
 import org.apache.log4j.Logger;
@@ -12,6 +13,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import tasks.Task1;
 import tasks.TaskList;
  
 /**
@@ -22,7 +25,7 @@ import tasks.TaskList;
 public class ProcessPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	static final Logger log = Logger.getLogger(ProcessPanel.class);
-	
+		
 	public ProcessPanel(String id, PageParameters params, final TaskList tasks){
 		super(id);
 		log.info("Adding " +tasks.getTaskNames().size() +" To panel");

@@ -2,12 +2,13 @@ package storage;
 
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.HashMap;
+
+//import storage.dight.MedicalRecord;
 
 public class DataEndPoint {
-	Object o;
 	/*
 	 * This takes an entry and stores it in the database.
 	 * Since it's singned it can no longer be edited. 
@@ -38,13 +39,15 @@ public class DataEndPoint {
 		String visit = Long.toString(visitId);
 		if(temp.containsKey(patientId)){
 			if(temp.get(patientId).containsKey(visit+"_"+app)){
-				if(temp.get(patientId).get(visitId).containsKey(type)){
-					temp.get(patientId).get(visitId).get(type).add(o);
+				if(temp.get(patientId).get(visit+"_"+app).containsKey(type)){
+					temp.get(patientId).get(visit+"_"+app).get(type).add(o);
+					return "new object";
 				}
 				else{
 					Set<Object> s = new HashSet<Object>();
 					s.add(o);
-					temp.get(patientId).get(visitId).put(type, s);
+					temp.get(patientId).get(visit+"_"+app).put(type, s);
+					return "new type";
 				}
 			}
 			else{
@@ -53,6 +56,7 @@ public class DataEndPoint {
 				s.add(o);
 				h.put(type, s);				
 				temp.get(patientId).put(visit+"_"+app, h);
+				return "new visit and App";
 			}
 		}
 		else{
@@ -63,19 +67,20 @@ public class DataEndPoint {
 			inner.put(type, s);
 			outer.put(visit+"_"+app,inner);
 			temp.put(patientId, outer);
+			return "new patient";
 		}
-		//Write to dight
-		//MedicalRecord mr = new MedicalRecord(o, type, app, patientId, visitId);
-		
-		return "";
+		//Write to dight		
+		//MedicalRecord mr = new MedicalRecord();
+		//return mr.newEntry(o, type, app, patientId, visitId);
 	}
 	
 	/*
 	 * Returns all signed entries for a specific patient id
 	 */
-
 	public Set<Object> getEntriesFromPatientId(String id){
 		//Make a dight query
+		//MedicalRecord mr = new MedicalRecord();
+		//return mr.getObjectsFromPatientId(id);
 		return null;
 	}
 	
@@ -91,9 +96,10 @@ public class DataEndPoint {
 	/*
 	 * Returns all signed entries for a type and specific visit 
 	 */
-	public Set<Object> getEntriesFromVisitIdAndType(String patientId, long Visitid, String type){
+	public Set<Object> getEntriesFromVisitIdAndType(String patientId, String app, long Visitid, String type){
 		String visit = Long.toString(Visitid);
-		Set<Object> s = temp.get(patientId).get(visit).get(type);
+		
+		Set<Object> s = temp.get(patientId).get(visit+"_"+app).get(type);
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromTypeAndVisitId(type, id);
 		return s;

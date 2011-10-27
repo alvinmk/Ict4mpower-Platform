@@ -38,7 +38,6 @@ public class MenuPanel extends Panel {
 					}
 					link.add(l);
 					item.add(link);
-					
 				}		
 			});
 			
