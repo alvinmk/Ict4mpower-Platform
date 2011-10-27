@@ -186,6 +186,10 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		return df.format(date);
 	}
 	
+	public Date getDateValue() {
+		return date;
+	}
+	
 	public float getBmi() {
 		return Math.round((this.weight/(Math.pow(this.length/100, 2)))*10)/10f;
 	}
