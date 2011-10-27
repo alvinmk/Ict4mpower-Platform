@@ -3,6 +3,7 @@ package ict4mpower.childHealth.panels.followUp;
 import java.util.Date;
 
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -48,6 +49,11 @@ public class FollowUpPanel extends DivisionPanel {
 				protected DateTextField newDateTextField(String id,
 						PropertyModel<Date> model) {
 					return DateTextField.forDatePattern(id, model, "dd/MM/yyyy");
+				}
+				
+				@Override
+				protected DatePicker newDatePicker() {
+					return super.newDatePicker().setShowOnFieldClick(true);
 				}
 			};
 			date.setRequired(true);
