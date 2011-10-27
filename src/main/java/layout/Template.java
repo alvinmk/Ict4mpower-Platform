@@ -14,13 +14,11 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-
-
 import tasks.Task;
 import tasks.TaskList;
 
 /*
- * The basic strucutre of the template page and the components it contains.
+ * The basic structure of the template page and the components it contains.
  */
 public class Template extends WebPage {
 	private static final long serialVersionUID = 7656338216865551821L;
@@ -42,8 +40,6 @@ public class Template extends WebPage {
 		//--END OF MOCK DATA--
 		
 		TaskList taskList;
-		//Parse the parameter and add the corresponding tab
-		//If no argument set use first tab				
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
 
 		// Add goal and task names to session
@@ -55,6 +51,7 @@ public class Template extends WebPage {
 			taskList = new TaskList();
 		}
 		else{
+			
 			String task = (String) (parameters.get("taskname").toString() != null ? parameters.get("taskname").toString() : "none");
 			log.debug("goal is " +goal +" Finding task " +task);
 			taskList = gt.getGoals().getTasks(goal);

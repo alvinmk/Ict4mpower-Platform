@@ -12,7 +12,7 @@ public class VisitSummaryPanel extends DivisionPanel {
 		super(id, "title");
 		
 		// Test
-		FollowUpData followUp = (FollowUpData) getSession().getAttribute("childHealth.FollowUpPanel");
+		FollowUpData followUp = (FollowUpData) getSession().getAttribute("ChildHealth:FollowUpTask");
 		add(new Label("test", followUp.getDate()+" - "+followUp.getMessage()));
 	}
 }

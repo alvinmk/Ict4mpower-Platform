@@ -7,9 +7,24 @@
 	xml:lang="en" 
 	lang="en">  
 <wicket:head>
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="VisitSummaryPanel.css"></link>
+	</wicket:link>
 </wicket:head>
 
 <wicket:extend>
+	<ul id="summary">
+		<li><h3><a href="#test">Test</a></h3>
+			<ul>
+				<li><div id="test">Text</div></li>
+			</ul>
+		</li>
+		<li><h3><a href="#test2">Test2</a></h3>
+			<ul>
+				<li><div id="test2">Text2</div></li>
+			</ul>
+		</li>
+	</ul>
 	<span wicket:id="test"/>
 </wicket:extend>
 </html>

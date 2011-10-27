@@ -1,8 +1,10 @@
 package storage;
 
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.HashMap;
 
 //import storage.dight.MedicalRecord;
 
@@ -10,12 +12,66 @@ public class DataEndPoint {
 	/*
 	 * This takes an entry and stores it in the database.
 	 * Since it's singned it can no longer be edited. 
+	 *
 	 */
+	
+	//A temporary in memory object storage {patientId}->{visit_app}->{type}->Set<Objects>
+	private HashMap<String, HashMap<String, HashMap<String, Set<Object>>>> temp = new HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>();
+	private static DataEndPoint d;
+	
+	public static DataEndPoint getDataEndPoint(){
+		if(d!=null){
+			return d;
+		}
+		else{
+			d = new DataEndPoint();
+			return d;
+		}
+	}
+	
+	private DataEndPoint(){
+		
+	}
+	
 	public String signEntry(Object o,String patientId, long visitId, String app){
 		String type = o.getClass().getName();
+
+		String visit = Long.toString(visitId);
+		if(temp.containsKey(patientId)){
+			if(temp.get(patientId).containsKey(visit+"_"+app)){
+				if(temp.get(patientId).get(visit+"_"+app).containsKey(type)){
+					temp.get(patientId).get(visit+"_"+app).get(type).add(o);
+					return "new object";
+				}
+				else{
+					Set<Object> s = new HashSet<Object>();
+					s.add(o);
+					temp.get(patientId).get(visit+"_"+app).put(type, s);
+					return "new type";
+				}
+			}
+			else{
+				HashMap<String, Set<Object>> h = new HashMap<String, Set<Object>>();
+				Set<Object> s = new HashSet<Object>();
+				s.add(o);
+				h.put(type, s);				
+				temp.get(patientId).put(visit+"_"+app, h);
+				return "new visit and App";
+			}
+		}
+		else{
+			HashMap<String, Set<Object>> inner = new HashMap<String, Set<Object>>();
+			HashMap<String, HashMap<String, Set<Object>>> outer = new HashMap<String, HashMap<String, Set<Object>>>();
+			Set<Object> s = new HashSet<Object>();
+			s.add(o);
+			inner.put(type, s);
+			outer.put(visit+"_"+app,inner);
+			temp.put(patientId, outer);
+			return "new patient";
+		}
+		//Write to dight		
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.newEntry(o, type, app, patientId, visitId);
-		return null;
 	}
 	
 	/*
@@ -40,10 +96,13 @@ public class DataEndPoint {
 	/*
 	 * Returns all signed entries for a type and specific visit 
 	 */
-	public Set<Object> getEntriesFromVisitIdAndType(String type, long id){
+	public Set<Object> getEntriesFromVisitIdAndType(String patientId, String app, long Visitid, String type){
+		String visit = Long.toString(Visitid);
+		
+		Set<Object> s = temp.get(patientId).get(visit+"_"+app).get(type);
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromTypeAndVisitId(type, id);
-		return null;
+		return s;
 	}
 	/*
 	 * Returns signed entries within a date range for a specific patient
