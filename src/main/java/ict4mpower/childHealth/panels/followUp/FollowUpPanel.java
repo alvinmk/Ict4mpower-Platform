@@ -2,13 +2,12 @@ package ict4mpower.childHealth.panels.followUp;
 
 import java.util.Date;
 
-import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.util.convert.IConverter;
-import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
@@ -18,7 +17,7 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 public class FollowUpPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 	
-	private DatePicker<Date> date;
+	private DateTimeField date;
 	private TextArea<String> message;
 
 	public FollowUpPanel(String id) {
@@ -42,16 +41,15 @@ public class FollowUpPanel extends DivisionPanel {
 			add(new FeedbackPanel("feedback"), false);
 			
 			// Date field
-			date = new DatePicker<Date>("date", new PropertyModel<Date>(data, "date")) {
+			date = new DateTimeField("date", new PropertyModel<Date>(data, "date")) {
 				private static final long serialVersionUID = 1L;
-
-				@SuppressWarnings("unchecked")
+				
 				@Override
-				public <C> IConverter<C> getConverter(Class<C> type) {
-					return (IConverter<C>) new PatternDateConverter("dd/mm/yy", false);
+				protected DateTextField newDateTextField(String id,
+						PropertyModel<Date> model) {
+					return DateTextField.forDatePattern(id, model, "dd/MM/yyyy");
 				}
 			};
-			date.setDateFormat("dd/mm/yy");
 			date.setRequired(true);
 			date.add(new ValidationClassBehavior());
 			add(date);
