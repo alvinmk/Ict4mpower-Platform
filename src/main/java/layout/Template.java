@@ -1,8 +1,6 @@
 package layout;
 
 
-import ict4mpower.AppSession;
-import ict4mpower.MockPatient;
 import layoutPanels.MenuPanel;
 import layoutPanels.ProcessPanel;
 import layoutPanels.StatePanel;
@@ -13,8 +11,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-
 
 import tasks.Task;
 import tasks.TaskList;
@@ -27,34 +23,20 @@ public class Template extends WebPage {
 	static final Logger log = Logger.getLogger(Template.class);
 	
 	public Template(final PageParameters parameters) {
-		AppSession session = (AppSession)getSession();
+	
 		
-		//--Add some mock data, this will be removed--
-		//Mock goals and tasks
-		GoalsAndTasks gt = new GoalsAndTasks();
-		//Mock session data
-		MockPatient mock = new MockPatient();
-		session.setUserID("Alvin");
-		session.setAllVisits(mock.visits);
-		session.setCurrentVisit(mock.visits.get(0));
-		session.setPatientInfo(mock.pi);
-		//--END OF MOCK DATA--
-		
-		TaskList taskList;
 		//Parse the parameter and add the coresponding tab
-		//If no argument set use first tab				
+		//If no argument set use first tab
+		GoalsAndTasks gt = new GoalsAndTasks();
+		TaskList taskList;
+		
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
-		
-		// Add goal and task names to session
-		session.setGoal(goal);
-		session.setTask(parameters.get("taskname").toString());
-		
-		
 		if(goal.equals("none")){
 			add( new Label("task", ""));
 			taskList = new TaskList();
 		}
 		else{
+			
 			String task = (String) (parameters.get("taskname").toString() != null ? parameters.get("taskname").toString() : "none");
 			log.debug("goal is " +goal +" Finding task " +task);
 			taskList = gt.getGoals().getTasks(goal);
