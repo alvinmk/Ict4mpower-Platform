@@ -32,7 +32,8 @@ public class CheckInfoPanel extends Panel {
 				}
 				else {
 					input.setVisible(true);
-					target.appendJavaScript("document.getElementById('" + input.getMarkupId() + "').focus();");
+					//target.appendJavaScript("document.getElementById('" + input.getMarkupId() + "').focus();");
+					target.focusComponent(input);
 				}
 				target.add(input);
 			}
