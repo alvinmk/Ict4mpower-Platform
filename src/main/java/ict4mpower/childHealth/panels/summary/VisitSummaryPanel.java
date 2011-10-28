@@ -3,7 +3,6 @@ package ict4mpower.childHealth.panels.summary;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
@@ -11,8 +10,13 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.model.Model;
 
 import ict4mpower.AppSession;
+import ict4mpower.childHealth.SummaryCheck;
+import ict4mpower.childHealth.data.CheckInfoData;
 import ict4mpower.childHealth.data.FollowUpData;
 import ict4mpower.childHealth.data.GrowthData;
+import ict4mpower.childHealth.data.ImmunizationData;
+import ict4mpower.childHealth.data.MedicationsData;
+import ict4mpower.childHealth.data.StatusPraesensData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 import ict4mpower.childHealth.panels.growth.Indicator;
 
@@ -27,13 +31,11 @@ public class VisitSummaryPanel extends DivisionPanel {
 		
 		AppSession session = (AppSession)getSession();
 		
-		String goal = session.getGoal();
+		String goal = session.getGoal()+":";
 		
 		// Growth
-		GrowthData growth = (GrowthData) session.getAttribute(goal+":GrowthTask");
-		CheckBox growthCheck = new CheckBox("growthCheck", new Model<Boolean>(growth != null));
-		if(growth == null) growthCheck.setEnabled(false);
-		add(growthCheck);
+		GrowthData growth = (GrowthData) session.getAttribute(goal+"GrowthTask");
+		add(new SummaryCheck("growthCheck", growth));
 		Indicator indi = growth != null && growth.getIndicators() != null
 				? growth.getIndicators().get(growth.getIndicators().size()-1) : null;
 		if(indi != null) { // Check if last measurement was done today
@@ -52,11 +54,40 @@ public class VisitSummaryPanel extends DivisionPanel {
 		add(new Label("growthPMTCT", growth != null && growth.getPmtct() != null
 				? getString(growth.getPmtct()) : "-"));
 		
+		// Immunization
+		ImmunizationData imm = (ImmunizationData) session.getAttribute(goal+"ImmunizationTask");
+		add(new SummaryCheck("immCheck", imm));
+		// TODO Show info
+		
+		// Status praesens
+		StatusPraesensData status = (StatusPraesensData) session.getAttribute(goal+"StatusPraesensTask");
+		add(new SummaryCheck("statusCheck", status));
+		add(new Label("statusComplaints", status != null ? status.getComplaintsText() : null));
+		add(new Label("statusConclusion", status != null ? status.getConclusionText() : null));
+		String problems = "";
+		if(status != null && status.getRecentHealthProblems() != null) {
+			for(CheckInfoData info : status.getRecentHealthProblems()) {
+				if(info.isCheck()) problems += info.getLabel()
+						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n\n";
+			}
+		}
+		add(new MultiLineLabel("statusProblems", problems).setEscapeModelStrings(false));
+		String checkUp = "";
+		if(status != null && status.getCheckUp() != null) {
+			for(CheckInfoData info : status.getCheckUp()) {
+				if(info.isCheck()) checkUp += info.getLabel()
+						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n\n";
+			}
+		}
+		add(new MultiLineLabel("statusCheckUp", checkUp).setEscapeModelStrings(false));
+		
+		// Medications
+		MedicationsData med = (MedicationsData) session.getAttribute(goal+"MedicationsTask");
+		add(new SummaryCheck("medCheck", med));
+		
 		// Follow up
-		FollowUpData followUp = (FollowUpData) session.getAttribute(goal+":FollowUpTask");
-		CheckBox followUpCheck = new CheckBox("followUpCheck", new Model<Boolean>(followUp != null));
-		if(followUp == null) followUpCheck.setEnabled(false);
-		add(followUpCheck);
+		FollowUpData followUp = (FollowUpData) session.getAttribute(goal+"FollowUpTask");
+		add(new SummaryCheck("followUpCheck", followUp));
 		add(new Label("followUpDate", followUp != null ? df.format(followUp.getDate()) : null));
 		add(new Label("followUpTime", followUp != null ? time.format(followUp.getDate()) : null));
 		add(new MultiLineLabel("followUpNote", followUp != null ? followUp.getMessage() : null));

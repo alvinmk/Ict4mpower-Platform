@@ -1,6 +1,5 @@
 package ict4mpower.childHealth.data;
 
-
 import java.io.Serializable;
 import java.util.List;
 
