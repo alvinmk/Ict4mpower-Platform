@@ -39,3 +39,20 @@
 #summary td {
 	text-align: left;
 }
+
+.diagnosis {
+	font-weight: bold;
+	color: #800040;
+}
+
+.strong {
+	font-weight: bold;
+}
+
+.em {
+	font-style: italic;
+}
+
+.listrows {
+	line-height: 150%;
+}

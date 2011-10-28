@@ -11,7 +11,7 @@
 
 <wicket:extend>
 	<ul id="summary">
-		<li>
+		<li><!-- Growth -->
 			<fieldset>
 				<label for="growth"><wicket:message key="growth"/></label>
 				<input type="checkbox" id="growth" wicket:id="growthCheck"/>
@@ -19,23 +19,75 @@
 					<table>
 						<tr>
 							<td><wicket:message key="growth_indicators"/>:</td>
-							<td><wicket:message key="growth_head"/> - <span wicket:id="growthHead"/>;
+							<td class="em"><wicket:message key="growth_head"/> - <span wicket:id="growthHead"/>;
 							 <wicket:message key="growth_length"/> - <span wicket:id="growthLength"/>;
 							 <wicket:message key="growth_weight"/> - <span wicket:id="growthWeight"/></td>
 						</tr>
 						<tr>
 							<td><wicket:message key="growth_feeding"/>:</td>
-							<td><span wicket:id="growthFeeding"/></td>
+							<td class="em"><span wicket:id="growthFeeding"/></td>
 						</tr>
 						<tr>
 							<td><wicket:message key="growth_pmtct"/></td>
-							<td><span wicket:id="growthPMTCT"/></td>
+							<td class="em"><span wicket:id="growthPMTCT"/></td>
 						</tr>
 					</table>
 				</div>
 			</fieldset>
 		</li>
-		<li>
+		<li><!-- Immunization -->
+			<fieldset>
+				<label for="immunization"><wicket:message key="immunization"/></label>
+				<input type="checkbox" id="immunization" wicket:id="immCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li><!-- Status praesens -->
+			<fieldset>
+				<label for="status"><wicket:message key="status"/></label>
+				<input type="checkbox" id="status" wicket:id="statusCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="status_complaints"/>:</td>
+							<td class="em"><span wicket:id="statusComplaints"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="status_problems"/>:</td>
+							<td class="em listrows"><span wicket:id="statusProblems"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="status_check_up"/>:</td>
+							<td class="em listrows"><span wicket:id="statusCheckUp"/></td>
+						</tr>
+						<tr>
+							<td class="diagnosis"><wicket:message key="status_conclusion"/>:</td>
+							<td class="em strong"><span wicket:id="statusConclusion"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li><!-- Medications -->
+			<fieldset>
+				<label for="med"><wicket:message key="medications"/></label>
+				<input type="checkbox" id="med" wicket:id="medCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li><!-- Follow-up -->
 			<fieldset>
 				<label for="followUp"><wicket:message key="follow_up"/></label>
 				<input type="checkbox" id="followUp" wicket:id="followUpCheck"/>
@@ -43,12 +95,12 @@
 					<table>
 						<tr>
 							<td><wicket:message key="follow_up_time"/>:</td>
-							<td><span wicket:id="followUpDate"/> <wicket:message key="at"/>
+							<td class="em"><span wicket:id="followUpDate"/> <wicket:message key="at"/>
 							 <span wicket:id="followUpTime"/></td>
 						</tr>
 						<tr>
 							<td><wicket:message key="follow_up_note"/>:</td>
-							<td><span wicket:id="followUpNote"/></td>
+							<td class="em"><span wicket:id="followUpNote"/></td>
 						</tr>
 					</table>
 				</div>
