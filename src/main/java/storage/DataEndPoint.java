@@ -1,6 +1,10 @@
 package storage;
 
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,9 +19,11 @@ public class DataEndPoint {
 	 *
 	 */
 	
-	//A temporary in memory object storage {patientId}->{visit_app}->{type}->Set<Objects>
-	private HashMap<String, HashMap<String, HashMap<String, Set<Object>>>> temp = new HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>();
+	//A temporary in memory object storage {patientId}->{visit_app}->{type}->Set<Objects>y
+	
+	private static HashMap<String, HashMap<String, HashMap<String, Set<Object>>>> temp = new HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>();
 	private static DataEndPoint d;
+	private HashMap<String, HashMap<String, String>> test = new HashMap<String, HashMap<String, String>>();
 	
 	public static DataEndPoint getDataEndPoint(){
 		if(d!=null){
@@ -25,13 +31,63 @@ public class DataEndPoint {
 		}
 		else{
 			d = new DataEndPoint();
+			load();
 			return d;
+		}
+	}
+	
+	private void printMap(){
+		for(String key : temp.keySet()){
+			
+			for(String Ikey : temp.get(key).keySet()){
+				
+				for(String IIkey : temp.get(key).get(Ikey).keySet()){
+					System.err.print(key);
+					System.err.print("->{"+Ikey+"}->");
+					System.err.print("{"+IIkey+"}->{\n");
+					Set s = temp.get(key).get(Ikey).get(IIkey);
+					for(Object o : s){
+						System.err.println("           "+o.getClass().getName());
+					}
+					System.err.println("}");
+				}
+			}
+			
 		}
 	}
 	
 	private DataEndPoint(){
 		
+		try {
+		    FileInputStream fin = new FileInputStream("MedicalRecords.dat");
+		    ObjectInputStream ois = new ObjectInputStream(fin);
+		    temp = (HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>) ois.readObject();
+		    ois.close();
+		    }
+		   catch (Exception e) { e.printStackTrace(); }
+		printMap();
 	}
+	
+	public void save(){
+		printMap();
+		HashMap<String, String> m1 = new HashMap<String, String>();
+		m1.put("test", "test");
+		m1.put("jsak", "lkfölka");
+		test.put("ahsjk", m1);
+		 try {
+		      FileOutputStream fout = new FileOutputStream("MedicalRecords.dat");
+		      ObjectOutputStream oos = new ObjectOutputStream(fout);
+		      oos.writeObject(temp);
+		      oos.close();
+		      }
+		 catch (Exception e) { e.printStackTrace(); }
+		 
+	}
+	
+	private static void load(){
+		
+	}
+	
 	
 	public String SignEntry(Object o,String patientId, long visitId, String app){
 		String type = o.getClass().getName();
