@@ -20,13 +20,13 @@ public class Storage extends TestCase{
 	public void testStoreAndRetrive(){
 		MockPatient m = new MockPatient();
 		long l = 1L;
-		String result = data.SignEntry(m.pi, "111", l , "TestApp");
+		String result = data.signEntry(m.pi, "111", l , "TestApp");
 		//assertEquals("new patient", result); //Nothing added yet
 		Object o = new Object();
-		//result = data.SignEntry(o, "111", l , "TestApp");
+		//result = data.signEntry(o, "111", l , "TestApp");
 		//assertEquals("new type", result); //Only difference is the object
 		Object o2 = new Object();
-		//result = data.SignEntry(o2, "111", l , "TestApp");
+		//result = data.signEntry(o2, "111", l , "TestApp");
 		//assertEquals("new object", result); //Only difference is the object
 		
 		String type = m.pi.getClass().getName();

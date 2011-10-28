@@ -89,7 +89,7 @@ public class DataEndPoint {
 	}
 	
 	
-	public String SignEntry(Object o,String patientId, long visitId, String app){
+	public String signEntry(Object o,String patientId, long visitId, String app){
 		String type = o.getClass().getName();
 
 		String visit = Long.toString(visitId);
