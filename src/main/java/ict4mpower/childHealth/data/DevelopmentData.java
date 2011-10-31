@@ -3,6 +3,7 @@ package ict4mpower.childHealth.data;
 import ict4mpower.childHealth.panels.development.Milestone;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 public class DevelopmentData implements Serializable {
@@ -27,5 +28,20 @@ public class DevelopmentData implements Serializable {
 
 	public void setMilestones(List<Milestone> milestones) {
 		this.milestones = milestones;
+	}
+
+	public Milestone getTodaysMilestone() {
+		if(milestones == null) return null;
+		Calendar mCal = Calendar.getInstance();
+		Calendar today = Calendar.getInstance();
+		for(Milestone m : milestones) {
+			if(m.date == null) continue;
+			mCal.setTime(m.date);
+			if(mCal.get(Calendar.YEAR) == today.get(Calendar.YEAR)
+					&& mCal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+				return m;
+			}
+		}
+		return null;
 	}
 }

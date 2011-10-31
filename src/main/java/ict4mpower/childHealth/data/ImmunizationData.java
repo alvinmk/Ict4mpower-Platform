@@ -3,6 +3,8 @@ package ict4mpower.childHealth.data;
 import ict4mpower.childHealth.panels.immunization.Vaccination;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ImmunizationData implements Serializable {
@@ -27,5 +29,21 @@ public class ImmunizationData implements Serializable {
 
 	public void setVaccinations(List<Vaccination> vaccinations) {
 		this.vaccinations = vaccinations;
+	}
+
+	public List<Vaccination> getVaccinationsToday() {
+		if(vaccinations == null) return null;
+		List<Vaccination> list = new ArrayList<Vaccination>();
+		Calendar mCal = Calendar.getInstance();
+		Calendar today = Calendar.getInstance();
+		for(Vaccination v : vaccinations) {
+			if(v.getGivenDate() == null) continue;
+			mCal.setTime(v.getGivenDateValue());
+			if(mCal.get(Calendar.YEAR) == today.get(Calendar.YEAR)
+					&& mCal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+				list.add(v);
+			}
+		}
+		return list;
 	}
 }

@@ -31,8 +31,16 @@
 							<td class="em"><span wicket:id="growthFeeding"/></td>
 						</tr>
 						<tr>
-							<td><wicket:message key="growth_pmtct"/></td>
+							<td><wicket:message key="growth_pmtct"/>:</td>
 							<td class="em"><span wicket:id="growthPMTCT"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="growth_hiv_test"/>:</td>
+							<td class="em"><span wicket:id="growthHIVTest"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="growth_init_treatment"/>:</td>
+							<td class="em listrows"><span wicket:id="growthInitTreatment"/></td>
 						</tr>
 					</table>
 				</div>
@@ -45,7 +53,8 @@
 				<div>
 					<table>
 						<tr>
-							<td></td>
+							<td><wicket:message key="vaccinations"/>:</td>
+							<td class="em listrows"><span wicket:id="vaccinations"/></td>
 						</tr>
 					</table>
 				</div>
@@ -84,7 +93,64 @@
 				<div>
 					<table>
 						<tr>
-							<td></td>
+							<td><wicket:message key="med_vitamin_a"/></td>
+							<td class="em listrows"><span wicket:id="medVitaminA"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="med_deworming"/></td>
+							<td class="em listrows"><span wicket:id="medDeWorming"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="med_antimalarial"/></td>
+							<td class="em listrows"><span wicket:id="medAntimalarial"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="med_other"/></td>
+							<td class="em listrows"><span wicket:id="medOther"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li><!-- Development -->
+			<fieldset>
+				<label for="dev"><wicket:message key="development"/></label>
+				<input type="checkbox" id="dev" wicket:id="devCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="dev_well"/>:</td>
+							<td class="em listrows"><span wicket:id="devWell"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="dev_behind"/>:</td>
+							<td class="em listrows"><span wicket:id="devBehind"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="dev_not"/>:</td>
+							<td class="em listrows"><span wicket:id="devNot"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
+		<li><!-- Education -->
+			<fieldset>
+				<label for="education"><wicket:message key="education"/></label>
+				<input type="checkbox" id="education" wicket:id="education"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="feeding"/>:</td>
+							<td class="em listrows"><span wicket:id="feeding"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="oral"/>:</td>
+							<td class="em listrows"><span wicket:id="oral"/></td>
+						</tr>
+						<tr>
+							<td><wicket:message key="infections"/>:</td>
+							<td class="em listrows"><span wicket:id="infections"/></td>
 						</tr>
 					</table>
 				</div>
@@ -110,5 +176,6 @@
 			</fieldset>
 		</li>
 	</ul>
+	<div wicket:id="dialog"/>
 </wicket:extend>
 </html>

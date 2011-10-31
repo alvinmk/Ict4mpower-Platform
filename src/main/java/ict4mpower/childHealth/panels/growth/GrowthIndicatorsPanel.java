@@ -1,16 +1,19 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.AppSession;
 import ict4mpower.Person;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -21,6 +24,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+
+import storage.DataEndPoint;
 
 public class GrowthIndicatorsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8147585043264253460L;
@@ -59,6 +64,21 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			GrowthData data = GrowthData.instance();
 			// TODO Temporary
 			if(data.getIndicators() == null) {
+//				int max = 0;
+//				GrowthData gd = null;
+//				// Get from db
+//				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+//				System.out.println("set "+set.size());
+//				for(Object o : set) {
+//					System.out.println("obj "+o.getClass());
+//					if(o instanceof GrowthData) {
+//						gd = (GrowthData) o;
+//						if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
+//							data.setIndicators(gd.getIndicators());
+//							max = gd.getIndicators().size();
+//						}
+//					}
+//				}
 				data.setIndicators(indicators);
 			}
 			
@@ -81,11 +101,14 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 		protected void onSubmit() {
 			super.onSubmit();
 			
-			System.out.println("head: "+today.getHeadField().getConvertedInput()
-					+" length: "+today.getLengthField().getConvertedInput()
-					+" weight: "+today.getWeightField().getConvertedInput());
 			Person p = Person.getPerson();
 			List<Indicator> l = list.getModelObject();
+			if(l == null) {
+				GrowthData data = GrowthData.instance();
+				data.setIndicators(new ArrayList<Indicator>());
+				list.modelChanged();
+				l = list.getModelObject();
+			}
 			l.add(new Indicator(p,
 					today.getHeadField().getConvertedInput(),
 					today.getLengthField().getConvertedInput(),

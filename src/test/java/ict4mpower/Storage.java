@@ -1,5 +1,6 @@
 package ict4mpower;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -30,7 +31,7 @@ public class Storage extends TestCase{
 		//assertEquals("new object", result); //Only difference is the object
 		
 		String type = m.pi.getClass().getName();
-		Set<Object> s = data.getEntriesFromVisitIdAndType("111","TestApp", l, type);
+		Set<Serializable> s = data.getEntriesFromVisitIdAndType("111","TestApp", l, type);
 		assertTrue(s.contains(m.pi));
 		data.save();
 	}

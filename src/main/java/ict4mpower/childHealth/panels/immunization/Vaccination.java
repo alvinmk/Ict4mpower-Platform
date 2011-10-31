@@ -138,6 +138,10 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 		}
 		else return null;
 	}
+	
+	public Date getGivenDateValue() {
+		return givenDate;
+	}
 
 	public String getDosage() {
 		return dosage;

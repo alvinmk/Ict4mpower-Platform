@@ -3,12 +3,12 @@ package ict4mpower.childHealth.panels.development;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import layout.Template;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -69,8 +69,8 @@ public class DevelopmentPanel extends DivisionPanel {
 			//TODO Temporary
 			List<Milestone> milestones = new ArrayList<Milestone>();
 			try {
-				milestones.add(new Milestone(tests.get(0), (short)0, (short)0, (short)0, (short)0, new Short[]{0,0}, new Short[]{0,0}));
-				milestones.add(new Milestone(tests.get(1), (short)1, (short)0, (short)1, (short)0, new Short[]{0,0}, new Short[]{0,0}));
+				milestones.add(new Milestone(tests.get(0), null, (short)0, (short)0, (short)0, (short)0, new Short[]{0,0}, new Short[]{0,0}));
+				milestones.add(new Milestone(tests.get(1), null, (short)1, (short)0, (short)1, (short)0, new Short[]{0,0}, new Short[]{0,0}));
 			} catch(Exception e) {
 				//
 			}
@@ -104,19 +104,12 @@ public class DevelopmentPanel extends DivisionPanel {
 			super.onSubmit();
 			
 			MilestoneTests t = nextPanel.getTests();
-			//TODO Temporary info on age - get due date from database
-			System.out.println("gross: "+NextMilestonePanel.convert(t.grossChoice)
-					+" fine: "+NextMilestonePanel.convert(t.fineChoice)
-					+" communication: "+NextMilestonePanel.convert(t.commChoice)
-					+" cognitive: "+NextMilestonePanel.convert(t.cogChoice)
-					+" hearing: "+new Short[]{NextMilestonePanel.convert(t.hearLeftChoice),NextMilestonePanel.convert(t.hearRightChoice)}.toString()
-					+" eyesight: "+new Short[]{NextMilestonePanel.convert(t.eyeLeftChoice),NextMilestonePanel.convert(t.eyeRightChoice)}.toString());
-			
 			List<Milestone> l = list.getModelObject();
 			
 			// Add saved milestone to table
 			if(l.size() < tests.size()) {
 				l.add(new Milestone(tests.get(l.size()),
+					new Date(),
 					NextMilestonePanel.convert(t.grossChoice),
 					NextMilestonePanel.convert(t.fineChoice),
 					NextMilestonePanel.convert(t.commChoice),
@@ -211,7 +204,6 @@ class NextMilestonePanel extends DivisionPanel {
 	}
 	
 	private MilestoneTests tests;
-	private List<Component> updateList = new ArrayList<Component>();
 	
 	private NextMilestoneChoice grossMotor;
 	private NextMilestoneChoice fineMotor;
@@ -240,7 +232,6 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		Label ageLabel = new Label("age", new PropertyModel<String>(this.tests, "dueAge"));
 		ageLabel.setOutputMarkupId(true);
-		updateList.add(ageLabel);
 		add(ageLabel);
 		// Add link to follow-up
 		final PageParameters pp = new PageParameters();
@@ -258,63 +249,79 @@ class NextMilestonePanel extends DivisionPanel {
 		};
 		// Add link text
 		Label dueDateLabel = new Label("dateLink", new PropertyModel<String>(this.tests, "dueDateString"));
-		updateList.add(dueDateLabel);
 		link.add(dueDateLabel);
 		add(link);
+		
+		// Gross motor
 		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(this.tests, "grossMotor"));
 		grossLabel.setEscapeModelStrings(false);
-		updateList.add(grossLabel);
 		add(grossLabel);
 		this.grossMotor = new NextMilestoneChoice("select_gross",
 				new PropertyModel<String>(tests, "grossChoice"), development);
+		if(!grossLabel.getDefaultModelObjectAsString().isEmpty()) this.grossMotor.setRequired(true);
+		else this.grossMotor.setEnabled(false);
 		add(this.grossMotor);
 		
+		// Fine motor
 		Label fineLabel = new Label("fine_motor", new PropertyModel<String>(this.tests, "fineMotor"));
 		fineLabel.setEscapeModelStrings(false);
-		updateList.add(fineLabel);
 		add(fineLabel);
 		this.fineMotor = new NextMilestoneChoice("select_fine",
 				new PropertyModel<String>(tests, "fineChoice"), development);
+		if(!fineLabel.getDefaultModelObjectAsString().isEmpty()) this.fineMotor.setRequired(true);
+		else this.fineMotor.setEnabled(false);
 		add(this.fineMotor);
 		
+		// Communication
 		Label commLabel = new Label("communication", new PropertyModel<String>(tests, "communication"));
 		commLabel.setEscapeModelStrings(false);
-		updateList.add(commLabel);
 		add(commLabel);
 		this.communication = new NextMilestoneChoice("select_comm",
 				new PropertyModel<String>(tests, "commChoice"), development);
+		if(!commLabel.getDefaultModelObjectAsString().isEmpty()) this.communication.setRequired(true);
+		else this.communication.setEnabled(false);
 		add(this.communication);
 		
+		// Cognitive
 		Label cogLabel = new Label("cognitive", new PropertyModel<String>(tests, "cognitive"));
 		cogLabel.setEscapeModelStrings(false);
-		updateList.add(cogLabel);
 		add(cogLabel);
 		this.cognitive = new NextMilestoneChoice("select_cog",
 				new PropertyModel<String>(tests, "cogChoice"), development);
+		if(!cogLabel.getDefaultModelObjectAsString().isEmpty()) this.cognitive.setRequired(true);
+		else this.cognitive.setEnabled(false);
 		add(this.cognitive);
 		
+		// Hearing left
 		Label hearLeftLabel = new Label("hearing_left", new StringResourceModel("left", this, null));
 		add(hearLeftLabel);
 		this.hearingLeft = new NextMilestoneChoice("select_hear_left",
 				new PropertyModel<String>(tests, "hearLeftChoice"), development);
+		this.hearingLeft.setRequired(true);
 		add(this.hearingLeft);
 		
+		// Hearing right
 		Label hearRightLabel = new Label("hearing_right", new StringResourceModel("right", this, null));
 		add(hearRightLabel);
 		this.hearingRight = new NextMilestoneChoice("select_hear_right",
 				new PropertyModel<String>(tests, "hearRightChoice"), development);
+		this.hearingRight.setRequired(true);
 		add(this.hearingRight);
 		
+		// Eyesight left
 		Label eyeLeftLabel = new Label("eyesight_left", new StringResourceModel("left", this, null));
 		add(eyeLeftLabel);
 		this.eyesightLeft = new NextMilestoneChoice("select_eye_left",
 				new PropertyModel<String>(tests, "eyeLeftChoice"), development);
+		this.eyesightLeft.setRequired(true);
 		add(this.eyesightLeft);
 		
+		// Eyesight right
 		Label eyeRightLabel = new Label("eyesight_right", new StringResourceModel("right", this, null));
 		add(eyeRightLabel);
 		this.eyesightRight = new NextMilestoneChoice("select_eye_right",
 				new PropertyModel<String>(tests, "eyeRightChoice"), development);
+		this.eyesightRight.setRequired(true);
 		add(this.eyesightRight);
 	}
 	
