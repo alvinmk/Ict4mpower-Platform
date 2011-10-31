@@ -35,7 +35,7 @@ public class GrowthData implements Serializable {
 	private String initTreatmentRadio;
 	private Date initTreatmentDate;
 	
-	private GrowthData() {}
+	public GrowthData() {}
 
 	public String getFeeding() {
 		return feeding;

@@ -143,8 +143,6 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		if(extraDays<0) {
 			extraDays += b.getActualMaximum(Calendar.DAY_OF_MONTH);
 		}
-		System.out.println("extra days "+extraDays);
-		System.out.println("months "+months);
 		if(months < 3) {
 			// Less than 3 months old
 			int weeks = measured.get(Calendar.WEEK_OF_YEAR) - birth.get(Calendar.WEEK_OF_YEAR);
@@ -158,8 +156,6 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 				extraDays += 7;
 				weeks -= 1;
 			}
-			System.out.println("extra days "+extraDays);
-			System.out.println("weeks "+weeks);
 			if(returnExtraDays) return new Object[]{"weeks", weeks, extraDays};
 			return new Object[]{"weeks", weeks+extraDays/7f};
 		}
@@ -195,7 +191,6 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 	}
 	
 	public float getNormalHeadCircumference() {
-		System.out.println("Normal_head_circumference, age key "+getAgeKey());
 		return normal_headCircumference.get(getAgeKey());
 	}
 	
@@ -221,6 +216,38 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 
 	public float getWeightValue() {
 		return weight;
+	}
+	
+	public Person getPerson() {
+		return person;
+	}
+	
+	public void setPerson(Person p) {
+		person = p;
+	}
+
+	public Component getParent() {
+		return parent;
+	}
+
+	public void setParent(Component parent) {
+		this.parent = parent;
+	}
+
+	public void setHeadCircumference(float headCircumference) {
+		this.headCircumference = headCircumference;
+	}
+
+	public void setLength(float length) {
+		this.length = length;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public int compareTo(Indicator other) {

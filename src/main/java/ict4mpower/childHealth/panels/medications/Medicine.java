@@ -174,7 +174,7 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 		return instructions;
 	}
 
-	public String getSerialNr() {
+	public String getBatchNr() {
 		return serialNr;
 	}
 

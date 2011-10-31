@@ -1,12 +1,16 @@
 package storage;
 
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.HashMap;
 
@@ -15,13 +19,13 @@ import java.util.HashMap;
 public class DataEndPoint {
 	/*
 	 * This takes an entry and stores it in the database.
-	 * Since it's singned it can no longer be edited. 
+	 * Since it's singed it can no longer be edited. 
 	 *
 	 */
 	
 	//A temporary in memory object storage {patientId}->{visit_app}->{type}->Set<Objects>y
 	
-	private static HashMap<String, HashMap<String, HashMap<String, Set<Object>>>> temp = new HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>();
+	private static HashMap<String, HashMap<String, HashMap<String, Set<Serializable>>>> temp = new HashMap<String, HashMap<String, HashMap<String, Set<Serializable>>>>();
 	private static DataEndPoint d;
 	private HashMap<String, HashMap<String, String>> test = new HashMap<String, HashMap<String, String>>();
 	
@@ -45,7 +49,7 @@ public class DataEndPoint {
 					System.err.print(key);
 					System.err.print("->{"+Ikey+"}->");
 					System.err.print("{"+IIkey+"}->{\n");
-					Set s = temp.get(key).get(Ikey).get(IIkey);
+					Set<Serializable> s = temp.get(key).get(Ikey).get(IIkey);
 					for(Object o : s){
 						System.err.println("           "+o.getClass().getName());
 					}
@@ -56,15 +60,33 @@ public class DataEndPoint {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private DataEndPoint(){
-		
+		ObjectInputStream ois = null;
 		try {
 		    FileInputStream fin = new FileInputStream("MedicalRecords.dat");
-		    ObjectInputStream ois = new ObjectInputStream(fin);
-		    temp = (HashMap<String, HashMap<String, HashMap<String, Set<Object>>>>) ois.readObject();
-		    ois.close();
+		    ois = new ObjectInputStream(fin);
+		    Object o = ois.readObject();
+		    if(o instanceof HashMap) {
+		    	temp = (HashMap<String, HashMap<String, HashMap<String, Set<Serializable>>>>) o;
 		    }
-		   catch (Exception e) { e.printStackTrace(); }
+		    else {
+		    	System.err.println("Not hashmap "+o);
+		    }
+		    System.out.println("temp "+temp);
+		} catch(EOFException eof) {
+			// There's nothing there!
+			eof.printStackTrace();
+		} catch (Exception e) { e.printStackTrace(); }
+		finally {
+			if(ois != null) {
+				try {
+					ois.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		printMap();
 	}
 	
@@ -74,13 +96,23 @@ public class DataEndPoint {
 		m1.put("test", "test");
 		m1.put("jsak", "lkfölka");
 		test.put("ahsjk", m1);
+		ObjectOutputStream oos = null;
 		 try {
 		      FileOutputStream fout = new FileOutputStream("MedicalRecords.dat");
-		      ObjectOutputStream oos = new ObjectOutputStream(fout);
+		      oos = new ObjectOutputStream(fout);
 		      oos.writeObject(temp);
-		      oos.close();
-		      }
+		 }
 		 catch (Exception e) { e.printStackTrace(); }
+		 finally {
+			 if(oos != null) {
+				 try {
+					oos.flush();
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			 }
+		 }
 		 
 	}
 	
@@ -88,7 +120,7 @@ public class DataEndPoint {
 		
 	}
 	
-	public String signEntry(Object o,String patientId, long visitId, String app){
+	public String signEntry(Serializable o, String patientId, long visitId, String app){
 		String type = o.getClass().getName();
 
 		String visit = Long.toString(visitId);
@@ -99,15 +131,15 @@ public class DataEndPoint {
 					return "new object";
 				}
 				else{
-					Set<Object> s = new HashSet<Object>();
+					Set<Serializable> s = new HashSet<Serializable>();
 					s.add(o);
 					temp.get(patientId).get(visit+"_"+app).put(type, s);
 					return "new type";
 				}
 			}
 			else{
-				HashMap<String, Set<Object>> h = new HashMap<String, Set<Object>>();
-				Set<Object> s = new HashSet<Object>();
+				HashMap<String, Set<Serializable>> h = new HashMap<String, Set<Serializable>>();
+				Set<Serializable> s = new HashSet<Serializable>();
 				s.add(o);
 				h.put(type, s);				
 				temp.get(patientId).put(visit+"_"+app, h);
@@ -115,9 +147,9 @@ public class DataEndPoint {
 			}
 		}
 		else{
-			HashMap<String, Set<Object>> inner = new HashMap<String, Set<Object>>();
-			HashMap<String, HashMap<String, Set<Object>>> outer = new HashMap<String, HashMap<String, Set<Object>>>();
-			Set<Object> s = new HashSet<Object>();
+			HashMap<String, Set<Serializable>> inner = new HashMap<String, Set<Serializable>>();
+			HashMap<String, HashMap<String, Set<Serializable>>> outer = new HashMap<String, HashMap<String, Set<Serializable>>>();
+			Set<Serializable> s = new HashSet<Serializable>();
 			s.add(o);
 			inner.put(type, s);
 			outer.put(visit+"_"+app,inner);
@@ -132,17 +164,27 @@ public class DataEndPoint {
 	/*
 	 * Returns all signed entries for a specific patient id
 	 */
-	public Set<Object> getEntriesFromPatientId(String id){
+	public Set<Serializable> getEntriesFromPatientId(String id){
+		Set<Serializable> s = new HashSet<Serializable>();
+		if(temp.get(id) != null) {
+			for(Entry<String, HashMap<String, Set<Serializable>>> visits : temp.get(id).entrySet()) {
+				for(Entry<String, Set<Serializable>> types : visits.getValue().entrySet()) {
+					for(Serializable obj : types.getValue()) {
+						s.add(obj);
+					}
+				}
+			}
+		}
 		//Make a dight query
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromPatientId(id);
-		return null;
+		return s;
 	}
 	
 	/*
 	 * Returns all signed entries for a specific visit id
 	 */
-	public Set<Object> getEntriesFromVisitId(long id){
+	public Set<Serializable> getEntriesFromVisitId(long id){
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromVisitId(id);
 		return null;
@@ -151,10 +193,10 @@ public class DataEndPoint {
 	/*
 	 * Returns all signed entries for a type and specific visit 
 	 */
-	public Set<Object> getEntriesFromVisitIdAndType(String patientId, String app, long Visitid, String type){
+	public Set<Serializable> getEntriesFromVisitIdAndType(String patientId, String app, long Visitid, String type){
 		String visit = Long.toString(Visitid);
 		
-		Set<Object> s = temp.get(patientId).get(visit+"_"+app).get(type);
+		Set<Serializable> s = temp.get(patientId).get(visit+"_"+app).get(type);
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromTypeAndVisitId(type, id);
 		return s;
@@ -162,7 +204,7 @@ public class DataEndPoint {
 	/*
 	 * Returns signed entries within a date range for a specific patient
 	 */	
-	public Set<Object> getEntriesFromDateRange(String patientId, Date low, Date high){
+	public Set<Serializable> getEntriesFromDateRange(String patientId, Date low, Date high){
 		//MedicalRecord mr = new MedicalRecord();
 		//return mr.getObjectsFromDateRange(patientId, low, high);
 		return null;

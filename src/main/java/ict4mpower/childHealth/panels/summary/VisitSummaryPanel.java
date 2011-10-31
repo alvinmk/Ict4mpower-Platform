@@ -1,39 +1,74 @@
 package ict4mpower.childHealth.panels.summary;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.model.Model;
+
+import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
+import ict4mpower.childHealth.Callback;
 import ict4mpower.childHealth.SummaryCheck;
 import ict4mpower.childHealth.data.CheckInfoData;
+import ict4mpower.childHealth.data.CheckableOption;
+import ict4mpower.childHealth.data.DevelopmentData;
+import ict4mpower.childHealth.data.EducationData;
 import ict4mpower.childHealth.data.FollowUpData;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.data.ImmunizationData;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.data.StatusPraesensData;
+import ict4mpower.childHealth.panels.ConfirmDialog;
 import ict4mpower.childHealth.panels.DivisionPanel;
+import ict4mpower.childHealth.panels.development.Milestone;
 import ict4mpower.childHealth.panels.growth.Indicator;
+import ict4mpower.childHealth.panels.immunization.Vaccination;
+import ict4mpower.childHealth.panels.medications.Medicine;
 
 public class VisitSummaryPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172223673548889654L;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private DateFormat time = new SimpleDateFormat("HH:mm");
+	private ConfirmDialog dialog;
 
 	public VisitSummaryPanel(String id) {
 		super(id, "title");
+		
+		dialog = new ConfirmDialog("dialog");
+		dialog.setLabel("Are you certain you want to sign this visit?");
+		dialog.addOnSubmit(new Callback() {
+			private static final long serialVersionUID = 1L;
+
+			public boolean call(AjaxRequestTarget target) {
+				return saveVisit();
+			}
+		});
+		add(dialog);
+		
+		saveButton.add(new AjaxFormComponentUpdatingBehavior("onclick") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				dialog.show(target);
+			}
+		});
 		
 		AppSession session = (AppSession)getSession();
 		
 		String goal = session.getGoal()+":";
 		
-		// Growth
+		/*
+		 * Growth
+		 */
 		GrowthData growth = (GrowthData) session.getAttribute(goal+"GrowthTask");
 		add(new SummaryCheck("growthCheck", growth));
 		Indicator indi = growth != null && growth.getIndicators() != null
@@ -53,43 +88,199 @@ public class VisitSummaryPanel extends DivisionPanel {
 				? getString(growth.getFeeding()) : "-"));
 		add(new Label("growthPMTCT", growth != null && growth.getPmtct() != null
 				? getString(growth.getPmtct()) : "-"));
+		add(new Label("growthHIVTest", growth != null && growth.getHivTestRadio() != null
+				? getString(growth.getHivTestRadio()) : "-"));
+		add(new MultiLineLabel("growthInitTreatment", growth != null && growth.getInitTreatmentRadio() != null
+				? getString(growth.getInitTreatmentRadio())+"\n &nbsp; &nbsp;"+getString("growth_init_date")+": "
+						+(growth.getInitTreatmentDate() != null ? df.format(growth.getInitTreatmentDate()) : "-")
+						: "-").setEscapeModelStrings(false));
 		
-		// Immunization
+		/*
+		 * Immunization
+		 */
 		ImmunizationData imm = (ImmunizationData) session.getAttribute(goal+"ImmunizationTask");
 		add(new SummaryCheck("immCheck", imm));
-		// TODO Show info
+		// Vaccinations
+		String vacc = "";
+		if(imm != null && imm.getVaccinationsToday() != null) {
+			for(Vaccination v : imm.getVaccinationsToday()) {
+				vacc += v.getVaccine()+"\n &nbsp; &nbsp;"+v.getDosage()+" - "+getString("serial_nr")+": "+v.getSerial_nr()+"\n";
+			}
+		}
+		add(new MultiLineLabel("vaccinations", vacc).setEscapeModelStrings(false));
 		
-		// Status praesens
+		/*
+		 * Status praesens
+		 */
 		StatusPraesensData status = (StatusPraesensData) session.getAttribute(goal+"StatusPraesensTask");
 		add(new SummaryCheck("statusCheck", status));
+		// Complaints
 		add(new Label("statusComplaints", status != null ? status.getComplaintsText() : null));
+		// Conclusion
 		add(new Label("statusConclusion", status != null ? status.getConclusionText() : null));
+		// Recent health problems
 		String problems = "";
 		if(status != null && status.getRecentHealthProblems() != null) {
 			for(CheckInfoData info : status.getRecentHealthProblems()) {
 				if(info.isCheck()) problems += info.getLabel()
-						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n\n";
+						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n";
 			}
 		}
 		add(new MultiLineLabel("statusProblems", problems).setEscapeModelStrings(false));
+		// Check-up
 		String checkUp = "";
 		if(status != null && status.getCheckUp() != null) {
 			for(CheckInfoData info : status.getCheckUp()) {
 				if(info.isCheck()) checkUp += info.getLabel()
-						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n\n";
+						+(info.getInfo() != null ? "\n &nbsp; &nbsp;"+info.getInfo() : "")+"\n";
 			}
 		}
 		add(new MultiLineLabel("statusCheckUp", checkUp).setEscapeModelStrings(false));
 		
-		// Medications
+		/*
+		 * Medications
+		 */
 		MedicationsData med = (MedicationsData) session.getAttribute(goal+"MedicationsTask");
 		add(new SummaryCheck("medCheck", med));
+		// Vitamin A supplement
+		String vita = "";
+		if(med != null && med.getVitaminsToday() != null) {
+			for(Medicine m : med.getVitaminsToday()) {
+				vita += m.getName()+"\n &nbsp; &nbsp;"+m.getDosage()+" - "+getString("batch_nr")+": "+m.getBatchNr()+"\n";
+			}
+		}
+		add(new MultiLineLabel("medVitaminA", vita).setEscapeModelStrings(false));
+		// De-worming medication
+		String worm = "";
+		if(med != null && med.getDewormingToday() != null) {
+			for(Medicine m : med.getDewormingToday()) {
+				worm += m.getName()+"\n &nbsp; &nbsp;"+m.getDosage()+" - "+getString("batch_nr")+": "+m.getBatchNr()+"\n";
+			}
+		}
+		add(new MultiLineLabel("medDeWorming", worm).setEscapeModelStrings(false));
+		// Antimalarial medication
+		String anti = "";
+		if(med != null && med.getAntimalarialToday() != null) {
+			for(Medicine m : med.getAntimalarialToday()) {
+				anti += m.getName()+"\n &nbsp; &nbsp;"+m.getDosage()+" - "+getString("batch_nr")+": "+m.getBatchNr()+"\n";
+			}
+		}
+		add(new MultiLineLabel("medAntimalarial", anti).setEscapeModelStrings(false));
+		// Other medication
+		String other = "";
+		if(med != null && med.getOtherToday() != null) {
+			for(Medicine m : med.getOtherToday()) {
+				other += m.getName()+"\n &nbsp; &nbsp;"+m.getDosage()+" - "+m.getInstructions()+"\n";
+			}
+		}
+		add(new MultiLineLabel("medOther", other).setEscapeModelStrings(false));
 		
-		// Follow up
+		/*
+		 * Development
+		 */
+		DevelopmentData dev = (DevelopmentData) session.getAttribute(goal+"DevelopmentTask");
+		add(new SummaryCheck("devCheck", dev));
+		String testWell = "", testBehind = "", testNot = "";
+		if(dev != null) {
+			Milestone m = dev.getTodaysMilestone();
+			if(m != null) {
+				Object[][] mile = new Object[][]{
+						new Object[]{m.tests.grossMotor, m.grossMotor},
+						new Object[]{m.tests.fineMotor, m.fineMotor},
+						new Object[]{m.tests.communication, m.communication},
+						new Object[]{m.tests.cognitive, m.cognitive},
+						new Object[]{getString("eyesight")+" "+getString("left"), m.eyesight[0]},
+						new Object[]{getString("eyesight")+" "+getString("right"), m.eyesight[1]},
+						new Object[]{getString("hearing")+" "+getString("left"), m.hearing[0]},
+						new Object[]{getString("hearing")+" "+getString("right"), m.hearing[1]}
+				};
+				for(Object[] o : mile) {
+					switch((Short)o[1]) {
+					case 0:
+						// Well developed
+						if(o[0] == null) break;
+						testWell += o[0]+"\n";
+						break;
+					case 1:
+						// Stays behind
+						if(o[0] == null) break;
+						testBehind += o[0]+"\n";
+						break;
+					case 2:
+						// Not developed
+						if(o[0] == null) break;
+						testNot += o[0]+"\n";
+						break;
+					}
+				}
+			}
+		}
+		add(new MultiLineLabel("devWell", testWell).setEscapeModelStrings(false));
+		add(new MultiLineLabel("devBehind", testBehind).setEscapeModelStrings(false));
+		add(new MultiLineLabel("devNot", testNot).setEscapeModelStrings(false));
+		
+		/*
+		 * Education
+		 */
+		EducationData edu = (EducationData) session.getAttribute(goal+"EducationTask");
+		add(new SummaryCheck("education", edu));
+		String fText = "", oText = "", iText = "";
+		if(edu != null) {
+			List<List<CheckableOption>> feeding = edu.getFeedingOptions();
+			if(feeding != null) {
+				for(List<CheckableOption> l : feeding) {
+					for(CheckableOption co : l) {
+						if(co.isChecked()) fText += getString(co.getOption())+"\n";
+					}
+				}
+			}
+			List<List<CheckableOption>> oral = edu.getOralOptions();
+			if(oral != null) {
+				for(List<CheckableOption> l : oral) {
+					for(CheckableOption co : l) {
+						if(co.isChecked()) oText += getString(co.getOption())+"\n";
+					}
+				}
+			}
+			List<List<CheckableOption>> infections = edu.getFeedingOptions();
+			if(infections != null) {
+				for(List<CheckableOption> l : infections) {
+					for(CheckableOption co : l) {
+						if(co.isChecked()) iText += getString(co.getOption())+"\n";
+					}
+				}
+			}
+		}
+		add(new MultiLineLabel("feeding", fText));
+		add(new MultiLineLabel("oral", oText));
+		add(new MultiLineLabel("infections", iText));
+		
+		/*
+		 * Follow-up visit
+		 */
 		FollowUpData followUp = (FollowUpData) session.getAttribute(goal+"FollowUpTask");
 		add(new SummaryCheck("followUpCheck", followUp));
 		add(new Label("followUpDate", followUp != null ? df.format(followUp.getDate()) : null));
 		add(new Label("followUpTime", followUp != null ? time.format(followUp.getDate()) : null));
 		add(new MultiLineLabel("followUpNote", followUp != null ? followUp.getMessage() : null));
+	}
+	
+	private boolean saveVisit() {
+		AppSession session = (AppSession)getSession();
+		String goal = session.getGoal()+":";
+		DataEndPoint dep = DataEndPoint.getDataEndPoint();
+		
+		Serializable[] data = new Serializable[]{
+				session.getAttribute(goal+"GrowthTask"),
+				session.getAttribute(goal+"ImmunizationTask")
+		};
+		for(Serializable s : data) {
+			// TODO What is visit id?
+			if(s != null) {
+				dep.signEntry(s, session.getPatientInfo().getClientId(), /*session.getCurrentVisit()*/1L, "ChildHealth");
+			}
+		}
+		dep.save();
+		return true;
 	}
 }
