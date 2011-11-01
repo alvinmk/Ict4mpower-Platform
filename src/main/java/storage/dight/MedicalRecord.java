@@ -18,7 +18,7 @@ public class MedicalRecord extends BaseRecord{
 		setKlass((KlassContainer) klassContainer.getKlass());
 	}
 	
-	public String newEntry(Object o, String type, String app,String patientId, long visitId) {
+	public String newEntry(Object data, String type, String app,String patientId, long visitId) {
 		klassContainer = new MedicalRecordKlass(e);
 		Value vType = e.makeStringValue(type);
 		Value vApp = e.makeStringValue(app);
@@ -28,7 +28,7 @@ public class MedicalRecord extends BaseRecord{
 		EntryId eid = null;
 		byte[] payload = null;
 		try {
-			payload = serialize(o);
+			payload = serialize(data);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

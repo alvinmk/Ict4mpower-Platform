@@ -18,5 +18,6 @@ public class DightSocket {
 		oos.writeObject(creds);
 		oos.close();
 		byte[] entryBytes = e.serialize(entry);
+		
 	}
 }

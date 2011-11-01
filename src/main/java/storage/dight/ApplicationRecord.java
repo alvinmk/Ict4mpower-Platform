@@ -1,5 +1,6 @@
 package storage.dight;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,16 +14,20 @@ public class ApplicationRecord extends BaseRecord{
 	
 	private static ApplicationKlass klassContainer;
 	
-	public String newEntry(String application, String type){
+	public String newEntry(String application, String type, Object data){
 		klassContainer = new ApplicationKlass(e);
 		Value vApplication = e.makeStringValue(application);
 		Value vType = e.makeStringValue(type);
 		EntryId eid = null;
-	
-		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, null );
+		byte[] payload = null;
+		try {
+			payload = serialize(data);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, payload );
 		entry.setValue(klassContainer.application, vApplication);
 		entry.setValue(klassContainer.type, vType);
-		
 		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send to server
 		return eid.getId().toString();

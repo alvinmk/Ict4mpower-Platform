@@ -2,6 +2,8 @@ package tasks;
 
 import java.util.Locale;
 
+import models.Person;
+
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -11,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.Person;
 
 public class Task1 extends Task{
 	//final Logger log = Logger.getLogger(Task1.class);
