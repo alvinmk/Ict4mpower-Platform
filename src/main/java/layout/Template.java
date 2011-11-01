@@ -1,7 +1,6 @@
 package layout;
 
 
-import ict4mpower.AppSession;
 import layoutPanels.MenuPanel;
 import layoutPanels.ProcessPanel;
 import layoutPanels.StatePanel;
@@ -32,18 +31,12 @@ public class Template extends WebPage {
 		TaskList taskList;
 		
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
-		
-		// Add goal and task names to session
-		AppSession session = (AppSession)getSession();
-		session.setGoal(goal);
-		session.setTask(parameters.get("taskname").toString());
-		
-		
 		if(goal.equals("none")){
 			add( new Label("task", ""));
 			taskList = new TaskList();
 		}
 		else{
+			
 			String task = (String) (parameters.get("taskname").toString() != null ? parameters.get("taskname").toString() : "none");
 			log.debug("goal is " +goal +" Finding task " +task);
 			taskList = gt.getGoals().getTasks(goal);

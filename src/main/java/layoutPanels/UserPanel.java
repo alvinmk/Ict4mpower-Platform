@@ -1,5 +1,7 @@
 package layoutPanels;
 
+import ict4mpower.AppSession;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,8 @@ public class UserPanel extends Panel {
 	public UserPanel(String id, String selectedApplication) {
 		super(id);
 		selected = selectedApplication;
-		add( new Label("username", "username"));
+		AppSession s = (AppSession) getSession();
+		add( new Label("username", s.getUserID()));
 		
 		DropDownChoice choice = new DropDownChoice("applicationSelect", new PropertyModel(this, "selected"), Apps);	
 		add( choice);
