@@ -16,24 +16,25 @@ package tasks;
  * limitations under the License.
  */
 
-import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import layout.GoalsAndTasks;
+
 import org.apache.log4j.Logger;
+
 
 /**
  *
  * @author Elias
  */
-public class Goals implements Serializable {
-	private static final long serialVersionUID = -1942133361406207799L;
-	
-	//    private LinkedList goalList;
+public class Goals {
+//    private LinkedList goalList;
     private String name;
     private Map <String, TaskList> map = new HashMap<String, TaskList> ();
-    static final Logger log = Logger.getLogger(Goals.class);
+    final Logger log = Logger.getLogger(Goals.class);
     
     public Goals(){
        

@@ -17,7 +17,6 @@ import org.odlabs.wiquery.ui.dialog.Dialog;
 
 import pagePanels.ClientInfoPanel;
 
-
 public class ClientPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 

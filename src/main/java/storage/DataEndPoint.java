@@ -120,8 +120,7 @@ public class DataEndPoint {
 		
 	}
 	
-	
-	public String signEntry(Serializable o,String patientId, long visitId, String app){
+	public String signEntry(Serializable o, String patientId, long visitId, String app){
 		String type = o.getClass().getName();
 
 		String visit = Long.toString(visitId);

@@ -13,12 +13,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.StringValue;
 
 import tasks.Goals;
 
 public class MenuPanel extends Panel {
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	public MenuPanel(String id, PageParameters params, final Goals goals){
 		
