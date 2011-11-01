@@ -7,13 +7,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import models.PatientInfo;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import ict4mpower.Person;
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
@@ -30,10 +32,10 @@ public class DeWormingPanel extends DivisionPanel {
 		//TODO Temporary
 		List<Medicine> meds = null;
 		try {
-			Person p = Person.getPerson();
+			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 			meds = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
-					new Medicine(p, "De-worming 1", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "100 000 IU", "", this),
-					new Medicine(p, "De-worming 2", Calendar.MONTH, 6, null, "100 000 IU", "", this)
+					new Medicine(pi, "De-worming 1", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "100 000 IU", "", this),
+					new Medicine(pi, "De-worming 2", Calendar.MONTH, 6, null, "100 000 IU", "", this)
 			}));
 		} catch(Exception e) {
 			//

@@ -23,6 +23,9 @@ public class GrowthData implements Serializable {
 		return instance;
 	}
 	
+	// Date of creation
+	private Date date;
+	
 	// Growth indicators
 	private List<Indicator>	indicators;
 	
@@ -83,5 +86,13 @@ public class GrowthData implements Serializable {
 
 	public void setInitTreatmentDate(Date initTreatmentDate) {
 		this.initTreatmentDate = initTreatmentDate;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public Date getDate() {
+		return date;
 	}
 }

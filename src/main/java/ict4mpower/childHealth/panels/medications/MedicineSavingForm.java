@@ -9,9 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.MissingResourceException;
 
+import models.PatientInfo;
+
 import org.apache.wicket.markup.html.list.ListView;
 
-import ict4mpower.Person;
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 
 public class MedicineSavingForm extends SavingForm {
@@ -93,7 +95,7 @@ public class MedicineSavingForm extends SavingForm {
 					calDiff = (int) ((Math.floor(age) + (age%1f))*12);
 				}
 			}
-			l.add(new Medicine(Person.getPerson(),
+			l.add(new Medicine(((AppSession)getSession()).getPatientInfo(),
 					medicineName,
 					calField,
 					calDiff,

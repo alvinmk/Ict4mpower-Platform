@@ -1,12 +1,12 @@
 package ict4mpower.childHealth.panels.immunization;
 
-import ict4mpower.Person;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import models.PatientInfo;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
@@ -15,48 +15,46 @@ import org.apache.wicket.model.StringResourceModel;
 public class Vaccination implements Serializable, Comparable<Vaccination> {
 	private static final long serialVersionUID = -4299959951236886609L;
 	
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private Person person;
+	private PatientInfo patientInfo;
 	private String vaccine;
 	private Date dueDate;
 	private Date givenDate;
 	private String dosage;
 	private String serial_nr;
-	private Component parent;
 	
-	public Vaccination(Person person, String vaccine, int calField, int calAdd, Date givenDate, String dosage,
-			String serial_nr, Component parent) {
-		this.setPerson(person);
+	public Vaccination(PatientInfo pi, String vaccine, int calField, int calAdd, Date givenDate, String dosage,
+			String serial_nr) {
+		this.patientInfo = pi;
 		this.vaccine = vaccine;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
 		this.givenDate = givenDate;
 		this.dosage = dosage;
 		this.serial_nr = serial_nr;
-		this.parent = parent;
 	}
 	
-	public Person getPerson() {
-		return person;
+	public PatientInfo getPatientInfo() {
+		return patientInfo;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPatientInfo(PatientInfo pi) {
+		this.patientInfo = pi;
 	}
 
 	public void setGivenDate(Date date) {
 		this.givenDate = date;
 	}
 
-	public String getDueAge() {
-		return getAgeValue().getObject();
+	public String getDueAge(Component parent) {
+		return getAgeValue(parent).getObject();
 	}
 	
-	public StringResourceModel getAgeValue() {
+	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Integer>((int)Math.floor((Float)arr[1]))));
@@ -66,7 +64,7 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		int years = due.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
 		int months = due.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
 		int days = due.get(Calendar.DAY_OF_MONTH) - birth.get(Calendar.DAY_OF_MONTH);
@@ -157,6 +155,14 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 
 	public void setSerial_nr(String serial_nr) {
 		this.serial_nr = serial_nr;
+	}
+
+	public void setVaccine(String vaccine) {
+		this.vaccine = vaccine;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	public int compareTo(Vaccination other) {

@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.Callback;
 import ict4mpower.childHealth.ExtendableDropDownChoice;
 import ict4mpower.childHealth.SavingForm;
@@ -7,15 +8,22 @@ import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 import ict4mpower.childHealth.panels.TextDialog;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.CloseButtonCallback;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+
+import storage.DataEndPoint;
 
 public class FeedingPanel extends DivisionPanel {
 	private static final long serialVersionUID = 4179450386998797319L;
@@ -44,6 +52,26 @@ public class FeedingPanel extends DivisionPanel {
 			super(id);
 			
 			final GrowthData data = GrowthData.instance();
+			if(data.getFeeding() == null) {
+				Date max = null;
+				try {
+					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				GrowthData gd = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				for(Object o : set) {
+					if(o instanceof GrowthData) {
+						gd = (GrowthData) o;
+						if(gd.getFeeding() != null && gd.getDate().after(max)) {
+							data.setFeeding(gd.getFeeding());
+							max = gd.getDate();
+						}
+					}
+				}
+			}
 			
 			// Dialog
 			final TextDialog dialog = new TextDialog("dialog");
@@ -97,6 +125,13 @@ public class FeedingPanel extends DivisionPanel {
 					target.add(feedingChoice);
 				}
 			});
+		}
+		
+		@Override
+		protected void onSubmit() {
+			GrowthData.instance().setDate(new Date());
+			
+			super.onSubmit();
 		}
 	}
 }

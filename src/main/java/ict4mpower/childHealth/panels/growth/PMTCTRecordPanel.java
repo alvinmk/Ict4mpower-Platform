@@ -1,19 +1,26 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.ui.datepicker.DatePicker;
+
+import storage.DataEndPoint;
 
 public class PMTCTRecordPanel extends DivisionPanel {
 	private static final long serialVersionUID = 3074630914459300687L;
@@ -44,6 +51,38 @@ public class PMTCTRecordPanel extends DivisionPanel {
 			add(new FeedbackPanel("formFeedback"), false);
 			
 			GrowthData data = GrowthData.instance();
+			if(data.getPmtct() == null || data.getHivTestRadio() == null || data.getInitTreatmentRadio() == null
+					|| data.getInitTreatmentDate() == null) {
+				Date max = null;
+				try {
+					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				GrowthData gd = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				for(Object o : set) {
+					if(o instanceof GrowthData) {
+						gd = (GrowthData) o;
+						if(gd.getDate().after(max)) {
+							if(gd.getPmtct() != null) {
+								data.setPmtct(gd.getPmtct());
+							}
+							if(gd.getHivTestRadio() != null) {
+								data.setHivTestRadio(gd.getHivTestRadio());
+							}
+							if(gd.getInitTreatmentRadio() != null) {
+								data.setInitTreatmentRadio(gd.getInitTreatmentRadio());
+							}
+							if(gd.getInitTreatmentDate() != null) {
+								data.setInitTreatmentDate(gd.getInitTreatmentDate());
+							}
+							max = gd.getDate();
+						}
+					}
+				}
+			}
 			
 			// PMTCT drop down
 			DropDownChoice<String> pmtct = new DropDownChoice<String>("pmtct", new PropertyModel<String>(data, "pmtct"),
@@ -94,6 +133,8 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		
 		@Override
 		protected void onSubmit() {
+			GrowthData.instance().setDate(new Date());
+			
 			super.onSubmit();
 		}
 	}

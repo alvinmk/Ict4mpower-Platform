@@ -1,12 +1,12 @@
 package ict4mpower.childHealth.panels.development;
 
-import ict4mpower.Person;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import models.PatientInfo;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
@@ -17,7 +17,7 @@ public class MilestoneTests implements Serializable, Cloneable {
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private Person person;
+	private PatientInfo patientInfo;
 	private Date dueDate;
 	public String grossMotor;
 	public String fineMotor;
@@ -35,12 +35,12 @@ public class MilestoneTests implements Serializable, Cloneable {
 	
 	private Component parent;
 	
-	public MilestoneTests(Person person, int calField, int calAdd, String grossMotor, String fineMotor,
+	public MilestoneTests(PatientInfo pi, int calField, int calAdd, String grossMotor, String fineMotor,
 			String communication, String cognitive, Component parent) {
-		this.person = person;
+		this.patientInfo = pi;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(pi.getBirthDate());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
 		this.grossMotor = grossMotor;
@@ -64,7 +64,7 @@ public class MilestoneTests implements Serializable, Cloneable {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		int years = due.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
 		int months = due.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
 		int days = due.get(Calendar.DAY_OF_MONTH) - birth.get(Calendar.DAY_OF_MONTH);

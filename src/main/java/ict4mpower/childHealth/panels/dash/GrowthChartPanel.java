@@ -1,8 +1,10 @@
 package ict4mpower.childHealth.panels.dash;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.NumberSeries;
@@ -13,6 +15,9 @@ import nl.topicus.wqplot.options.PlotTooltipLocation;
 
 import org.apache.wicket.model.util.ListModel;
 
+import storage.DataEndPoint;
+
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 import ict4mpower.childHealth.panels.growth.Indicator;
@@ -111,16 +116,35 @@ public class GrowthChartPanel extends DivisionPanel {
 			list.add(series);
 		}
 		
-		// TODO Get values from session (or db if session is empty)
+		// Get values from session (or db if session is empty)
 		GrowthData data = GrowthData.instance();
-		if(data.getIndicators() != null) {
-			NumberSeries<Float, Float> vHead = new NumberSeries<Float, Float>();
-			NumberSeries<Float, Float> vLength = new NumberSeries<Float, Float>();
-			NumberSeries<Float, Float> vWeight = new NumberSeries<Float, Float>();
-			String wmy;
-			float val;
-			float key = 0;
-			List<Indicator> indicators = data.getIndicators();
+		NumberSeries<Float, Float> vHead = new NumberSeries<Float, Float>();
+		NumberSeries<Float, Float> vLength = new NumberSeries<Float, Float>();
+		NumberSeries<Float, Float> vWeight = new NumberSeries<Float, Float>();
+		String wmy;
+		float val;
+		float key = 0;
+		List<Indicator> indicators = data.getIndicators();
+		if(data.getIndicators() == null) {
+			// Get data from db
+			int max = 0;
+			GrowthData gd = null;
+			// Get from db
+			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			System.out.println("set "+set.size());
+			for(Object o : set) {
+				System.out.println("obj "+o.getClass());
+				if(o instanceof GrowthData) {
+					gd = (GrowthData) o;
+					if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
+						data.setIndicators(gd.getIndicators());
+						max = gd.getIndicators().size();
+					}
+				}
+			}
+			indicators = data.getIndicators();
+		}
+		if(indicators != null) {
 			Collections.sort(indicators);
 			for(Indicator i : indicators) {
 				wmy = (String) i.getAccurateAgeArray()[0];
@@ -131,9 +155,9 @@ public class GrowthChartPanel extends DivisionPanel {
 				else if(wmy.equals("months")) {
 					key = val+10;
 				}
-				vHead.addEntry(key, i.getHeadCircumferenceValue());
-				vLength.addEntry(key, i.getLengthValue());
-				vWeight.addEntry(key, i.getWeightValue());
+				vHead.addEntry(key, i.getHeadCircumference());
+				vLength.addEntry(key, i.getLength());
+				vWeight.addEntry(key, i.getWeight());
 			}
 			list.add(vHead);
 			list.add(vLength);

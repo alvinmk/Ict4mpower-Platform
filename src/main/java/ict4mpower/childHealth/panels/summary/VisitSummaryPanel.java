@@ -81,9 +81,9 @@ public class VisitSummaryPanel extends DivisionPanel {
 				indi = null;
 			}
 		}
-		add(new Label("growthHead", indi != null ? indi.getHeadCircumference() : "-"));
-		add(new Label("growthLength", indi != null ? indi.getLength() : "-"));
-		add(new Label("growthWeight", indi != null ? indi.getWeight() : "-"));
+		add(new Label("growthHead", indi != null ? Float.toString(indi.getHeadCircumference()) : "-"));
+		add(new Label("growthLength", indi != null ? Float.toString(indi.getLength()) : "-"));
+		add(new Label("growthWeight", indi != null ? Float.toString(indi.getWeight()) : "-"));
 		add(new Label("growthFeeding", growth != null && growth.getFeeding() != null
 				? getString(growth.getFeeding()) : "-"));
 		add(new Label("growthPMTCT", growth != null && growth.getPmtct() != null
@@ -272,7 +272,8 @@ public class VisitSummaryPanel extends DivisionPanel {
 		
 		Serializable[] data = new Serializable[]{
 				session.getAttribute(goal+"GrowthTask"),
-				session.getAttribute(goal+"ImmunizationTask")
+				session.getAttribute(goal+"ImmunizationTask"),
+				session.getAttribute("Demographics:AdditionalInfoTask")
 		};
 		for(Serializable s : data) {
 			// TODO What is visit id?

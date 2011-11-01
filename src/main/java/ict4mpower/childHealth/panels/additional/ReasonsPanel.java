@@ -1,14 +1,22 @@
 package ict4mpower.childHealth.panels.additional;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import storage.DataEndPoint;
+
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.AdditionalData;
 import ict4mpower.childHealth.panels.DivisionPanel;
@@ -47,6 +55,28 @@ public class ReasonsPanel extends DivisionPanel {
 			}));
 			
 			AdditionalData data = AdditionalData.instance();
+			if(data.getReasons().isEmpty()) {
+				Date max = null;
+				try {
+					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				AdditionalData ad = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				System.out.println("set "+set.size());
+				for(Object o : set) {
+					System.out.println("obj "+o.getClass());
+					if(o instanceof AdditionalData) {
+						ad = (AdditionalData) o;
+						if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
+							data.setReasons(ad.getReasons());
+							max = ad.getDate();
+						}
+					}
+				}
+			}
 			
 			// Reasons for special care
 			Palette<String> palette = new Palette<String>("reasons",
@@ -66,6 +96,14 @@ public class ReasonsPanel extends DivisionPanel {
 						}
 			}, 13, false);
 			add(palette);
+		}
+		
+		@Override
+		protected void onSubmit() {
+			super.onSubmit();
+			
+			AdditionalData data = AdditionalData.instance();
+			data.setDate(new Date());
 		}
 	}
 }

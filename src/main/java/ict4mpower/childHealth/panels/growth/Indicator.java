@@ -1,13 +1,13 @@
 package ict4mpower.childHealth.panels.growth;
 
-import ict4mpower.Person;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
+import models.PatientInfo;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
@@ -16,14 +16,13 @@ import org.apache.wicket.model.StringResourceModel;
 public class Indicator implements Serializable, Comparable<Indicator> {
 	private static final long serialVersionUID = -9155283621010002742L;
 	
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private Person person;
+	private PatientInfo patientInfo;
 	private float headCircumference;
 	private float length;
 	private float weight;
 	private Date date;
-	private Component parent;
 	
 	private static HashMap<String, Float> normal_headCircumference = new HashMap<String, Float>();
 	private static HashMap<String, Float> normal_length = new HashMap<String, Float>();
@@ -91,20 +90,19 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		normal_weight.put("7 months", 8.3f);
 	}
 	
-	public Indicator(Person p, float headCircumference, float length, float weight, Date date, Component parent) {
-		this.person = p;
+	public Indicator(PatientInfo pi, float headCircumference, float length, float weight, Date date) {
+		this.patientInfo = pi;
 		this.headCircumference = headCircumference;
 		this.length = length;
 		this.weight = weight;
 		this.date = date;
-		this.parent = parent;
 	}
 	
-	public String getAge() {
-		return getAgeValue().getObject();
+	public String getAge(Component parent) {
+		return getAgeValue(parent).getObject();
 	}
 	
-	public StringResourceModel getAgeValue() {
+	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray(true);
 		if((Integer)arr[2] == 0) return new StringResourceModel((String)arr[0], parent, new Model<Integer>((Integer)arr[1]));
 		return new StringResourceModel((String)arr[0]+"_extra_days", parent, new Model<AgeData>(
@@ -124,7 +122,7 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		Calendar measured = Calendar.getInstance();
 		measured.setTime(date);
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		int years = measured.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
 		int months = measured.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
 		int days = measured.get(Calendar.DAY_OF_MONTH) - birth.get(Calendar.DAY_OF_MONTH);
@@ -166,16 +164,16 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		}
 	}
 	
-	public String getHeadCircumference() {
-		return headCircumference+" "+parent.getString("cm");
+	public float getHeadCircumference() {
+		return headCircumference;
 	}
 	
-	public String getLength() {
-		return length+" "+parent.getString("cm");
+	public float getLength() {
+		return length;
 	}
 	
-	public String getWeight() {
-		return weight+" "+parent.getString("kg");
+	public float getWeight() {
+		return weight;
 	}
 	
 	public String getDate() {
@@ -218,20 +216,12 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		return weight;
 	}
 	
-	public Person getPerson() {
-		return person;
+	public PatientInfo getPatientInfo() {
+		return patientInfo;
 	}
 	
-	public void setPerson(Person p) {
-		person = p;
-	}
-
-	public Component getParent() {
-		return parent;
-	}
-
-	public void setParent(Component parent) {
-		this.parent = parent;
+	public void setPatientInfo(PatientInfo pi) {
+		patientInfo = pi;
 	}
 
 	public void setHeadCircumference(float headCircumference) {
