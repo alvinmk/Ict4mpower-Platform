@@ -1,7 +1,7 @@
 package layout;
 
-
 import ict4mpower.AppSession;
+import ict4mpower.MockPatient;
 import layoutPanels.MenuPanel;
 import layoutPanels.ProcessPanel;
 import layoutPanels.StatePanel;
@@ -18,7 +18,7 @@ import tasks.Task;
 import tasks.TaskList;
 
 /*
- * The basic strucutre of the template page and the components it contains.
+ * The basic structure of the template page and the components it contains.
  */
 public class Template extends WebPage {
 	private static final long serialVersionUID = 7656338216865551821L;
@@ -26,16 +26,23 @@ public class Template extends WebPage {
 	
 	public Template(final PageParameters parameters) {
 		add(new Label("title", new StringResourceModel("application_title", this, null)));
-		
-		//Parse the parameter and add the corresponding tab
-		//If no argument set use first tab
+
+		AppSession session = (AppSession)getSession();
+		//--Add some mock data, this will be removed--
+		//Mock goals and tasks
 		GoalsAndTasks gt = new GoalsAndTasks();
-		TaskList taskList;
+		//Mock session data
+		MockPatient mock = new MockPatient();
+		session.setUserID("Alvin");
+		session.setAllVisits(mock.visits);
+		session.setCurrentVisit(mock.visits.get(0));
+		session.setPatientInfo(mock.pi);
+		//--END OF MOCK DATA--
 		
+		TaskList taskList;
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
 
 		// Add goal and task names to session
-		AppSession session = (AppSession)getSession();
 		session.setGoal(goal);
 		session.setTask(parameters.get("taskname").toString());
 		

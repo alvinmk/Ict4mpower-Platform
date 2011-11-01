@@ -1,5 +1,6 @@
 package tasks;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +9,9 @@ import org.apache.log4j.Logger;
 
 import authentication.OpenIdCallbackPage;
 
-public class TaskList {
- private List<String> tasks = new ArrayList<String>();
+public class TaskList implements Serializable {
+	private static final long serialVersionUID = 867500089746391660L;
+private List<String> tasks = new ArrayList<String>();
  
  public TaskList(){}
  static final Logger log = Logger.getLogger(OpenIdCallbackPage.class);

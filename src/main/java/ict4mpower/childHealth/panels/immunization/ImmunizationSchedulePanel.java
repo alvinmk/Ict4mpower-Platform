@@ -141,6 +141,10 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 			
 			// See if the submitted info matches an item in the list
 			List<Vaccination> l = list.getModelObject();
+			if(l == null) {
+				list.setModelObject(new ArrayList<Vaccination>());
+				l = list.getModelObject();
+			}
 
 			// Get vaccine name
 			String vaccineName = null;

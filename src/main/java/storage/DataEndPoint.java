@@ -2,6 +2,7 @@ package storage;
 
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -64,16 +65,19 @@ public class DataEndPoint {
 	private DataEndPoint(){
 		ObjectInputStream ois = null;
 		try {
-		    FileInputStream fin = new FileInputStream("MedicalRecords.dat");
-		    ois = new ObjectInputStream(fin);
-		    Object o = ois.readObject();
-		    if(o instanceof HashMap) {
-		    	temp = (HashMap<String, HashMap<String, HashMap<String, Set<Serializable>>>>) o;
-		    }
-		    else {
-		    	System.err.println("Not hashmap "+o);
-		    }
-		    System.out.println("temp "+temp);
+			File file = new File("MedicalRecords.dat");
+			if(file.exists()) {
+			    FileInputStream fin = new FileInputStream(file);
+			    ois = new ObjectInputStream(fin);
+			    Object o = ois.readObject();
+			    if(o instanceof HashMap) {
+			    	temp = (HashMap<String, HashMap<String, HashMap<String, Set<Serializable>>>>) o;
+			    }
+			    else {
+			    	System.err.println("Not hashmap "+o);
+			    }
+			    System.out.println("temp "+temp);
+			}
 		} catch(EOFException eof) {
 			// There's nothing there!
 			eof.printStackTrace();
