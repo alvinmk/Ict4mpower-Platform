@@ -1,10 +1,14 @@
 package ict4mpower.childHealth.panels.development;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import layout.Template;
 import models.PatientInfo;
@@ -23,6 +27,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
@@ -79,6 +85,27 @@ public class DevelopmentPanel extends DivisionPanel {
 			DevelopmentData data = DevelopmentData.instance();
 			// TODO Temporary
 			if(data.getMilestones() == null) {
+				Date max = null;
+				try {
+					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				DevelopmentData dev = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				for(Object o : set) {
+					if(o instanceof DevelopmentData) {
+						dev = (DevelopmentData) o;
+						if(dev.getMilestones() != null && dev.getDate().after(max)) {
+							data.setMilestones(dev.getMilestones());
+							max = dev.getDate();
+						}
+					}
+				}
+			}
+			if(data.getMilestones() == null) {
+				// TODO Remove, get scheduled vitamins from db
 				data.setMilestones(milestones);
 			}
 			
@@ -93,10 +120,18 @@ public class DevelopmentPanel extends DivisionPanel {
 			add(list);
 			
 			//TODO Temporary
-			current = tests.get(data.getMilestones().size()).clone();
+			if(data.getMilestones().size() < tests.size()) {
+				current = tests.get(data.getMilestones().size()).clone();
+			}
+			else {
+				current = tests.get(data.getMilestones().size()-1).clone();
+			}
 			
 			nextPanel = new NextMilestonePanel("nextMilestonePanel", this, DevelopmentPanel.this, current);
 			nextPanel.setOutputMarkupId(true);
+			if(data.getMilestones().size() >= tests.size()) {
+				nextPanel.setVisible(false);
+			}
 			add(nextPanel, false);
 		}
 		
@@ -132,6 +167,7 @@ public class DevelopmentPanel extends DivisionPanel {
 					nextPanel.setVisible(false);
 				}
 			}
+			DevelopmentData.instance().setDate(new Date());
 		}
 	}
 }

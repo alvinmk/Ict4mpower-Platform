@@ -1,13 +1,14 @@
 package ict4mpower.childHealth.data;
 
+import ict4mpower.childHealth.ChildHealthData;
 import ict4mpower.childHealth.panels.medications.Medicine;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class MedicationsData implements Serializable {
+public class MedicationsData implements ChildHealthData {
 	private static final long serialVersionUID = 4239968609396691757L;
 	
 	private static MedicationsData instance = null;
@@ -30,6 +31,9 @@ public class MedicationsData implements Serializable {
 	
 	// Other medication
 	private List<Medicine> otherMeds;
+	
+	// Creation date
+	private Date date;
 	
 	private MedicationsData() {}
 	
@@ -95,5 +99,21 @@ public class MedicationsData implements Serializable {
 			}
 		}
 		return list;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+
+	public void reset() {
+		setAntimalarial(null);
+		setDate(null);
+		setDeworming(null);
+		setOtherMeds(null);
+		setVitamins(null);
 	}
 }

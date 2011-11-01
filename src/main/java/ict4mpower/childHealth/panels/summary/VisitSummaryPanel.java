@@ -6,16 +6,23 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import layout.Template;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.Callback;
+import ict4mpower.childHealth.ChildHealthData;
 import ict4mpower.childHealth.SummaryCheck;
+import ict4mpower.childHealth.data.AdditionalData;
 import ict4mpower.childHealth.data.CheckInfoData;
 import ict4mpower.childHealth.data.CheckableOption;
 import ict4mpower.childHealth.data.DevelopmentData;
@@ -38,17 +45,43 @@ public class VisitSummaryPanel extends DivisionPanel {
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private DateFormat time = new SimpleDateFormat("HH:mm");
 	private ConfirmDialog dialog;
+	private boolean signed = false;
 
 	public VisitSummaryPanel(String id) {
 		super(id, "title");
 		
+		Object sgn = getSession().getAttribute("ChildHealth:VisitSummarySigned");
+		if(sgn != null && (Boolean)sgn) {
+			info(new StringResourceModel("visit_signed", this, null).getObject());
+			getSession().setAttribute("ChildHealth:VisitSummarySigned", false);
+		}
+		
 		dialog = new ConfirmDialog("dialog");
 		dialog.setLabel("Are you certain you want to sign this visit?");
+		dialog.setWindowClosedCallback(new WindowClosedCallback() {
+			private static final long serialVersionUID = 1L;
+
+			public void onClose(AjaxRequestTarget target) {
+				System.out.println("Refreshed");
+				if(signed) {
+					signed = false;
+					PageParameters pp = new PageParameters();
+					pp.set("taskname", "VisitSummaryTask");
+					pp.set("goalname", "ChildHealth");
+					getSession().setAttribute("ChildHealth:VisitSummarySigned", true);
+					VisitSummaryPanel.this.setResponsePage(Template.class, pp);
+				}
+			}
+		});
 		dialog.addOnSubmit(new Callback() {
 			private static final long serialVersionUID = 1L;
 
 			public boolean call(AjaxRequestTarget target) {
-				return saveVisit();
+				if(saveVisit()) {
+					signed = true;
+					return true;
+				}
+				return false;
 			}
 		});
 		add(dialog);
@@ -256,6 +289,13 @@ public class VisitSummaryPanel extends DivisionPanel {
 		add(new MultiLineLabel("infections", iText));
 		
 		/*
+		 * Additional info
+		 */
+		AdditionalData additional = (AdditionalData) session.getAttribute("Demographics:AdditionalInfoTask");
+		add(new SummaryCheck("additionalCheck", additional));
+		add(new MultiLineLabel("reasons", additional != null ? additional.getReasonsAsString(this) : null));
+		
+		/*
 		 * Follow-up visit
 		 */
 		FollowUpData followUp = (FollowUpData) session.getAttribute(goal+"FollowUpTask");
@@ -273,6 +313,11 @@ public class VisitSummaryPanel extends DivisionPanel {
 		Serializable[] data = new Serializable[]{
 				session.getAttribute(goal+"GrowthTask"),
 				session.getAttribute(goal+"ImmunizationTask"),
+				session.getAttribute(goal+"StatusPraesensTask"),
+				session.getAttribute(goal+"MedicationsTask"),
+				session.getAttribute(goal+"DevelopmentTask"),
+				session.getAttribute(goal+"EducationTask"),
+				session.getAttribute(goal+"FollowUpTask"),
 				session.getAttribute("Demographics:AdditionalInfoTask")
 		};
 		for(Serializable s : data) {
@@ -282,6 +327,14 @@ public class VisitSummaryPanel extends DivisionPanel {
 			}
 		}
 		dep.save();
+		
+		// Reset data
+		session.replaceSession();
+		for(Serializable s : data) {
+			if(s != null) {
+				((ChildHealthData)s).reset();
+			}
+		}
 		return true;
 	}
 }

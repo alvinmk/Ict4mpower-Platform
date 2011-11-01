@@ -156,6 +156,20 @@
 				</div>
 			</fieldset>
 		</li>
+		<li><!-- Additional info - reasons for special care -->
+			<fieldset>
+				<label for="additional"><wicket:message key="additional"/></label>
+				<input type="checkbox" id="additional" wicket:id="additionalCheck"/>
+				<div>
+					<table>
+						<tr>
+							<td><wicket:message key="reasons"/></td>
+							<td class="em listrows"><span wicket:id="reasons"/></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+		</li>
 		<li><!-- Follow-up -->
 			<fieldset>
 				<label for="followUp"><wicket:message key="follow_up"/></label>

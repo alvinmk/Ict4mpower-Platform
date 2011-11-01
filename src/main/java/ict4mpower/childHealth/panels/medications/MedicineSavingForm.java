@@ -9,12 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.MissingResourceException;
 
-import models.PatientInfo;
-
 import org.apache.wicket.markup.html.list.ListView;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
+import ict4mpower.childHealth.data.MedicationsData;
 
 public class MedicineSavingForm extends SavingForm {
 	private static final long serialVersionUID = -73635838347441944L;
@@ -105,6 +104,8 @@ public class MedicineSavingForm extends SavingForm {
 					this));
 			Collections.sort(l);
 		}
+		
+		MedicationsData.instance().setDate(new Date());
 		
 		medPanel.setVisible(false);
 	}

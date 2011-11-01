@@ -77,8 +77,8 @@ public class WicketApplication extends WebApplication
 	
 	public void onDestroy(){
 		//Save data
-		DataEndPoint d = DataEndPoint.getDataEndPoint();
-		d.save();
+//		DataEndPoint d = DataEndPoint.getDataEndPoint();
+//		d.save();
 	}
 		
 }

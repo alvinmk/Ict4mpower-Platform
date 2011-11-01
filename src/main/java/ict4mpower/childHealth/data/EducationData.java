@@ -1,11 +1,12 @@
 package ict4mpower.childHealth.data;
 
-import java.io.Serializable;
+import ict4mpower.childHealth.ChildHealthData;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EducationData implements Serializable {
+public class EducationData implements ChildHealthData {
 	private static final long serialVersionUID = -5967334292372509608L;
 
 	private static EducationData instance;
@@ -233,5 +234,11 @@ public class EducationData implements Serializable {
 				new EducationInfoData(infectionsHeaders.get(3), infectionsTexts.get(3), infectionsOptions.get(3))
 		});
 		return list;
+	}
+
+	public void reset() {
+		setFeedingOptions(null);
+		setInfectionsOptions(null);
+		setOralOptions(null);
 	}
 }

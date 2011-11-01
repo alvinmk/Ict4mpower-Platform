@@ -1,13 +1,14 @@
 package ict4mpower.childHealth.data;
 
+import ict4mpower.childHealth.ChildHealthData;
 import ict4mpower.childHealth.panels.immunization.Vaccination;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class ImmunizationData implements Serializable {
+public class ImmunizationData implements ChildHealthData {
 	private static final long serialVersionUID = -553200314531540733L;
 	
 	private static ImmunizationData instance = null;
@@ -20,6 +21,7 @@ public class ImmunizationData implements Serializable {
 	}
 
 	private List<Vaccination> vaccinations;
+	private Date date;
 	
 	private ImmunizationData() {}
 
@@ -45,5 +47,18 @@ public class ImmunizationData implements Serializable {
 			}
 		}
 		return list;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+
+	public void reset() {
+		setDate(null);
+		setVaccinations(null);
 	}
 }

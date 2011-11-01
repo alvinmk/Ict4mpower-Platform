@@ -1,9 +1,10 @@
 package ict4mpower.childHealth.data;
 
-import java.io.Serializable;
+import ict4mpower.childHealth.ChildHealthData;
+
 import java.util.List;
 
-public class StatusPraesensData implements Serializable {
+public class StatusPraesensData implements ChildHealthData {
 	private static final long serialVersionUID = -7582569994675017144L;
 	
 	private static StatusPraesensData instance = null;
@@ -59,5 +60,12 @@ public class StatusPraesensData implements Serializable {
 
 	public void setConclusionText(String conclusionText) {
 		this.conclusionText = conclusionText;
+	}
+
+	public void reset() {
+		setCheckUp(null);
+		setComplaintsText(null);
+		setConclusionText(null);
+		setRecentHealthProblems(null);
 	}
 }

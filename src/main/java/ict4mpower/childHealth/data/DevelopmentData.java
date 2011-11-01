@@ -1,12 +1,13 @@
 package ict4mpower.childHealth.data;
 
+import ict4mpower.childHealth.ChildHealthData;
 import ict4mpower.childHealth.panels.development.Milestone;
 
-import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class DevelopmentData implements Serializable {
+public class DevelopmentData implements ChildHealthData {
 	private static final long serialVersionUID = -3866379165135838860L;
 
 	private static DevelopmentData instance = null;
@@ -19,6 +20,7 @@ public class DevelopmentData implements Serializable {
 	}
 	
 	private List<Milestone> milestones;
+	private Date date;
 	
 	private DevelopmentData() {}
 
@@ -43,5 +45,18 @@ public class DevelopmentData implements Serializable {
 			}
 		}
 		return null;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void reset() {
+		setDate(null);
+		setMilestones(null);
 	}
 }

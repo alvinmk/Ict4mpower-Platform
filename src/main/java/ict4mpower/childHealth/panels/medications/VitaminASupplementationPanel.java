@@ -1,11 +1,15 @@
 package ict4mpower.childHealth.panels.medications;
 
+import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import models.PatientInfo;
 
@@ -14,6 +18,8 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
+
+import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
@@ -47,6 +53,27 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 		MedicationsData data = MedicationsData.instance();
 		// TODO Temporary
 		if(data.getVitamins() == null) {
+			Date max = null;
+			try {
+				max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			MedicationsData med = null;
+			// Get from db
+			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			for(Object o : set) {
+				if(o instanceof MedicationsData) {
+					med = (MedicationsData) o;
+					if(med.getVitamins() != null && med.getDate().after(max)) {
+						data.setVitamins(med.getVitamins());
+						max = med.getDate();
+					}
+				}
+			}
+		}
+		if(data.getVitamins() == null) {
+			// TODO Remove, get scheduled vitamins from db
 			data.setVitamins(vitamins);
 		}
 		

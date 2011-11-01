@@ -51,18 +51,6 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 
 		public GrowthIndicatorsForm(String id) {
 			super(id);
-
-			//TODO Temporary
-//			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
-//			List<Indicator> indicators = new ArrayList<Indicator>();
-//			try {
-//				indicators.add(new Indicator(pi, 37.2f, 54.5f, 4.5f, df.parse("05/07/2011")));
-//				indicators.add(new Indicator(pi, 39, 57.5f, 5.5f, df.parse("01/08/2011")));
-//				indicators.add(new Indicator(pi, 40, 60, 5.8f, df.parse("28/08/2011")));
-//				indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
-//			} catch(Exception e) {
-//				e.printStackTrace();
-//			}
 			
 			GrowthData data = GrowthData.instance();
 			// TODO Temporary
@@ -85,6 +73,20 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 						}
 					}
 				}
+			}
+			if(data.getIndicators() == null) {
+				// TODO Temporary, remove!
+				PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+				List<Indicator> indicators = new ArrayList<Indicator>();
+				try {
+					indicators.add(new Indicator(pi, 37.2f, 54.5f, 4.5f, df.parse("05/07/2011")));
+					indicators.add(new Indicator(pi, 39, 57.5f, 5.5f, df.parse("01/08/2011")));
+					indicators.add(new Indicator(pi, 40, 60, 5.8f, df.parse("28/08/2011")));
+					indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				data.setIndicators(indicators);
 			}
 			
 			list = new ListView<Indicator>("indicators", new PropertyModel<List<Indicator>>(data, "indicators")) {

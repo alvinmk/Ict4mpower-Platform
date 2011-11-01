@@ -1,9 +1,10 @@
 package ict4mpower.childHealth.data;
 
-import java.io.Serializable;
+import ict4mpower.childHealth.ChildHealthData;
+
 import java.util.Date;
 
-public class FollowUpData implements Serializable {
+public class FollowUpData implements ChildHealthData {
 	private static final long serialVersionUID = -8893036385045807296L;
 	
 	private static FollowUpData instance = null;
@@ -34,5 +35,10 @@ public class FollowUpData implements Serializable {
 
 	public String getMessage() {
 		return message;
+	}
+
+	public void reset() {
+		setDate(null);
+		setMessage(null);
 	}
 }

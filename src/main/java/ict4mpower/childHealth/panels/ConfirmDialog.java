@@ -62,7 +62,7 @@ class ConfirmDialogPanel extends Panel {
 		this.form = new ConfirmDialogPanelForm("form", dialog);
 		add(this.form);
 	}
-	
+
 	public void error(AjaxRequestTarget target, String key) {
 		setLabel(getString(key));
 		target.add(label);
@@ -98,7 +98,11 @@ class ConfirmDialogPanel extends Panel {
 				protected void onSubmit(AjaxRequestTarget target) {
 					boolean success = false;
 					List<Callback> rm = new ArrayList<Callback>();
+					List<Callback> cbs = new ArrayList<Callback>(callbacks.size());
 					for(Callback cb : callbacks) {
+						cbs.add(cb);
+					}
+					for(Callback cb : cbs) {
 						success = cb.call(target);
 						if(success) {
 							rm.add(cb);
@@ -127,6 +131,7 @@ class ConfirmDialogPanel extends Panel {
 				@Override
 				protected void onError(AjaxRequestTarget target) {}
 			});
+			cancelButton.setOutputMarkupPlaceholderTag(true);
 			add(cancelButton);
 		}
 

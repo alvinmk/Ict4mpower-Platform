@@ -1,13 +1,14 @@
 package ict4mpower.childHealth.data;
 
-import java.io.Serializable;
+import ict4mpower.childHealth.ChildHealthData;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.Component;
 
-public class AdditionalData implements Serializable {
+public class AdditionalData implements ChildHealthData {
 	private static final long serialVersionUID = -283564779395916587L;
 	
 	private static AdditionalData instance;
@@ -49,5 +50,10 @@ public class AdditionalData implements Serializable {
 
 	public Date getDate() {
 		return date;
+	}
+
+	public void reset() {
+		setDate(null);
+		setReasons(null);
 	}
 }

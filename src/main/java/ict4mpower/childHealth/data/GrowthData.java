@@ -1,8 +1,8 @@
 package ict4mpower.childHealth.data;
 
+import ict4mpower.childHealth.ChildHealthData;
 import ict4mpower.childHealth.panels.growth.Indicator;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @author Joakim Lindskog
  *
  */
-public class GrowthData implements Serializable {
+public class GrowthData implements ChildHealthData {
 	private static final long serialVersionUID = -7434447093247650316L;
 	
 	private static GrowthData instance = null;
@@ -94,5 +94,15 @@ public class GrowthData implements Serializable {
 	
 	public Date getDate() {
 		return date;
+	}
+
+	public void reset() {
+		setDate(null);
+		setFeeding(null);
+		setHivTestRadio(null);
+		setIndicators(null);
+		setInitTreatmentDate(null);
+		setInitTreatmentRadio(null);
+		setPmtct(null);
 	}
 }
