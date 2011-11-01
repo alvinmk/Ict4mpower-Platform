@@ -116,17 +116,7 @@ BASIC LAYOUT
 }
 
 #dropdown ul{
-	display: inline;
-	position: relative;
-	padding-bottom: 5px;
-	padding-left: 3px;
-	margin-right: 5px;	
-	right: 5px;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	border-left: 1px solid #555;
-	background: -moz-linear-gradient(left center, #555, #333 80%) repeat scroll 0 0 #555;
+
 }
 
 #dropdown ul .dropdownItem{

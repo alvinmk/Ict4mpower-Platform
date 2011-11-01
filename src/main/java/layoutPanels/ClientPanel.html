@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
 <html 
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/" 
@@ -8,10 +7,14 @@
 	lang="en">  
 <wicket:head>
 </wicket:head>
-
 <body>
 	<wicket:panel>
-	 	<span wicket:id="clientName">USERNAME</span>
+		<div wicket:id="patientDialog">
+			<div wicket:id="patientData">
+				PATIENTINFOPANELHERE
+			</div>
+		</div>
+	 	<a wicket:id="clientName"><span wicket:id="patientLinkLabel">PATIENT NAME</span></a>
 	 	<span wicket:id="clientWarnings">WARNINGS</span>
 	</wicket:panel>
 </body>
