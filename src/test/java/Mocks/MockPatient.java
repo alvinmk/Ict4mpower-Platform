@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import Models.PatientInfo;
+import models.PatientInfo;
 
 public class MockPatient {
 	private static SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
