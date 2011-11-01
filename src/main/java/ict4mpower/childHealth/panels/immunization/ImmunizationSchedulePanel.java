@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.panels.immunization;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.MissingResourceException;
+import java.util.Set;
+
+import models.PatientInfo;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -24,7 +28,9 @@ import org.odlabs.wiquery.core.effects.EffectBehavior;
 import org.odlabs.wiquery.ui.effects.EffectsHelper;
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
-import ict4mpower.Person;
+import storage.DataEndPoint;
+
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.ImmunizationData;
 import ict4mpower.childHealth.panels.DivisionPanel;
@@ -54,19 +60,19 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 		public ImmunizationForm(String id) {
 			super(id);
 			
-			//TODO Temporary
+			//TODO Temporary - get from db
 			List<Vaccination> vaccinations = new ArrayList<Vaccination>();
 			try {
-				Person p = Person.getPerson();
-				vaccinations.add(new Vaccination(p, "BCG", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", "", this));
-				vaccinations.add(new Vaccination(p, "Oral Polio 0", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", "", this));
-				vaccinations.add(new Vaccination(p, "Oral Polio 1", Calendar.WEEK_OF_YEAR, 6, null, "", "", this));
-				vaccinations.add(new Vaccination(p, "DPT+HepB+Hib 1", Calendar.WEEK_OF_YEAR, 6, df.parse("15/09/2011"), "", "", this));
-				vaccinations.add(new Vaccination(p, "Oral Polio 2", Calendar.WEEK_OF_YEAR, 10, null, "", "", this));
-				vaccinations.add(new Vaccination(p, "DPT+HepB+Hib 2", Calendar.WEEK_OF_YEAR, 10, null, "", "", this));
-				vaccinations.add(new Vaccination(p, "Oral Polio 2", Calendar.MONTH, 3, null, "", "", this));
-				vaccinations.add(new Vaccination(p, "DPT+HepB+Hib 3", Calendar.MONTH, 3, null, "", "", this));
-				vaccinations.add(new Vaccination(p, "Measles", Calendar.MONTH, 9, null, "", "", this));
+				PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+				vaccinations.add(new Vaccination(pi, "BCG", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", ""));
+				vaccinations.add(new Vaccination(pi, "Oral Polio 0", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", ""));
+				vaccinations.add(new Vaccination(pi, "Oral Polio 1", Calendar.WEEK_OF_YEAR, 6, null, "", ""));
+				vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 1", Calendar.WEEK_OF_YEAR, 6, df.parse("15/09/2011"), "", ""));
+				vaccinations.add(new Vaccination(pi, "Oral Polio 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""));
+				vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""));
+				vaccinations.add(new Vaccination(pi, "Oral Polio 2", Calendar.MONTH, 3, null, "", ""));
+				vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 3", Calendar.MONTH, 3, null, "", ""));
+				vaccinations.add(new Vaccination(pi, "Measles", Calendar.MONTH, 9, null, "", ""));
 			} catch(Exception e) {
 				//
 			}
@@ -74,8 +80,24 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 			ImmunizationData data = ImmunizationData.instance();
 			// TODO Temporary
 			if(data.getVaccinations() == null) {
-				data.setVaccinations(vaccinations);
+				int max = 0;
+				ImmunizationData imd = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				System.out.println("set "+set.size());
+				for(Object o : set) {
+					System.out.println("obj "+o.getClass());
+					if(o instanceof ImmunizationData) {
+						imd = (ImmunizationData) o;
+						if(imd.getVaccinations() != null && imd.getVaccinations().size() > max) {
+							data.setVaccinations(imd.getVaccinations());
+							max = imd.getVaccinations().size();
+						}
+					}
+				}
+//				data.setVaccinations(vaccinations);
 			}
+			// TODO If data.getVaccionations() == null, get "starting values" for patient
 			
 			// Add table items
 			list = new ListView<Vaccination>("vaccinations", new PropertyModel<List<Vaccination>>(data, "vaccinations")) {
@@ -131,7 +153,7 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 			
 			boolean found = false;
 			for(Vaccination v : l) {
-				if(v.getDueAge().equals(vaccPanel.getAgeChoiceValue())
+				if(v.getDueAge(this).equals(vaccPanel.getAgeChoiceValue())
 						&& v.getVaccine().equals(vaccineName)) {
 					v.setGivenDate(new Date());
 					v.setDosage(vaccPanel.getDosageChoice().getConvertedInput());
@@ -162,14 +184,13 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 					calField = Calendar.YEAR;
 					calDiff = Integer.parseInt(ageValue.substring(0, ageValue.indexOf("years")).trim());
 				}
-				l.add(new Vaccination(Person.getPerson(),
+				l.add(new Vaccination(((AppSession)getSession()).getPatientInfo(),
 						vaccineName,
 						calField,
 						calDiff,
 						new Date(),
 						vaccPanel.getDosageChoice().getConvertedInput(),
-						vaccPanel.getSerialNr().getConvertedInput(),
-						ImmunizationSchedulePanel.this));
+						vaccPanel.getSerialNr().getConvertedInput()));
 				Collections.sort(l);
 			}
 			
@@ -201,7 +222,7 @@ class VaccinationPanel extends Panel {
 		super(id);
 		
 		// Add vaccination values
-		Label ageLabel = new Label("age", new PropertyModel<String>(vaccination, "dueAge"));
+		Label ageLabel = new Label("age", new AgeModel(vaccination, this));
 		add(ageLabel);
 		Label vaccineLabel = new Label("vaccine", new PropertyModel<String>(vaccination, "vaccine"));
 		add(vaccineLabel);

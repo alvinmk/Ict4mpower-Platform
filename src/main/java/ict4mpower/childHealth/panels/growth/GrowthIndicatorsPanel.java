@@ -1,7 +1,6 @@
 package ict4mpower.childHealth.panels.growth;
 
 import ict4mpower.AppSession;
-import ict4mpower.Person;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.GrowthData;
@@ -9,11 +8,14 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import models.PatientInfo;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -24,6 +26,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 
 import storage.DataEndPoint;
 
@@ -50,36 +53,38 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			super(id);
 
 			//TODO Temporary
-			Person p = Person.getPerson();
-			List<Indicator> indicators = new ArrayList<Indicator>();
-			try {
-				indicators.add(new Indicator(p, 37.2f, 54.5f, 4.5f, df.parse("05/07/2011"), this));
-				indicators.add(new Indicator(p, 39, 57.5f, 5.5f, df.parse("01/08/2011"), this));
-				indicators.add(new Indicator(p, 40, 60, 5.8f, df.parse("28/08/2011"), this));
-				indicators.add(new Indicator(p, 42, 64, 7f, df.parse("12/10/2011"), this));
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+//			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+//			List<Indicator> indicators = new ArrayList<Indicator>();
+//			try {
+//				indicators.add(new Indicator(pi, 37.2f, 54.5f, 4.5f, df.parse("05/07/2011")));
+//				indicators.add(new Indicator(pi, 39, 57.5f, 5.5f, df.parse("01/08/2011")));
+//				indicators.add(new Indicator(pi, 40, 60, 5.8f, df.parse("28/08/2011")));
+//				indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
+//			} catch(Exception e) {
+//				e.printStackTrace();
+//			}
 			
 			GrowthData data = GrowthData.instance();
 			// TODO Temporary
 			if(data.getIndicators() == null) {
-//				int max = 0;
-//				GrowthData gd = null;
-//				// Get from db
-//				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
-//				System.out.println("set "+set.size());
-//				for(Object o : set) {
-//					System.out.println("obj "+o.getClass());
-//					if(o instanceof GrowthData) {
-//						gd = (GrowthData) o;
-//						if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
-//							data.setIndicators(gd.getIndicators());
-//							max = gd.getIndicators().size();
-//						}
-//					}
-//				}
-				data.setIndicators(indicators);
+				Date max = null;
+				try {
+					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				GrowthData gd = null;
+				// Get from db
+				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				for(Object o : set) {
+					if(o instanceof GrowthData) {
+						gd = (GrowthData) o;
+						if(gd.getIndicators() != null && gd.getDate().after(max)) {
+							data.setIndicators(gd.getIndicators());
+							max = gd.getDate();
+						}
+					}
+				}
 			}
 			
 			list = new ListView<Indicator>("indicators", new PropertyModel<List<Indicator>>(data, "indicators")) {
@@ -101,20 +106,20 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 		protected void onSubmit() {
 			super.onSubmit();
 			
-			Person p = Person.getPerson();
+			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 			List<Indicator> l = list.getModelObject();
+			GrowthData data = GrowthData.instance();
 			if(l == null) {
-				GrowthData data = GrowthData.instance();
 				data.setIndicators(new ArrayList<Indicator>());
 				list.modelChanged();
 				l = list.getModelObject();
 			}
-			l.add(new Indicator(p,
+			l.add(new Indicator(pi,
 					today.getHeadField().getConvertedInput(),
 					today.getLengthField().getConvertedInput(),
 					today.getWeightField().getConvertedInput(),
-					new Date(),
-					GrowthIndicatorsPanel.this));
+					new Date()));
+			data.setDate(new Date());
 		}
 	}
 }
@@ -166,14 +171,14 @@ class IndicatorPanel extends Panel {
 		super(id);
 		
 		// Add child's values
-		add(new Label("age", new PropertyModel<String>(indicator, "age")));
-		Label head = new Label("headCircumference", new PropertyModel<String>(indicator, "headCircumference"));
+		add(new Label("age", new AgeModel(indicator, this)));
+		Label head = new Label("headCircumference", new StringResourceModel("head_cm", this, indicator));
 		//setClass(head, indicator.headCircumference, indicator.getNormalHeadCircumference());
 		add(head);
-		Label length = new Label("length", new PropertyModel<String>(indicator, "length"));
+		Label length = new Label("length", new StringResourceModel("length_cm", this, indicator));
 		//setClass(length, indicator.length, indicator.getNormallength());
 		add(length);
-		Label weight = new Label("weight", new PropertyModel<String>(indicator, "weight"));
+		Label weight = new Label("weight", new StringResourceModel("weight_kg", this, indicator));
 		//setClass(weight, indicator.weight, indicator.getNormalWeight());
 		add(weight);
 		Label bmi = new Label("bmi", new PropertyModel<Float>(indicator, "bmi"));

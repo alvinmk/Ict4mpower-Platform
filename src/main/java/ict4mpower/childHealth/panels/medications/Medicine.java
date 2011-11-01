@@ -1,12 +1,12 @@
 package ict4mpower.childHealth.panels.medications;
 
-import ict4mpower.Person;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import models.PatientInfo;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
@@ -17,7 +17,7 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private Person person;
+	private PatientInfo patientInfo;
 	private String name;
 	private Date dueDate;
 	private Date givenDate;
@@ -29,14 +29,14 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	private String reason;
 	private String instructions;
 	
-	public Medicine(Person p, String name, int calField, int calAdd, Date givenDate, String dosage, String serialNr, Component parent) {
-		this.person = p;
+	public Medicine(PatientInfo pi, String name, int calField, int calAdd, Date givenDate, String dosage, String serialNr, Component parent) {
+		this.patientInfo = pi;
 		this.name = name;
 		this.dosage = dosage;
 		this.serialNr = serialNr;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
 		this.givenDate = givenDate;
@@ -76,7 +76,7 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
 		Calendar birth = Calendar.getInstance();
-		birth.setTime(person.getBirth());
+		birth.setTime(patientInfo.getBirthDate());
 		int years = due.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
 		int months = due.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
 		int days = due.get(Calendar.DAY_OF_MONTH) - birth.get(Calendar.DAY_OF_MONTH);

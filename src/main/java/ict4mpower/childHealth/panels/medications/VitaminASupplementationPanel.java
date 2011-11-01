@@ -7,13 +7,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import models.PatientInfo;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import ict4mpower.Person;
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
@@ -30,13 +32,13 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 		//TODO Temporary
 		List<Medicine> vitamins = null;
 		try {
-			Person p = Person.getPerson();
+			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 			vitamins = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
-					new Medicine(p, "Vitamin A", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "100 000 IU", "", this),
-					new Medicine(p, "Vitamin A", Calendar.MONTH, 6, null, "100 000 IU", "", this),
-					new Medicine(p, "Vitamin A", Calendar.YEAR, 1, null, "100 000 IU", "", this),
-					new Medicine(p, "Vitamin A", Calendar.MONTH, 18, null, "100 000 IU", "", this),
-					new Medicine(p, "Vitamin A", Calendar.YEAR, 2, null, "100 000 IU", "", this)
+					new Medicine(pi, "Vitamin A", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "100 000 IU", "", this),
+					new Medicine(pi, "Vitamin A", Calendar.MONTH, 6, null, "100 000 IU", "", this),
+					new Medicine(pi, "Vitamin A", Calendar.YEAR, 1, null, "100 000 IU", "", this),
+					new Medicine(pi, "Vitamin A", Calendar.MONTH, 18, null, "100 000 IU", "", this),
+					new Medicine(pi, "Vitamin A", Calendar.YEAR, 2, null, "100 000 IU", "", this)
 			}));
 		} catch(Exception e) {
 			//

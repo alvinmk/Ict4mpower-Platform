@@ -1,18 +1,24 @@
 package ict4mpower;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import models.PatientInfo;
 
 
 public class MockPatient {
+	private static SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public PatientInfo pi;
 	public ArrayList<String> visits;
 	
 	public MockPatient() {
-		pi = new PatientInfo("Alvin Mattsson Kjellqvist", "1", "Allergic to peanuts");
+		try {
+			pi = new PatientInfo("Alvin Mattsson Kjellqvist", "1", "Allergic to peanuts", df.parse("01/06/2011"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		visits = new ArrayList<String>();
 		
 		visits.add("2010-03-01");

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import layout.Template;
+import models.PatientInfo;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,7 +24,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import ict4mpower.Person;
+import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.DevelopmentData;
 import ict4mpower.childHealth.data.FollowUpData;
@@ -37,17 +38,17 @@ public class DevelopmentPanel extends DivisionPanel {
 	private MilestoneTests current;
 	
 	// TODO Temporary
-	Person p = Person.getPerson();
+	private PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 	private List<MilestoneTests> tests = Arrays.asList(
-					new MilestoneTests(p, Calendar.WEEK_OF_YEAR, 4, "Symmetric spontaneous motor skills",
+					new MilestoneTests(pi, Calendar.WEEK_OF_YEAR, 4, "Symmetric spontaneous motor skills",
 							null, "Follows objects with eyes", null, this),
-					new MilestoneTests(p, Calendar.WEEK_OF_YEAR, 6, "Holds up the head lying on stomach<br/>Opens hands",
+					new MilestoneTests(pi, Calendar.WEEK_OF_YEAR, 6, "Holds up the head lying on stomach<br/>Opens hands",
 							null, "Smiles at parents<br/>Responds to sounds", null, this),
-					new MilestoneTests(p, Calendar.MONTH, 6, "Turns around<br/>Pulls self up towards a sitting position",
+					new MilestoneTests(pi, Calendar.MONTH, 6, "Turns around<br/>Pulls self up towards a sitting position",
 							"Transfers objects from one hand to the other",
 							"Looks for the dropped object<br/>Makes double syllable sounds such as 'mumum' and 'dada'",
 							null, this),
-					new MilestoneTests(p, Calendar.MONTH, 10, "Rises, walks with support",
+					new MilestoneTests(pi, Calendar.MONTH, 10, "Rises, walks with support",
 							"Picks up objects with pincergrasp",
 							"Hits two objects against each other",
 							null, this)

@@ -2,6 +2,7 @@ package ict4mpower.childHealth.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.Component;
@@ -19,6 +20,7 @@ public class AdditionalData implements Serializable {
 	}
 
 	private List<String> reasons;
+	private Date date;
 	
 	private AdditionalData() {}
 
@@ -39,5 +41,13 @@ public class AdditionalData implements Serializable {
 			rString += c.getString(s)+"\n";
 		}
 		return rString;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Date getDate() {
+		return date;
 	}
 }
