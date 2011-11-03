@@ -1,5 +1,6 @@
 package layout;
 
+import ict4mpower.MockPatient;
 import tasks.Goals;
 
 
@@ -15,6 +16,7 @@ public class GoalsAndTasks {
 		
 		g.addGoal("Overview");
 		g.addTask("Overview", "Task1");
+			
 			
 	}
 	

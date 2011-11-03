@@ -1,6 +1,8 @@
 package layout;
 
 
+import ict4mpower.AppSession;
+import ict4mpower.MockPatient;
 import layoutPanels.MenuPanel;
 import layoutPanels.ProcessPanel;
 import layoutPanels.StatePanel;
@@ -25,9 +27,17 @@ public class Template extends WebPage {
 	public Template(final PageParameters parameters) {
 	
 		
+		
+		
+		//Mock data
+		GoalsAndTasks gt = new GoalsAndTasks();
+		MockPatient mock = new MockPatient();
+		AppSession s = (AppSession) getSession();
+		s.setAllVisits(mock.visits);
+		s.setPatientInfo(mock.pi);
+		
 		//Parse the parameter and add the coresponding tab
 		//If no argument set use first tab
-		GoalsAndTasks gt = new GoalsAndTasks();
 		TaskList taskList;
 		
 		String goal = (String) (parameters.get("goalname").toString() != null ? parameters.get("goalname").toString() : "none");
