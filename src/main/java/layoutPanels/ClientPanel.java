@@ -29,7 +29,9 @@ public class ClientPanel extends Panel {
 		final Dialog patientDialog = new Dialog("patientDialog");
 		Component childs = new ClientInfoPanel("patientData");
 		patientDialog.add(childs);
-		patientDialog.setTitle(s.getPatientInfo().getName());
+		String name = "NoneSet";
+		if(s.getPatientInfo().getName()!=null) name = s.getPatientInfo().getName();  
+		patientDialog.setTitle(name);
 		AjaxLink<String> patientName = new AjaxLink<String>("clientName") {
 			private static final long serialVersionUID = -1999518640202002086L;
 			
