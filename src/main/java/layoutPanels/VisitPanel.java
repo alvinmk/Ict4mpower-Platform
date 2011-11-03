@@ -17,7 +17,16 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		AppSession session = (AppSession) getSession();
-		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), session.getAllVisits());
+		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), session.getAllVisits()){
+			private static final long serialVersionUID = 6239600167733224223L;
+			@Override
+			protected void onSelectionChanged(String newSelection) {
+				AppSession s = (AppSession) getSession();
+				s.setCurrentVisit(newSelection);
+				super.onSelectionChanged(newSelection);
+			}
+			
+		};
 		add(visits);
 		add( new Label("visitStage", "VISIT SIGNED"));
 	}
