@@ -2,7 +2,8 @@ package Mocks;
 
 import java.util.List;
 
-import Models.PatientInfo;
+import models.PatientInfo;
+
 
 public class MockPatient {
 	

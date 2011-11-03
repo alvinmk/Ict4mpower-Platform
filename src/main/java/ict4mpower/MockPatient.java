@@ -3,7 +3,8 @@ package ict4mpower;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.PatientInfo;
+import models.PatientInfo;
+
 
 public class MockPatient {
 	

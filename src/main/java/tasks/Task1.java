@@ -2,7 +2,7 @@ package tasks;
 
 import java.util.Locale;
 
-import models.Person;
+import models.PatientInfo;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.Button;
@@ -23,7 +23,7 @@ public class Task1 extends Task{
 	        protected void onSubmit() {}
 	    };
 	    add(form);
-	    Person person = new Person();
+	    PatientInfo person = new PatientInfo(name, name, name);
 	    
 	    form.add(new RequiredTextField("personName", new PropertyModel(person, "name")));
 	    

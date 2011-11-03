@@ -5,34 +5,35 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.WicketTester;
-
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 public class Storage extends TestCase{
-	DataEndPoint data;
+	MedicalRecordSocket MRSocket = new MedicalRecordSocket();
 		
 	@Override
 	public void setUp()
 	{
-		data = DataEndPoint.getDataEndPoint();
+		
 	}
 	
 	public void testStoreAndRetrive(){
-		MockPatient m = new MockPatient();
+		MockPatient m1 = new MockPatient();
+		MockPatient m2 = new MockPatient();
+		MockPatient m3 = new MockPatient();
 		long l = 1L;
-		String result = data.SignEntry(m.pi, "111", l , "TestApp");
-		//assertEquals("new patient", result); //Nothing added yet
-		Object o = new Object();
-		//result = data.SignEntry(o, "111", l , "TestApp");
-		//assertEquals("new type", result); //Only difference is the object
-		Object o2 = new Object();
-		//result = data.SignEntry(o2, "111", l , "TestApp");
-		//assertEquals("new object", result); //Only difference is the object
+		MRSocket.SignEntry(m1, "111", 1L, "app");
+		MRSocket.SignEntry(m2, "111", 2L, "app");
+		MRSocket.SignEntry(m3, "112", 1L, "app");
 		
-		String type = m.pi.getClass().getName();
-		Set<Object> s = data.getEntriesFromVisitIdAndType("111","TestApp", l, type);
-		assertTrue(s.contains(m.pi));
-		data.save();
+		Set s = MRSocket.getEntriesFromPatientId("111");
+		assertTrue(s.contains(m1));
+		assertTrue(s.contains(m2));
+		s = MRSocket.getVisitEntry(1L, "111");
+		assertTrue(s.contains(m1));
+		assertFalse(s.contains(m2));
+		s = MRSocket.getEntriesFromPatientId("112");
+		assertTrue(s.contains(m3));
+		assertTrue(s.size()==1);		
 	}
 
 }

@@ -58,13 +58,17 @@ public class MedicalRecord extends BaseRecord{
 		return attributesQuery(s);
 	}
 	
-	public Set<Object> getObjectsFromVisitId(long visitId){
+	public Set<Object> getObjectsFromVisitId(long visitId, String patientId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
-		Value visitVal = e.makeBigintValue(visitId);
+		Value Vvisit = e.makeBigintValue(visitId);
+		Value VpatientId = e.makeStringValue(patientId);
 		h.put("attribute", klassContainer.visitId);
-		h.put("value", visitVal);
-		s.add(h);		
+		h.put("value", Vvisit);
+		s.add(h);
+		h.put("attribute", klassContainer.patientId);
+		h.put("value", VpatientId);
+		s.add(h);
 		return attributesQuery(s);
 	}
 	
