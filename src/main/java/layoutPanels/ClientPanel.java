@@ -29,7 +29,18 @@ public class ClientPanel extends Panel {
 		final Dialog patientDialog = new Dialog("patientDialog");
 		Component childs = new ClientInfoPanel("patientData");
 		patientDialog.add(childs);
-		patientDialog.setTitle(s.getPatientInfo().getName());
+		String name;
+		String warnings;
+		if(s.getPatientInfo() != null){
+			name = s.getPatientInfo().getName();
+			warnings =s.getPatientInfo().getWarnings();
+		}
+		else{
+			name = "No patient selected";
+			warnings ="";
+		}
+		
+		patientDialog.setTitle(name);
 		AjaxLink<String> patientName = new AjaxLink<String>("clientName") {
 			private static final long serialVersionUID = -1999518640202002086L;
 			
@@ -38,10 +49,10 @@ public class ClientPanel extends Panel {
 				patientDialog.open(target);
 			}
 		};
-		patientName.add(new Label("patientLinkLabel", s.getPatientInfo().getName() ));
+		patientName.add(new Label("patientLinkLabel", name ));
 		add(patientName);
 		add(patientDialog);
-		add( new Label("clientWarnings", s.getPatientInfo().getWarnings() ));
+		add( new Label("clientWarnings", warnings ));
 	}
 
 }
