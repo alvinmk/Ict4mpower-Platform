@@ -62,8 +62,8 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 			super(id);
 			
 			ImmunizationData data = ImmunizationData.instance();
-			// TODO Temporary
 			if(data.getVaccinations() == null) {
+				// No data in session - get from db for patient
 				Date max = null;
 				try {
 					max = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1800");
@@ -71,7 +71,6 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 					e.printStackTrace();
 				}
 				ImmunizationData imd = null;
-				// Get from db
 				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
 				System.out.println("set "+set.size());
 				for(Object o : set) {
@@ -86,8 +85,8 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 				}
 			}
 			if(data.getVaccinations() == null) {
-				// Get "starting vaccinations list" for patient
-				//TODO Temporary - get from db
+				// No data in db for patient - get "starting vaccinations list" for patient
+				//TODO Temporary - get from db - app specific storage
 				List<Vaccination> vaccinations = new ArrayList<Vaccination>();
 				try {
 					PatientInfo pi = ((AppSession)getSession()).getPatientInfo();

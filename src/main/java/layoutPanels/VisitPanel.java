@@ -1,5 +1,8 @@
 package layoutPanels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ict4mpower.AppSession;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,7 +20,12 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		AppSession session = (AppSession) getSession();
-		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), session.getAllVisits());
+		List<String> l = session.getAllVisits();
+		if(l == null){
+			l = new ArrayList<String>();
+			l.add("No visits available");
+		}
+		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), l);
 		add(visits);
 		add( new Label("visitStage", "VISIT SIGNED"));
 	}
