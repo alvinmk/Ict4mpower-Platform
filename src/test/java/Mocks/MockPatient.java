@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import models.PatientInfo;
+import models.PatientInfo.Sex;
 
 public class MockPatient {
 	private static SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -14,7 +15,8 @@ public class MockPatient {
 	
 	public MockPatient() {
 		try {
-			pi = new PatientInfo("Alvin Mattsson Kjellqvist", "1", "Allergic to peanuts", df.parse("01/06/2011"));
+			pi = new PatientInfo("Alvin Mattsson Kjellqvist", "1", "Allergic to peanuts",
+					df.parse("01/06/2011"), Sex.MALE);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
