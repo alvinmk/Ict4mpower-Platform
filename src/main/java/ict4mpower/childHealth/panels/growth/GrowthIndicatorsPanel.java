@@ -7,7 +7,6 @@ import ict4mpower.childHealth.data.GrowthData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import storage.DataEndPoint;
 public class GrowthIndicatorsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8147585043264253460L;
 	
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private ListView<Indicator> list;
 	private TodayPanel today;
 
@@ -53,7 +51,6 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 			super(id);
 			
 			GrowthData data = GrowthData.instance();
-			// TODO Temporary
 			if(data.getIndicators() == null) {
 				Date max = null;
 				try {
@@ -62,7 +59,7 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 					e.printStackTrace();
 				}
 				GrowthData gd = null;
-				// Get from db
+				// If no data in session, get from db
 				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
 				for(Object o : set) {
 					if(o instanceof GrowthData) {
@@ -73,20 +70,6 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 						}
 					}
 				}
-			}
-			if(data.getIndicators() == null) {
-				// TODO Temporary, remove!
-				PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
-				List<Indicator> indicators = new ArrayList<Indicator>();
-				try {
-					indicators.add(new Indicator(pi, 37.2f, 54.5f, 4.5f, df.parse("05/07/2011")));
-					indicators.add(new Indicator(pi, 39, 57.5f, 5.5f, df.parse("01/08/2011")));
-					indicators.add(new Indicator(pi, 40, 60, 5.8f, df.parse("28/08/2011")));
-					indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				data.setIndicators(indicators);
 			}
 			
 			list = new ListView<Indicator>("indicators", new PropertyModel<List<Indicator>>(data, "indicators")) {
