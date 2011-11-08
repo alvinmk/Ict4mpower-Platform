@@ -1,12 +1,10 @@
 package ict4mpower.childHealth.panels.medications;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
+import storage.ApplicationSocketTemp;
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
@@ -27,31 +26,14 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 
 public class VitaminASupplementationPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
-	
-	private DateFormat df = new SimpleDateFormat("d/M/y");
 
+	@SuppressWarnings("unchecked")
 	public VitaminASupplementationPanel(String id) {
 		super(id, "title", false);
 		
 		setOutputMarkupId(true);
-
-		//TODO Temporary
-		List<Medicine> vitamins = null;
-		try {
-			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
-			vitamins = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
-					new Medicine(pi, "Vitamin A", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "100 000 IU", "", this),
-					new Medicine(pi, "Vitamin A", Calendar.MONTH, 6, null, "100 000 IU", "", this),
-					new Medicine(pi, "Vitamin A", Calendar.YEAR, 1, null, "100 000 IU", "", this),
-					new Medicine(pi, "Vitamin A", Calendar.MONTH, 18, null, "100 000 IU", "", this),
-					new Medicine(pi, "Vitamin A", Calendar.YEAR, 2, null, "100 000 IU", "", this)
-			}));
-		} catch(Exception e) {
-			//
-		}
 		
 		MedicationsData data = MedicationsData.instance();
-		// TODO Temporary
 		if(data.getVitamins() == null) {
 			Date max = null;
 			try {
@@ -73,7 +55,20 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 			}
 		}
 		if(data.getVitamins() == null) {
-			// TODO Remove, get scheduled vitamins from db
+			// Get standard vitamin A supplements from db
+			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+			List<Medicine> std = null;
+			List<Medicine> vitamins = new ArrayList<Medicine>();
+			Set<Object> vit = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "StandardVitaminA");
+			for(Object o : vit) {
+				// Get only first object - there should be only one
+				std = (List<Medicine>) o;
+				break;
+			}
+			for(Medicine med : std) {
+				vitamins.add(new Medicine(pi, med.getName(), med.getCalField(), med.getCalAdd(), null,
+						med.getDosage(), med.getBatchNr()));
+			}
 			data.setVitamins(vitamins);
 		}
 		

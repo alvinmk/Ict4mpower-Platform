@@ -43,11 +43,11 @@ public class MedicineSavingForm extends SavingForm {
 		
 		boolean found = false;
 		for(Medicine m : l) {
-			if(m.getDueAge().equals(medPanel.getAgeChoiceValue())
+			if(m.getDueAge(this).equals(medPanel.getAgeChoiceValue())
 					&& m.getName().equals(medicineName)) {
 				m.setGivenDate(new Date());
 				m.setDosage(medPanel.getDosageChoice().getConvertedInput());
-				m.setSerialNr(medPanel.getSerialNr().getConvertedInput());
+				m.setBatchNr(medPanel.getSerialNr().getConvertedInput());
 				found = true;
 			}
 		}
@@ -100,8 +100,7 @@ public class MedicineSavingForm extends SavingForm {
 					calDiff,
 					new Date(),
 					medPanel.getDosageChoice().getConvertedInput(),
-					medPanel.getSerialNr().getConvertedInput(),
-					this));
+					medPanel.getSerialNr().getConvertedInput()));
 			Collections.sort(l);
 		}
 		

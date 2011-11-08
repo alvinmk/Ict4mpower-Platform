@@ -1,5 +1,16 @@
 package ict4mpower.childHealth;
 
+import ict4mpower.AppSession;
+import ict4mpower.childHealth.panels.immunization.Vaccination;
+import ict4mpower.childHealth.panels.medications.Medicine;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+
+import models.PatientInfo;
+
 import storage.ApplicationSocketTemp;
 
 /**
@@ -150,8 +161,46 @@ public class SetupData {
 		store.storeData(app, "GrowthReferenceValues:girls", growthValuesGirls);
 		store.storeData(app, "GrowthReferenceValues:boys", growthValuesBoys);
 		
-		// Immunization
+		// Immunization - standard vaccinations to be given
+		List<Vaccination> vaccinations = new ArrayList<Vaccination>(Arrays.asList(new Vaccination[]{
+				new Vaccination("BCG", Calendar.WEEK_OF_YEAR, 0, null, "", ""),
+				new Vaccination("Oral Polio 0", Calendar.WEEK_OF_YEAR, 0, null, "", ""),
+				new Vaccination("Oral Polio 1", Calendar.WEEK_OF_YEAR, 6, null, "", ""),
+				new Vaccination("DPT+HepB+Hib 1", Calendar.WEEK_OF_YEAR, 6, null, "", ""),
+				new Vaccination("Oral Polio 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""),
+				new Vaccination("DPT+HepB+Hib 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""),
+				new Vaccination("Oral Polio 2", Calendar.MONTH, 3, null, "", ""),
+				new Vaccination("DPT+HepB+Hib 3", Calendar.MONTH, 3, null, "", ""),
+				new Vaccination("Measles", Calendar.MONTH, 9, null, "", "")
+		}));
+		store.storeData(app, "StandardVaccinations", vaccinations);
 		
+		// Medications - standard vitamin A supplements
+		List<Medicine> vitamins = null;
+		vitamins = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
+				new Medicine("Vitamin A", Calendar.WEEK_OF_YEAR, 0, null, "100 000 IU", ""),
+				new Medicine("Vitamin A", Calendar.MONTH, 6, null, "100 000 IU", ""),
+				new Medicine("Vitamin A", Calendar.YEAR, 1, null, "100 000 IU", ""),
+				new Medicine("Vitamin A", Calendar.MONTH, 18, null, "100 000 IU", ""),
+				new Medicine("Vitamin A", Calendar.YEAR, 2, null, "100 000 IU", "")
+		}));
+		store.storeData(app, "StandardVitaminA", vitamins);
+		
+		// Medications - standard de-worming medications
+		List<Medicine> deworm = null;
+		deworm = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
+				new Medicine("De-worming 1", Calendar.WEEK_OF_YEAR, 0, null, "100 000 IU", ""),
+				new Medicine("De-worming 2", Calendar.MONTH, 6, null, "100 000 IU", "")
+		}));
+		store.storeData(app, "StandardDeworming", deworm);
+		
+		// Medications - standard anti-malarial medications
+		List<Medicine> antimal = null;
+		antimal = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
+				new Medicine("Antimalarial 1", Calendar.WEEK_OF_YEAR, 0, null, "100 000 IU", ""),
+				new Medicine("Antimalarial 2", Calendar.MONTH, 6, null, "100 000 IU", "")
+		}));
+		store.storeData(app, "StandardAntimalarial", antimal);
 		
 		// Save
 		store.save();

@@ -22,25 +22,35 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	private Date dueDate;
 	private Date givenDate;
 	private String dosage;
-	private String serialNr;
-	private Component parent;
+	private String batchNr;
 	// For other medications
 	private String form;
 	private String reason;
 	private String instructions;
+	// For standard medicines
+	private int calField = -1;
+	private int calAdd = -1;
 	
-	public Medicine(PatientInfo pi, String name, int calField, int calAdd, Date givenDate, String dosage, String serialNr, Component parent) {
+	public Medicine(PatientInfo pi, String name, int calField, int calAdd, Date givenDate, String dosage, String batchNr) {
 		this.patientInfo = pi;
 		this.name = name;
 		this.dosage = dosage;
-		this.serialNr = serialNr;
+		this.batchNr = batchNr;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
 		birth.setTime(patientInfo.getBirthDate());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
 		this.givenDate = givenDate;
-		this.parent = parent;
+	}
+	
+	public Medicine(String name, int calField, int calAdd, Date givenDate, String dosage, String batchNr) {
+		this.name = name;
+		this.dosage = dosage;
+		this.batchNr = batchNr;
+		this.setCalField(calField);
+		this.setCalAdd(calAdd);
+		this.givenDate = givenDate;
 	}
 	
 	/**
@@ -52,21 +62,20 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	 * @param instructions
 	 * @param parent
 	 */
-	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate, Component parent) {
+	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate) {
 		this.name = name;
 		this.form = form;
 		this.dosage = dose;
 		this.reason = reason;
 		this.instructions = instructions;
 		this.givenDate = givenDate;
-		this.parent = parent;
 	}
 	
-	public String getDueAge() {
-		return getAgeValue().getObject();
+	public String getDueAge(Component parent) {
+		return getAgeValue(parent).getObject();
 	}
 	
-	public StringResourceModel getAgeValue() {
+	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Float>((float)(0.5f*Math.floor((Float)arr[1]/0.5f)))));
@@ -175,11 +184,27 @@ public class Medicine implements Serializable, Comparable<Medicine> {
 	}
 
 	public String getBatchNr() {
-		return serialNr;
+		return batchNr;
 	}
 
-	public void setSerialNr(String serialNr) {
-		this.serialNr = serialNr;
+	public void setBatchNr(String batchNr) {
+		this.batchNr = batchNr;
+	}
+
+	public int getCalField() {
+		return calField;
+	}
+
+	public void setCalField(int calField) {
+		this.calField = calField;
+	}
+
+	public int getCalAdd() {
+		return calAdd;
+	}
+
+	public void setCalAdd(int calAdd) {
+		this.calAdd = calAdd;
 	}
 
 	public int compareTo(Medicine other) {

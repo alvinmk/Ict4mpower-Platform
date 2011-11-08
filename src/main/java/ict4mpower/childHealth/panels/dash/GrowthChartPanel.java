@@ -51,6 +51,7 @@ public class GrowthChartPanel extends DivisionPanel {
 		for(Object o : refs) {
 			// Only get first data entry - there should be only one
 			references = (Float[][]) o;
+			break;
 		}
 
 		/** List of all series in the graph */

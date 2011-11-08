@@ -10,12 +10,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import models.PatientInfo;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
+import storage.ApplicationSocketTemp;
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
@@ -41,22 +44,20 @@ public class OtherMedicationsPanel extends DivisionPanel {
 	class OtherMedicationsForm extends SavingForm {
 		private static final long serialVersionUID = -6533255463323812596L;
 
-		//TODO Temporary
 		public OtherMedicationsForm(String id) {
 			super(id);
 
-			List<Medicine> meds = null;
-			try {
-				meds = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
-						new Medicine("Other medicine 1", "Pills", "100 000 IU", "Had some problem", "Take 1 each day for 30 days", df.parse("01/08/2011"), this),
-						new Medicine("Cough syrup", "Syrup", "100 000 IU", "Had a cough", "One tablespoon 3 times a day", df.parse("01/09/2011"), this)
-				}));
-			} catch(Exception e) {
-				//
-			}
+//			List<Medicine> meds = null;
+//			try {
+//				meds = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
+//						new Medicine("Other medicine 1", "Pills", "100 000 IU", "Had some problem", "Take 1 each day for 30 days", df.parse("01/08/2011")),
+//						new Medicine("Cough syrup", "Syrup", "100 000 IU", "Had a cough", "One tablespoon 3 times a day", df.parse("01/09/2011"))
+//				}));
+//			} catch(Exception e) {
+//				//
+//			}
 			
 			MedicationsData data = MedicationsData.instance();
-			// TODO Temporary
 			if(data.getOtherMeds() == null) {
 				Date max = null;
 				try {
@@ -76,10 +77,6 @@ public class OtherMedicationsPanel extends DivisionPanel {
 						}
 					}
 				}
-			}
-			if(data.getOtherMeds() == null) {
-				// TODO Remove, get scheduled vitamins from db
-				data.setOtherMeds(meds);
 			}
 			
 			// Add table items
@@ -130,8 +127,7 @@ public class OtherMedicationsPanel extends DivisionPanel {
 					medPanel.getDose().getConvertedInput(),
 					medPanel.getReason().getConvertedInput(),
 					medPanel.getInstructions().getConvertedInput(),
-					new Date(),
-					this));
+					new Date()));
 			
 			medPanel.setVisible(false);
 		}

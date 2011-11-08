@@ -1,7 +1,6 @@
 package ict4mpower.childHealth.panels.immunization;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import org.odlabs.wiquery.core.effects.EffectBehavior;
 import org.odlabs.wiquery.ui.effects.EffectsHelper;
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
+import storage.ApplicationSocketTemp;
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
@@ -43,7 +43,6 @@ import ict4mpower.childHealth.panels.StatusTakenPanel;
 public class ImmunizationSchedulePanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 	
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private ListView<Vaccination> list;
 	private GiveVaccinationPanel vaccPanel;
 
@@ -58,6 +57,7 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 	private class ImmunizationForm extends SavingForm {
 		private static final long serialVersionUID = 8603618882539149364L;
 
+		@SuppressWarnings("unchecked")
 		public ImmunizationForm(String id) {
 			super(id);
 			
@@ -86,23 +86,20 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 			}
 			if(data.getVaccinations() == null) {
 				// No data in db for patient - get "starting vaccinations list" for patient
-				//TODO Temporary - get from db - app specific storage
+				Set<Object> v = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "StandardVaccinations");
+				List<Vaccination> va = null;
 				List<Vaccination> vaccinations = new ArrayList<Vaccination>();
-				try {
-					PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
-					vaccinations.add(new Vaccination(pi, "BCG", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", ""));
-					vaccinations.add(new Vaccination(pi, "Oral Polio 0", Calendar.WEEK_OF_YEAR, 0, df.parse("01/08/2011"), "", ""));
-					vaccinations.add(new Vaccination(pi, "Oral Polio 1", Calendar.WEEK_OF_YEAR, 6, null, "", ""));
-					vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 1", Calendar.WEEK_OF_YEAR, 6, df.parse("15/09/2011"), "", ""));
-					vaccinations.add(new Vaccination(pi, "Oral Polio 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""));
-					vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 2", Calendar.WEEK_OF_YEAR, 10, null, "", ""));
-					vaccinations.add(new Vaccination(pi, "Oral Polio 2", Calendar.MONTH, 3, null, "", ""));
-					vaccinations.add(new Vaccination(pi, "DPT+HepB+Hib 3", Calendar.MONTH, 3, null, "", ""));
-					vaccinations.add(new Vaccination(pi, "Measles", Calendar.MONTH, 9, null, "", ""));
-					data.setVaccinations(vaccinations);
-				} catch(Exception e) {
-					//
+				PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+				for(Object o : v) {
+					// Only get first object in set - there should be only one
+					va = (List<Vaccination>) o;
+					break;
 				}
+				for(Vaccination vac : va) {
+					vaccinations.add(new Vaccination(pi, vac.getVaccine(), vac.getCalField(), vac.getCalAdd(), null,
+							vac.getDosage(), vac.getSerial_nr()));
+				}
+				data.setVaccinations(vaccinations);
 			}
 			
 			// Add table items

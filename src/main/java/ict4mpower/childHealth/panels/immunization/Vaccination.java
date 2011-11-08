@@ -24,6 +24,9 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 	private String dosage;
 	private String serial_nr;
 	
+	private int calField = -1;
+	private int calAdd = -1;
+	
 	public Vaccination(PatientInfo pi, String vaccine, int calField, int calAdd, Date givenDate, String dosage,
 			String serial_nr) {
 		this.patientInfo = pi;
@@ -33,6 +36,19 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 		birth.setTime(patientInfo.getBirthDate());
 		birth.add(calField, calAdd);
 		this.dueDate = birth.getTime();
+		this.givenDate = givenDate;
+		this.dosage = dosage;
+		this.serial_nr = serial_nr;
+	}
+	
+	/**
+	 * Constructor for standard vaccination
+	 */
+	public Vaccination(String vaccine, int calField, int calAdd, Date givenDate, String dosage, String serial_nr) {
+		this.vaccine = vaccine;
+		// Save cal-values
+		this.setCalField(calField);
+		this.setCalAdd(calAdd);
 		this.givenDate = givenDate;
 		this.dosage = dosage;
 		this.serial_nr = serial_nr;
@@ -163,6 +179,22 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
+	}
+
+	public int getCalField() {
+		return calField;
+	}
+
+	public void setCalField(int calField) {
+		this.calField = calField;
+	}
+
+	public int getCalAdd() {
+		return calAdd;
+	}
+
+	public void setCalAdd(int calAdd) {
+		this.calAdd = calAdd;
 	}
 
 	public int compareTo(Vaccination other) {

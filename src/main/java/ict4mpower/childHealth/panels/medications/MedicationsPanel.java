@@ -45,7 +45,7 @@ public class MedicationsPanel extends Panel {
 		super(id);
 		
 		// Add supplement values
-		Label ageLabel = new Label("age", new PropertyModel<String>(medicine, "dueAge"));
+		Label ageLabel = new Label("age", new AgeModel(medicine, this));
 		add(ageLabel);
 		Label drugLabel = new Label("name", new PropertyModel<String>(medicine, "name"));
 		add(drugLabel);
