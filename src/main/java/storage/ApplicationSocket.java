@@ -10,12 +10,12 @@ public class ApplicationSocket {
 	public String storeData(String application, String type, Object data){
 		//ApplicationRecord a = new ApplicationRecord();
 		//return a.newEntry(application, type, data);
-		return a;
+		return null;
 	}
 	
 	public Set<Object> getData(String application, String type){
 		//ApplicationRecord a = new ApplicationRecord();
 		//return a.getApplicationData(application, type);
-		return a;
+		return null;
 	}
 }
