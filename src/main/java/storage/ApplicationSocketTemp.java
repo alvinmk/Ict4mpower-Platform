@@ -1,8 +1,11 @@
 package storage;
 
 
+import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
@@ -30,13 +33,34 @@ public class ApplicationSocketTemp {
 	
 	
 	private ApplicationSocketTemp(){
+		ObjectInputStream ois = null;
 		try {
-		    FileInputStream fin = new FileInputStream("Application.dat");
-		    ObjectInputStream ois = new ObjectInputStream(fin);
-		    temp = (HashMap<String, HashMap<String, Set<Object>>>) ois.readObject();
-		    ois.close();
-		    }
-		   catch (Exception e) { e.printStackTrace(); }
+			File file = new File("Application.dat");
+			if(file.exists()) {
+			    FileInputStream fin = new FileInputStream(file);
+			    ois = new ObjectInputStream(fin);
+			    Object o = ois.readObject();
+			    if(o instanceof HashMap) {
+			    	temp = (HashMap<String, HashMap<String, Set<Object>>>) o;
+			    }
+			    else {
+			    	System.err.println("Not hashmap "+o);
+			    }
+			    System.out.println("temp "+temp);
+			}
+		} catch(EOFException eof) {
+			// There's nothing there!
+			eof.printStackTrace();
+		} catch (Exception e) { e.printStackTrace(); }
+		finally {
+			if(ois != null) {
+				try {
+					ois.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public String storeData(String application, String type, Object data){
@@ -59,25 +83,52 @@ public class ApplicationSocketTemp {
 			h.put(type, s);
 			temp.put(application, h);
 		}
+
+		printMap();
 		return "success";
 	}
 	
 	public Set<Object> getData(String application, String type){
+		printMap();
+		
 		return temp.get(application).get(type);
 		//ApplicationRecord a = new ApplicationRecord();
 		//return a.getApplicationData(application, type);
-		
 	}
 	
-	public void save(){		
+	public void save(){
+		printMap();
+		ObjectOutputStream oos = null;
 		 try {
-		      FileOutputStream fout = new FileOutputStream("MedicalRecords.dat");
-		      ObjectOutputStream oos = new ObjectOutputStream(fout);
+		      FileOutputStream fout = new FileOutputStream("Application.dat");
+		      oos = new ObjectOutputStream(fout);
 		      oos.writeObject(temp);
-		      oos.close();
-		      }
+		 }
 		 catch (Exception e) { e.printStackTrace(); }
-		 
+		 finally {
+			 if(oos != null) {
+				 try {
+					oos.flush();
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			 }
+		 }
 	}
-
+	
+	private void printMap(){
+		for(String key : temp.keySet()){
+			
+			for(String Ikey : temp.get(key).keySet()){
+					System.err.print(key);
+					System.err.print("->{"+Ikey+"}->{\n");
+					Set<Object> s = temp.get(key).get(Ikey);
+					for(Object o : s){
+						System.err.println("           "+o.getClass().getName());
+					}
+					System.err.println("}");
+			}
+		}
+	}
 }
