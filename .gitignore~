@@ -6,7 +6,8 @@ bin
 *.log
 target
 \#*\#
-*~
+*.dat
+
 # eclipse conf file
 .settings
 .classpath
