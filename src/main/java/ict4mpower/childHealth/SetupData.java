@@ -1,6 +1,6 @@
 package ict4mpower.childHealth;
 
-import ict4mpower.AppSession;
+import ict4mpower.childHealth.panels.development.MilestoneTests;
 import ict4mpower.childHealth.panels.immunization.Vaccination;
 import ict4mpower.childHealth.panels.medications.Medicine;
 
@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
-import models.PatientInfo;
 
 import storage.ApplicationSocketTemp;
 
@@ -201,6 +199,23 @@ public class SetupData {
 				new Medicine("Antimalarial 2", Calendar.MONTH, 6, null, "100 000 IU", "")
 		}));
 		store.storeData(app, "StandardAntimalarial", antimal);
+		
+		// Development - milestone tests
+		List<MilestoneTests> tests = Arrays.asList(
+				new MilestoneTests(Calendar.WEEK_OF_YEAR, 4, "Symmetric spontaneous motor skills",
+						null, "Follows objects with eyes", null),
+				new MilestoneTests(Calendar.WEEK_OF_YEAR, 6, "Holds up the head lying on stomach<br/>Opens hands",
+						null, "Smiles at parents<br/>Responds to sounds", null),
+				new MilestoneTests(Calendar.MONTH, 6, "Turns around<br/>Pulls self up towards a sitting position",
+						"Transfers objects from one hand to the other",
+						"Looks for the dropped object<br/>Makes double syllable sounds such as 'mumum' and 'dada'",
+						null),
+				new MilestoneTests(Calendar.MONTH, 10, "Rises, walks with support",
+						"Picks up objects with pincergrasp",
+						"Hits two objects against each other",
+						null)
+		);
+		store.storeData(app, "MilestoneTests", tests);
 		
 		// Save
 		store.save();

@@ -49,7 +49,6 @@ public class RecentHealthProblemsPanel extends DivisionPanel {
 			super(id);
 			
 			StatusPraesensData data = StatusPraesensData.instance();
-			// TODO Temporary
 			if(data.getRecentHealthProblems() == null) {
 				data.setRecentHealthProblems(RECENT_PROBS);
 			}

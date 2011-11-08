@@ -53,9 +53,6 @@ public class SavingForm extends Form<ValueMap> {
 					child.setDefaultModel(new PropertyModel(getSession().getAttribute(getSaveName()), id));
 				}
 			}
-			else {
-				// TODO Build session value from database
-			}
 			// Add to save list
 			System.out.println("Adding to saveList: "+getSaveName());
 			saveList.add(child);

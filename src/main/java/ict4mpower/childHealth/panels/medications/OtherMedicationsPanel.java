@@ -1,16 +1,11 @@
 package ict4mpower.childHealth.panels.medications;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import models.PatientInfo;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -18,7 +13,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.ApplicationSocketTemp;
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
@@ -28,8 +22,6 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 
 public class OtherMedicationsPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
-	
-	private DateFormat df = new SimpleDateFormat("d/M/y");
 	private ListView<Medicine> list;
 	private GiveOtherMedicationPanel medPanel;
 
@@ -46,16 +38,6 @@ public class OtherMedicationsPanel extends DivisionPanel {
 
 		public OtherMedicationsForm(String id) {
 			super(id);
-
-//			List<Medicine> meds = null;
-//			try {
-//				meds = new ArrayList<Medicine>(Arrays.asList(new Medicine[]{
-//						new Medicine("Other medicine 1", "Pills", "100 000 IU", "Had some problem", "Take 1 each day for 30 days", df.parse("01/08/2011")),
-//						new Medicine("Cough syrup", "Syrup", "100 000 IU", "Had a cough", "One tablespoon 3 times a day", df.parse("01/09/2011"))
-//				}));
-//			} catch(Exception e) {
-//				//
-//			}
 			
 			MedicationsData data = MedicationsData.instance();
 			if(data.getOtherMeds() == null) {

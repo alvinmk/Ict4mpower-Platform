@@ -38,7 +38,6 @@ public class ReasonsPanel extends DivisionPanel {
 			
 			setForm(this, ReasonsPanel.this);
 			
-			// TODO Temporary
 			ArrayList<String> list = new ArrayList<String>(Arrays.asList(new String[] {
 					"birth_weight_low",
 					"birth_defect",

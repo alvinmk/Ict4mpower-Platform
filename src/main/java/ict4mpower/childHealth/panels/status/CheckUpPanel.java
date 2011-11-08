@@ -58,7 +58,6 @@ public class CheckUpPanel extends DivisionPanel {
 			super(id);
 			
 			StatusPraesensData data = StatusPraesensData.instance();
-			// TODO Temporary
 			if(data.getCheckUp() == null) {
 				data.setCheckUp(CHECK_UP);
 			}

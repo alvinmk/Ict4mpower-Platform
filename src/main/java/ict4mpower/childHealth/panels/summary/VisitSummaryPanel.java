@@ -321,9 +321,8 @@ public class VisitSummaryPanel extends DivisionPanel {
 				session.getAttribute("Demographics:AdditionalInfoTask")
 		};
 		for(Serializable s : data) {
-			// TODO What is visit id?
 			if(s != null) {
-				dep.signEntry(s, session.getPatientInfo().getClientId(), /*session.getCurrentVisit()*/1L, "ChildHealth");
+				dep.signEntry(s, session.getPatientInfo().getClientId(), session.getCurrentVisit(), "ChildHealth");
 			}
 		}
 		dep.save();

@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +13,7 @@ import layout.Template;
 import models.PatientInfo;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +28,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import storage.ApplicationSocketTemp;
 import storage.DataEndPoint;
 
 import ict4mpower.AppSession;
@@ -43,25 +44,25 @@ public class DevelopmentPanel extends DivisionPanel {
 	private NextMilestonePanel nextPanel;
 	private MilestoneTests current;
 	
-	// TODO Temporary
-	private PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
-	private List<MilestoneTests> tests = Arrays.asList(
-					new MilestoneTests(pi, Calendar.WEEK_OF_YEAR, 4, "Symmetric spontaneous motor skills",
-							null, "Follows objects with eyes", null, this),
-					new MilestoneTests(pi, Calendar.WEEK_OF_YEAR, 6, "Holds up the head lying on stomach<br/>Opens hands",
-							null, "Smiles at parents<br/>Responds to sounds", null, this),
-					new MilestoneTests(pi, Calendar.MONTH, 6, "Turns around<br/>Pulls self up towards a sitting position",
-							"Transfers objects from one hand to the other",
-							"Looks for the dropped object<br/>Makes double syllable sounds such as 'mumum' and 'dada'",
-							null, this),
-					new MilestoneTests(pi, Calendar.MONTH, 10, "Rises, walks with support",
-							"Picks up objects with pincergrasp",
-							"Hits two objects against each other",
-							null, this)
-			);
+	private List<MilestoneTests> tests = new ArrayList<MilestoneTests>();
 
+	@SuppressWarnings("unchecked")
 	public DevelopmentPanel(String id) {
 		super(id, "title", false);
+		
+		// Get milestone tests from db
+		Set<Object> set = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "MilestoneTests");
+		PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
+		List<MilestoneTests> std = null;
+		for(Object o : set) {
+			// Only get first one - there should only be one
+			std = (List<MilestoneTests>) o;
+			break;
+		}
+		for(MilestoneTests t : std) {
+			tests.add(new MilestoneTests(pi, t.getCalField(), t.getCalAdd(), t.grossMotor, t.fineMotor,
+					t.communication, t.cognitive));
+		}
 		
 		DevelopmentForm form = new DevelopmentForm("form");
 		add(form);
@@ -73,17 +74,7 @@ public class DevelopmentPanel extends DivisionPanel {
 		public DevelopmentForm(String id) {
 			super(id);
 			
-			//TODO Temporary
-			List<Milestone> milestones = new ArrayList<Milestone>();
-			try {
-				milestones.add(new Milestone(tests.get(0), null, (short)0, (short)0, (short)0, (short)0, new Short[]{0,0}, new Short[]{0,0}));
-				milestones.add(new Milestone(tests.get(1), null, (short)1, (short)0, (short)1, (short)0, new Short[]{0,0}, new Short[]{0,0}));
-			} catch(Exception e) {
-				//
-			}
-			
 			DevelopmentData data = DevelopmentData.instance();
-			// TODO Temporary
 			if(data.getMilestones() == null) {
 				Date max = null;
 				try {
@@ -105,8 +96,7 @@ public class DevelopmentPanel extends DivisionPanel {
 				}
 			}
 			if(data.getMilestones() == null) {
-				// TODO Remove, get scheduled vitamins from db
-				data.setMilestones(milestones);
+				data.setMilestones(new ArrayList<Milestone>());
 			}
 			
 			list = new ListView<Milestone>("milestones", new PropertyModel<List<Milestone>>(data, "milestones")) {
@@ -114,13 +104,15 @@ public class DevelopmentPanel extends DivisionPanel {
 
 				@Override
 				protected void populateItem(ListItem<Milestone> item) {
-					item.add(new MilestonePanel("rowPanel", item.getModel()));
+					item.add(new MilestonePanel("rowPanel", item.getModel(), DevelopmentPanel.this));
 				}
 			};
 			add(list);
 			
-			//TODO Temporary
-			if(data.getMilestones().size() < tests.size()) {
+			if(data.getMilestones() == null) {
+				current = tests.get(0).clone();
+			}
+			else if(data.getMilestones().size() < tests.size()) {
 				current = tests.get(data.getMilestones().size()).clone();
 			}
 			else {
@@ -129,7 +121,7 @@ public class DevelopmentPanel extends DivisionPanel {
 			
 			nextPanel = new NextMilestonePanel("nextMilestonePanel", this, DevelopmentPanel.this, current);
 			nextPanel.setOutputMarkupId(true);
-			if(data.getMilestones().size() >= tests.size()) {
+			if(data.getMilestones() != null && data.getMilestones().size() >= tests.size()) {
 				nextPanel.setVisible(false);
 			}
 			add(nextPanel, false);
@@ -175,11 +167,11 @@ public class DevelopmentPanel extends DivisionPanel {
 class MilestonePanel extends Panel {
 	private static final long serialVersionUID = 3885944576231374282L;
 
-	public MilestonePanel(String id, IModel<Milestone> milestone) {
+	public MilestonePanel(String id, IModel<Milestone> milestone, Component parent) {
 		super(id);
 		
 		// Add milestone values
-		add(new Label("age", new Model<String>(milestone.getObject().tests.getDueAge())));
+		add(new Label("age", new Model<String>(milestone.getObject().tests.getDueAge(parent))));
 		Label grossLabel = new Label("gross_motor", new PropertyModel<String>(milestone, "tests.grossMotor"));
 		setClass(grossLabel, milestone.getObject().grossMotor);
 		grossLabel.setEscapeModelStrings(false);
@@ -267,7 +259,7 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		setForm(form, panel);
 		
-		Label ageLabel = new Label("age", new PropertyModel<String>(this.tests, "dueAge"));
+		Label ageLabel = new Label("age", new AgeModel(new Model<MilestoneTests>(this.tests), panel));
 		ageLabel.setOutputMarkupId(true);
 		add(ageLabel);
 		// Add link to follow-up

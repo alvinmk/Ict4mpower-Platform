@@ -33,10 +33,12 @@ public class MilestoneTests implements Serializable, Cloneable {
 	public String eyeLeftChoice;
 	public String eyeRightChoice;
 	
-	private Component parent;
+	// For standard milestone tests
+	private int calField = -1;
+	private int calAdd = -1;
 	
 	public MilestoneTests(PatientInfo pi, int calField, int calAdd, String grossMotor, String fineMotor,
-			String communication, String cognitive, Component parent) {
+			String communication, String cognitive) {
 		this.patientInfo = pi;
 		// Calculate due date
 		Calendar birth = Calendar.getInstance();
@@ -47,14 +49,32 @@ public class MilestoneTests implements Serializable, Cloneable {
 		this.fineMotor = fineMotor;
 		this.communication = communication;
 		this.cognitive = cognitive;
-		this.parent = parent;
 	}
 	
-	public String getDueAge() {
-		return getAgeValue().getObject();
+	/**
+	 * Constructor for standard milestone tests
+	 * @param calField
+	 * @param calAdd
+	 * @param grossMotor
+	 * @param fineMotor
+	 * @param communication
+	 * @param cognitive
+	 */
+	public MilestoneTests(int calField, int calAdd, String grossMotor, String fineMotor,
+			String communication, String cognitive) {
+		this.setCalField(calField);
+		this.setCalAdd(calAdd);
+		this.grossMotor = grossMotor;
+		this.fineMotor = fineMotor;
+		this.communication = communication;
+		this.cognitive = cognitive;
+	}
+
+	public String getDueAge(Component parent) {
+		return getAgeValue(parent).getObject();
 	}
 	
-	public StringResourceModel getAgeValue() {
+	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Integer>((int)Math.floor((Float)arr[1]))));
@@ -142,5 +162,21 @@ public class MilestoneTests implements Serializable, Cloneable {
 		} catch(CloneNotSupportedException e) {
 			return null;
 		}
+	}
+
+	public int getCalField() {
+		return calField;
+	}
+
+	public void setCalField(int calField) {
+		this.calField = calField;
+	}
+
+	public int getCalAdd() {
+		return calAdd;
+	}
+
+	public void setCalAdd(int calAdd) {
+		this.calAdd = calAdd;
 	}
 }
