@@ -1,4 +1,4 @@
-package PagePanels;
+package pagePanels;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
