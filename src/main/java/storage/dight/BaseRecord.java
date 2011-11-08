@@ -40,18 +40,6 @@ public abstract class BaseRecord {
 	public void setKlass(KlassContainer kc){
 		record = kc.getKlass();
 	}			
-		
-	//Test code to map out some thoughs
-	public Set<Object> testQuery(){
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		Attribute a = null;
-		Value v = null;
-		m.put("attribute", a);
-		m.put("value", v);
-		Set<HashMap> s = null;
-		s.add(m);
-		return attributesQuery(s);
-	}
 	
 	/*
 	 *  Makes an query from attributes and values
@@ -60,12 +48,20 @@ public abstract class BaseRecord {
 		AttributeQuery aq = null;
 		for(HashMap<String, Object> map : a){
 			aq = e.createAttributeQuery(record, true);
-			aq.setValue((Attribute) map.get("attribute"),(ValueTemplate)map.get("value"));
+			aq.setValue((Attribute) map.get("attribute"), (ValueTemplate)map.get("value"));
 		}
+		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send query to server
 		QueryResult qr = null;
-		AttributeQueryResult indexQResult = (AttributeQueryResult) qr;
+		try {
+			qr = DightSocket.CreateOperationResult(aq, credential, e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AttributeQueryResult indexQResult;
+		indexQResult = (AttributeQueryResult) qr;
 		Set<Entry> x = indexQResult.getResult();
 		return getObjectsFromEntrySet(x);
 	}

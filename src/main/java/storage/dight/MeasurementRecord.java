@@ -15,7 +15,7 @@ public class MeasurementRecord extends BaseRecord{
 	private static MeasurementKlass klassContainer;
 
 	public MeasurementRecord(){
-		//setKlass((KlassContainer) klassContainer.getKlass());
+		setKlass((KlassContainer) klassContainer.getKlass());
 	}
 	
 	public String newEntry(String measurement, String unit, String value, String patientId){

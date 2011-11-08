@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import se.sics.dight.data.model.EntryId;
+import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.Objekt;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.Value;
@@ -15,23 +16,29 @@ public class MedicalRecord extends BaseRecord{
 	private static MedicalRecordKlass klassContainer;
 
 	public MedicalRecord(){
-		setKlass((KlassContainer) klassContainer.getKlass());
+		super();
+		klassContainer = new MedicalRecordKlass(e);
+		record = klassContainer.getKlass();		
 	}
 	
 	public String newEntry(Object data, String type, String app,String patientId, long visitId) {
-		klassContainer = new MedicalRecordKlass(e);
 		Value vType = e.makeStringValue(type);
 		Value vApp = e.makeStringValue(app);
 		Value vPatientId = e.makeStringValue(patientId);
 		Value vVisitId = e.makeBigintValue(visitId);
 		Value vDate = e.makeDateValue(new Date());
-		EntryId eid = null;
+		//Make an Entry id
+		int value=1;
+		byte[] byts = new byte[]{(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value};
+		EntryId eid = e.makeEntryId(byts);
+		
 		byte[] payload = null;
 		try {
 			payload = serialize(data);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		System.err.print("SIZE OF PAYLOAD IS " + payload.length);
 		
 		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, payload );
 		entry.setValue(klassContainer.application, vApp);
@@ -61,8 +68,8 @@ public class MedicalRecord extends BaseRecord{
 	public Set<Object> getObjectsFromVisitId(long visitId, String patientId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
-		Value Vvisit = e.makeBigintValue(visitId);
-		Value VpatientId = e.makeStringValue(patientId);
+		ValueTemplate Vvisit = e.makeBigintValueTemplate(visitId);
+		ValueTemplate VpatientId = e.makeStringValueTemplate(patientId);
 		h.put("attribute", klassContainer.visitId);
 		h.put("value", Vvisit);
 		s.add(h);
@@ -75,9 +82,9 @@ public class MedicalRecord extends BaseRecord{
 	public Set<Object> getObjectsFromPatientId(String patientId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
-		Value visitVal = e.makeStringValue(patientId);
-		h.put("attribute", klassContainer.visitId);
-		h.put("value", visitVal);
+		ValueTemplate VPatientId = e.makeStringValueTemplate(patientId);
+		h.put("attribute", klassContainer.patientId);
+		h.put("value", VPatientId);
 		s.add(h);		
 		return attributesQuery(s);
 	}

@@ -7,7 +7,7 @@ import se.sics.dight.security.DummyEntryAuthenticationAlgorithm;
 import se.sics.dight.storage.engine.Engine;
 
 public class KlassContainer {
-	Klass klass;
+	protected Klass klass;
 	Engine e;
 	
 	EntryAuthenticationAlgorithm EAA = new DummyEntryAuthenticationAlgorithm();
@@ -19,7 +19,7 @@ public class KlassContainer {
 	public Klass getKlass(){
 		return klass;
 	}
-	
+		
 	public EntryAuthenticationAlgorithm getEntryAuthenticationAlgorithm(){
 		return EAA;
 	}

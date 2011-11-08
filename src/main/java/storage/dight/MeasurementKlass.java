@@ -1,5 +1,6 @@
 package storage.dight;
 
+import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.attributes.Attribute;
 import se.sics.dight.storage.engine.Engine;
 
@@ -18,7 +19,9 @@ public class MeasurementKlass extends KlassContainer{
 		this.value = e.makeSmallintAttribute("value");
 		this.date = e.makeDateAttribute("date");
 		this.patientId = e.makeSmallintAttribute("patientId");
-		
+		byte[] b = new byte[20];
+		EntryId eid = e.makeEntryId(b);
+		klass = e.createKlass(1L, eid, "MedicalRecord");
 		klass.addAttribute(measurement);
 		klass.addAttribute(unit);
 		klass.addAttribute(value);
