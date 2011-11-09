@@ -50,11 +50,17 @@ public class VisitSummaryPanel extends DivisionPanel {
 	public VisitSummaryPanel(String id) {
 		super(id, "title");
 		
+		Label messages = new Label("messages");
+		messages.setOutputMarkupPlaceholderTag(true);
 		Object sgn = getSession().getAttribute("ChildHealth:VisitSummarySigned");
 		if(sgn != null && (Boolean)sgn) {
-			info(new StringResourceModel("visit_signed", this, null).getObject());
+			messages.setDefaultModel(new StringResourceModel("visit_signed", this, null));
 			getSession().setAttribute("ChildHealth:VisitSummarySigned", false);
 		}
+		else {
+			messages.setVisible(false);
+		}
+		add(messages);
 		
 		dialog = new ConfirmDialog("dialog");
 		dialog.setLabel("Are you certain you want to sign this visit?");
