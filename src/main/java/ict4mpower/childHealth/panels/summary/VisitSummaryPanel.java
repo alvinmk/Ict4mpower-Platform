@@ -290,7 +290,7 @@ public class VisitSummaryPanel extends DivisionPanel {
 					}
 				}
 			}
-			List<List<CheckableOption>> infections = edu.getFeedingOptions();
+			List<List<CheckableOption>> infections = edu.getInfectionsOptions();
 			if(infections != null) {
 				for(List<CheckableOption> l : infections) {
 					for(CheckableOption co : l) {
