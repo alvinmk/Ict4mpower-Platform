@@ -8,6 +8,7 @@ import java.util.Set;
 
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Objekt;
+import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.Value;
 
 public class ApplicationRecord extends BaseRecord{
@@ -46,15 +47,18 @@ public class ApplicationRecord extends BaseRecord{
 	public Set<Object> getApplicationData(String application, String type){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
-		Value vApplication = e.makeStringValue(application);
+		ValueTemplate vApplication = e.makeStringValueTemplate(application);
+		ValueTemplate vType = e.makeStringValueTemplate(type);
+		
+		h.put("attribute", klassContainer.type);
+		h.put("value", vType);
+		s.add(h);
+		
 		h.put("attribute", klassContainer.application);
 		h.put("value", vApplication);
 		s.add(h);
 		
-		Value vType = e.makeStringValue(type);
-		h.put("attribute", klassContainer.type);
-		h.put("value", vType);
-		s.add(h);
+	
 		
 		return attributesQueryToObject(s);
 		

@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Objekt;
+import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.DateValue;
 import se.sics.dight.data.model.values.DoubleValue;
 import se.sics.dight.data.model.values.Value;
@@ -52,13 +53,13 @@ public class MeasurementRecord extends BaseRecord{
 	public Set<Measurement> getMeasurement(String patientId, String measurement){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
-		Value vMeasurement = e.makeStringValue(measurement);
+		ValueTemplate vMeasurement = e.makeStringValueTemplate(measurement);
 		h.put("attribute", klassContainer.measurement);
 		h.put("value", vMeasurement);
 		s.add(h);		
-		Value vPatientId = e.makeStringValue(patientId);
+		ValueTemplate vPatientId = e.makeStringValueTemplate(patientId);
 		h.put("attribute", klassContainer.patientId);
-		h.put("value", patientId);
+		h.put("value", vPatientId);
 		s.add(h);
 		
 		//Retrive result
