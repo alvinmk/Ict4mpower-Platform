@@ -266,8 +266,8 @@ class VaccinationPanel extends Panel {
 						for(Object[] choice : ages) {
 							ageArray = vaccination.getObject().getAccurateAgeArray();
 							if(choice[1] != null) { System.out.println(choice[1]+" : "+(Integer)(int)Math.floor((Float)ageArray[1])); }
-							System.out.println(choice[0]+" : "+ageArray[0]);
-							if(choice[1] == (Integer)(int)Math.floor((Float)ageArray[1]) && choice[0].equals(ageArray[0])) {
+							System.out.println(choice[0]+" : "+ageArray[0]+" ; "+choice[1]+" : "+ageArray[1]);
+							if(((choice[1] == null && ageArray[1] == null) || choice[1] == (Integer)(int)Math.floor((Float)ageArray[1])) && choice[0].equals(ageArray[0])) {
 								ageDef = choice;
 								break;
 							}
