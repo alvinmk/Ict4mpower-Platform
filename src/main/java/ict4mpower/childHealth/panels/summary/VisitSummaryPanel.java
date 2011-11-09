@@ -77,7 +77,6 @@ public class VisitSummaryPanel extends DivisionPanel {
 			private static final long serialVersionUID = 1L;
 
 			public void onClose(AjaxRequestTarget target) {
-				System.out.println("Refreshed");
 				if(signed) {
 					signed = false;
 					PageParameters pp = new PageParameters();

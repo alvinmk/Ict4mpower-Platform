@@ -91,9 +91,7 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 				}
 				ImmunizationData imd = null;
 				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
-				System.out.println("set "+set.size());
 				for(Object o : set) {
-					System.out.println("obj "+o.getClass());
 					if(o instanceof ImmunizationData) {
 						imd = (ImmunizationData) o;
 						if(imd.getVaccinations() != null && imd.getDate().after(max)) {
@@ -193,7 +191,6 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 				int calField = -1;
 				int calDiff = -1;
 				String ageValue = vaccPanel.getAgeChoiceValue();
-				System.out.println(ageValue);
 				if(ageValue.equals(getString("at_birth"))) {
 					calField = Calendar.MONTH;
 					calDiff = 0;

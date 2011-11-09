@@ -105,7 +105,6 @@ public class FeedingPanel extends DivisionPanel {
 
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					System.out.println("feeding "+feedingChoice.getConvertedInput());
 					if(feedingChoice.getConvertedInput() == null) return;
 					if(feedingChoice.getConvertedInput().equals("other")) {
 						// Show input dialog

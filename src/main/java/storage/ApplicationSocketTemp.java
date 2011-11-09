@@ -46,7 +46,6 @@ public class ApplicationSocketTemp {
 			    else {
 			    	System.err.println("Not hashmap "+o);
 			    }
-			    System.out.println("temp "+temp);
 			}
 		} catch(EOFException eof) {
 			// There's nothing there!

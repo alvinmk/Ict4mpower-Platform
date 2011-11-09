@@ -82,9 +82,7 @@ public class ReasonsPanel extends DivisionPanel {
 				AdditionalData ad = null;
 				// Get from db
 				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
-				System.out.println("set "+set.size());
 				for(Object o : set) {
-					System.out.println("obj "+o.getClass());
 					if(o instanceof AdditionalData) {
 						ad = (AdditionalData) o;
 						if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
