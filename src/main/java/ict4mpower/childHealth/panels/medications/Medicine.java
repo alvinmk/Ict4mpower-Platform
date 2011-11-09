@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels.medications;
 
+import ict4mpower.childHealth.panels.IDueAge;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,7 +14,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-public class Medicine implements Serializable, Comparable<Medicine> {
+public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 	private static final long serialVersionUID = -4299959951236886609L;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");

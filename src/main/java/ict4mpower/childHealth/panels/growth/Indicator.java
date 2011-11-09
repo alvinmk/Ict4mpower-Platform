@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels.growth;
 
+import ict4mpower.childHealth.panels.IDueAge;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,7 +17,12 @@ import org.apache.wicket.model.StringResourceModel;
 
 import storage.ApplicationSocketTemp;
 
-public class Indicator implements Serializable, Comparable<Indicator> {
+/**
+ * Data class representing an indicator
+ * @author Joakim Lindskog
+ *
+ */
+public class Indicator implements Serializable, Comparable<Indicator>, IDueAge {
 	private static final long serialVersionUID = -9155283621010002742L;
 	
 	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -26,6 +33,14 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 	private float weight;
 	private Date date;
 	
+	/**
+	 * Constructor
+	 * @param pi patient info
+	 * @param headCircumference head circumference in cm
+	 * @param length length in cm
+	 * @param weight weight in kg
+	 * @param date measured date
+	 */
 	public Indicator(PatientInfo pi, float headCircumference, float length, float weight, Date date) {
 		this.patientInfo = pi;
 		this.headCircumference = headCircumference;
@@ -34,10 +49,24 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 		this.date = date;
 	}
 	
+	/**
+	 * Returns the age of the child (when this indicator was measured) as a String
+	 * @param parent parent component
+	 * @return the age of the child as a String
+	 */
 	public String getAge(Component parent) {
 		return getAgeValue(parent).getObject();
 	}
 	
+	public String getDueAge(Component parent) {
+		return getAge(parent);
+	}
+	
+	/**
+	 * Returns the age of the child as a StringResourceModel
+	 * @param parent parent component
+	 * @return the age of the child as a StringResourceModel
+	 */
 	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray(true);
 		if((Integer)arr[2] == 0) return new StringResourceModel((String)arr[0], parent, new Model<Integer>((Integer)arr[1]));
@@ -45,10 +74,23 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 				new AgeData((Integer)arr[1], (Integer)arr[2])));
 	}
 	
+	/**
+	 * Returns an array representing the age of the child (with no extra days)
+	 * [0] => properties key for the age unit (weeks/months)
+	 * [1] => number of units of age (e.g. 3 (weeks))
+	 * @return an array representing the age of the child
+	 */
 	public Object[] getAccurateAgeArray() {
 		return getAccurateAgeArray(false);
 	}
 	
+	/**
+	 * Returns an array representing the age of the child (with or without extra days)
+	 * [0] => properties key for the age unit (weeks/months)
+	 * [1] => number of units of age (e.g. 3 (weeks))
+	 * ([2] => extra days, if not even weeks/months - if returnExtraDays == true) 
+	 * @return an array representing the age of the child
+	 */
 	private Object[] getAccurateAgeArray(boolean returnExtraDays) {
 		Calendar measured = Calendar.getInstance();
 		measured.setTime(date);
@@ -141,6 +183,9 @@ public class Indicator implements Serializable, Comparable<Indicator> {
 				: (int)Math.floor((Float)arr[1]+10)];
 	}
 	
+	/**
+	 * @return the reference growth values for the child in a Float[][]
+	 */
 	private Float[][] getReferenceValues() {
 		Float[][] references = null;
 		ApplicationSocketTemp store = ApplicationSocketTemp.getApplicationSocketTemp();

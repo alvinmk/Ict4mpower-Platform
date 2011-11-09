@@ -34,18 +34,28 @@ import storage.DataEndPoint;
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.ImmunizationData;
+import ict4mpower.childHealth.panels.AgeModel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 import ict4mpower.childHealth.panels.StatusDuePanel;
 import ict4mpower.childHealth.panels.StatusMissedPanel;
 import ict4mpower.childHealth.panels.StatusPanel;
 import ict4mpower.childHealth.panels.StatusTakenPanel;
 
+/**
+ * Panel for the immunization schedule
+ * @author Joakim Lindskog
+ *
+ */
 public class ImmunizationSchedulePanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 	
 	private ListView<Vaccination> list;
 	private GiveVaccinationPanel vaccPanel;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public ImmunizationSchedulePanel(String id) {
 		super(id, "title", false);
 		
@@ -54,9 +64,18 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 		add(new ImmunizationForm("form"));
 	}
 	
+	/**
+	 * Form for the immunization schedule panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class ImmunizationForm extends SavingForm {
 		private static final long serialVersionUID = 8603618882539149364L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		@SuppressWarnings("unchecked")
 		public ImmunizationForm(String id) {
 			super(id);
@@ -209,6 +228,11 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 	}
 }
 
+/**
+ * Row panel for the vaccinations table
+ * @author Joakim Lindskog
+ *
+ */
 class VaccinationPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
 	
@@ -227,12 +251,20 @@ class VaccinationPanel extends Panel {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param vaccination model of the vaccination
+	 * @param list the list view of the vaccinations list
+	 * @param form the form to use
+	 * @param vaccPanel the give vaccination panel
+	 */
 	public VaccinationPanel(String id, final IModel<Vaccination> vaccination, final ListView<Vaccination> list,
 			final Form<?> form, final GiveVaccinationPanel vaccPanel) {
 		super(id);
 		
 		// Add vaccination values
-		Label ageLabel = new Label("age", new AgeModel(vaccination, this));
+		Label ageLabel = new Label("age", new AgeModel<Vaccination>(vaccination, this));
 		add(ageLabel);
 		Label vaccineLabel = new Label("vaccine", new PropertyModel<String>(vaccination, "vaccine"));
 		add(vaccineLabel);
@@ -265,8 +297,6 @@ class VaccinationPanel extends Panel {
 						Object[] ageArray;
 						for(Object[] choice : ages) {
 							ageArray = vaccination.getObject().getAccurateAgeArray();
-							if(choice[1] != null) { System.out.println(choice[1]+" : "+(Integer)(int)Math.floor((Float)ageArray[1])); }
-							System.out.println(choice[0]+" : "+ageArray[0]+" ; "+choice[1]+" : "+ageArray[1]);
 							if(((choice[1] == null && ageArray[1] == null) || choice[1] == (Integer)(int)Math.floor((Float)ageArray[1])) && choice[0].equals(ageArray[0])) {
 								ageDef = choice;
 								break;

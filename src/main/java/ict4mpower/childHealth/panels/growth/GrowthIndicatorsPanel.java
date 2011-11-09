@@ -4,6 +4,7 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.GrowthData;
+import ict4mpower.childHealth.panels.AgeModel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.io.Serializable;
@@ -29,12 +30,21 @@ import org.apache.wicket.model.StringResourceModel;
 
 import storage.DataEndPoint;
 
+/**
+ * Panel for growth indicators
+ * @author Joakim Lindskog
+ *
+ */
 public class GrowthIndicatorsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8147585043264253460L;
 	
 	private ListView<Indicator> list;
 	private TodayPanel today;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public GrowthIndicatorsPanel(String id) {
 		super(id, "title", false);
 		
@@ -44,9 +54,18 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 		add(new GrowthIndicatorsForm("form"));
 	}
 	
+	/**
+	 * Form for the growth indicators panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class GrowthIndicatorsForm extends SavingForm {
 		private static final long serialVersionUID = 1858236985096796569L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public GrowthIndicatorsForm(String id) {
 			super(id);
 			
@@ -109,6 +128,11 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 	}
 }
 
+/**
+ * Panel to receive input about today's indicators
+ * @author Joakim Lindskog
+ *
+ */
 class TodayPanel extends DivisionPanel {
 	private static final long serialVersionUID = -5139751028526033215L;
 	
@@ -116,6 +140,12 @@ class TodayPanel extends DivisionPanel {
 	private TextField<Float> lengthField;
 	private TextField<Float> weightField;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param form the form to use
+	 * @param panel parent panel
+	 */
 	public TodayPanel(String id, SavingForm form, DivisionPanel panel) {
 		super(id, "today_title");
 		
@@ -149,14 +179,24 @@ class TodayPanel extends DivisionPanel {
 	}
 }
 
+/**
+ * Row panel for rows in the indicators table
+ * @author Joakim Lindskog
+ *
+ */
 class IndicatorPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param indicator model of indicator
+	 */
 	public IndicatorPanel(String id, IModel<Indicator> indicator) {
 		super(id);
 		
 		// Add child's values
-		add(new Label("age", new AgeModel(indicator, this)));
+		add(new Label("age", new AgeModel<Indicator>(indicator, this)));
 		Label head = new Label("headCircumference", new StringResourceModel("head_cm", this, indicator));
 		//setClass(head, indicator.headCircumference, indicator.getNormalHeadCircumference());
 		add(head);
@@ -178,6 +218,12 @@ class IndicatorPanel extends Panel {
 		add(new Label("bmi_normal", new PropertyModel<Float>(indicator, "normalBmi")));
 	}
 
+//	/**
+//	 * Sets the class of the given label
+//	 * @param label the label to set the class for
+//	 * @param value the value of the indicator
+//	 * @param normal the normal value
+//	 */
 //	private void setClass(Label label, float value, float normal) {
 //		if(value > normal*1.2f
 //				|| value < normal*0.8f) {

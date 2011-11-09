@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels.immunization;
 
+import ict4mpower.childHealth.panels.IDueAge;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,7 +14,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-public class Vaccination implements Serializable, Comparable<Vaccination> {
+/**
+ * A vaccination
+ * @author Joakim Lindskog
+ *
+ */
+public class Vaccination implements Serializable, Comparable<Vaccination>, IDueAge {
 	private static final long serialVersionUID = -4299959951236886609L;
 	
 	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -27,6 +34,16 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 	private int calField = -1;
 	private int calAdd = -1;
 	
+	/**
+	 * Constructor
+	 * @param pi patient info
+	 * @param vaccine vaccine name
+	 * @param calField calendar field for due date (weeks/months etc.)
+	 * @param calAdd amount of calendar field type to add to the due date (e.g. 3 (weeks))
+	 * @param givenDate the date the vaccination was given
+	 * @param dosage the dose of the vaccination
+	 * @param serial_nr the serial number of the vaccination
+	 */
 	public Vaccination(PatientInfo pi, String vaccine, int calField, int calAdd, Date givenDate, String dosage,
 			String serial_nr) {
 		this.patientInfo = pi;
@@ -43,6 +60,12 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 	
 	/**
 	 * Constructor for standard vaccination
+	 * @param vaccine vaccine name
+	 * @param calField calendar field for due date (weeks/months etc.)
+	 * @param calAdd amount of calendar field type to add to the due date (e.g. 3 (weeks))
+	 * @param givenDate the date the vaccination was given
+	 * @param dosage the dose of the vaccination
+	 * @param serial_nr the serial number of the vaccination
 	 */
 	public Vaccination(String vaccine, int calField, int calAdd, Date givenDate, String dosage, String serial_nr) {
 		this.vaccine = vaccine;
@@ -66,16 +89,32 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 		this.givenDate = date;
 	}
 
+	/**
+	 * Gets the due age for these milestone tests
+	 * @param parent the parent component
+	 * @return a String representation of the due age
+	 */
 	public String getDueAge(Component parent) {
 		return getAgeValue(parent).getObject();
 	}
 	
+	/**
+	 * Gets the due age for these milestone tests, as a StringResourceModel
+	 * @param parent the parent component
+	 * @return a StringResourceModel representation of the due age
+	 */
 	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Integer>((int)Math.floor((Float)arr[1]))));
 	}
 	
+	/**
+	 * Returns an array representing the age of the child
+	 * [0] => properties key for the age unit (weeks/months/years)
+	 * [1] => number of units of age (e.g. 3 (weeks))
+	 * @return an array representing the age of the child
+	 */
 	public Object[] getAccurateAgeArray() {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
@@ -132,6 +171,9 @@ public class Vaccination implements Serializable, Comparable<Vaccination> {
 		return vaccine;
 	}
 	
+	/**
+	 * @return the current status of this vaccination (missed/due/taken)
+	 */
 	public String getStatus() {
 		if(givenDate == null) {
 			if(dueDate.before(new Date())) {

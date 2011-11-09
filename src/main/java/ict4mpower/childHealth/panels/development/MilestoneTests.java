@@ -1,5 +1,7 @@
 package ict4mpower.childHealth.panels.development;
 
+import ict4mpower.childHealth.panels.IDueAge;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,7 +14,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-public class MilestoneTests implements Serializable, Cloneable {
+/**
+ * Milestone tests
+ * @author Joakim Lindskog
+ *
+ */
+public class MilestoneTests implements Serializable, Cloneable, IDueAge {
 	private static final long serialVersionUID = 4401388786490151969L;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -37,6 +44,16 @@ public class MilestoneTests implements Serializable, Cloneable {
 	private int calField = -1;
 	private int calAdd = -1;
 	
+	/**
+	 * Constructor
+	 * @param pi patient info
+	 * @param calField what field in the calendar should be used (month/year/week of year etc.)
+	 * @param calAdd how many of the calField type to add to the due date (e.g. 3 (weeks))
+	 * @param grossMotor tests for gross motor skills
+	 * @param fineMotor tests for fine motor skills
+	 * @param communication tests for communication skills
+	 * @param cognitive tests for cognitive abilities
+	 */
 	public MilestoneTests(PatientInfo pi, int calField, int calAdd, String grossMotor, String fineMotor,
 			String communication, String cognitive) {
 		this.patientInfo = pi;
@@ -53,12 +70,12 @@ public class MilestoneTests implements Serializable, Cloneable {
 	
 	/**
 	 * Constructor for standard milestone tests
-	 * @param calField
-	 * @param calAdd
-	 * @param grossMotor
-	 * @param fineMotor
-	 * @param communication
-	 * @param cognitive
+	 * @param calField what field in the calendar should be used (month/year/week of year etc.)
+	 * @param calAdd how many of the calField type to add to the due date (e.g. 3 (weeks))
+	 * @param grossMotor tests for gross motor skills
+	 * @param fineMotor tests for fine motor skills
+	 * @param communication tests for communication skills
+	 * @param cognitive tests for cognitive abilities
 	 */
 	public MilestoneTests(int calField, int calAdd, String grossMotor, String fineMotor,
 			String communication, String cognitive) {
@@ -70,16 +87,32 @@ public class MilestoneTests implements Serializable, Cloneable {
 		this.cognitive = cognitive;
 	}
 
+	/**
+	 * Gets the due age for these milestone tests
+	 * @param parent the parent component
+	 * @return a String representation of the due age
+	 */
 	public String getDueAge(Component parent) {
 		return getAgeValue(parent).getObject();
 	}
 	
+	/**
+	 * Gets the due age for these milestone tests, as a StringResourceModel
+	 * @param parent the parent component
+	 * @return a StringResourceModel representation of the due age
+	 */
 	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Integer>((int)Math.floor((Float)arr[1]))));
 	}
 	
+	/**
+	 * Returns an array representing the age of the child
+	 * [0] => properties key for the age unit (weeks/months/years)
+	 * [1] => number of units of age (e.g. 3 (weeks))
+	 * @return an array representing the age of the child
+	 */
 	public Object[] getAccurateAgeArray() {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
@@ -132,10 +165,14 @@ public class MilestoneTests implements Serializable, Cloneable {
 		}
 	}
 	
+	/**
+	 * Returns the due date as a String
+	 * @return the due date as a String
+	 */
 	public String getDueDateString() {
 		return df.format(this.dueDate);
 	}
-
+	
 	public Date getDueDate() {
 		return dueDate;
 	}
@@ -144,6 +181,9 @@ public class MilestoneTests implements Serializable, Cloneable {
 		this.dueDate = date;
 	}
 	
+	/**
+	 * Resets all choice selections
+	 */
 	public void resetChoices() {
 		this.grossChoice = null;
 		this.fineChoice = null;

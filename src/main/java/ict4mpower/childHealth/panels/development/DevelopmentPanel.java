@@ -35,8 +35,14 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.DevelopmentData;
 import ict4mpower.childHealth.data.FollowUpData;
+import ict4mpower.childHealth.panels.AgeModel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for showing the development of the child in milestones
+ * @author Joakim Lindskog
+ *
+ */
 public class DevelopmentPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 	
@@ -46,6 +52,10 @@ public class DevelopmentPanel extends DivisionPanel {
 	
 	private List<MilestoneTests> tests = new ArrayList<MilestoneTests>();
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	@SuppressWarnings("unchecked")
 	public DevelopmentPanel(String id) {
 		super(id, "title", false);
@@ -68,9 +78,18 @@ public class DevelopmentPanel extends DivisionPanel {
 		add(form);
 	}
 	
+	/**
+	 * Form for development panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class DevelopmentForm extends SavingForm {
 		private static final long serialVersionUID = 54717230506400089L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public DevelopmentForm(String id) {
 			super(id);
 			
@@ -164,9 +183,20 @@ public class DevelopmentPanel extends DivisionPanel {
 	}
 }
 
+/**
+ * Panel to show a completed milestone
+ * @author Joakim Lindskog
+ *
+ */
 class MilestonePanel extends Panel {
 	private static final long serialVersionUID = 3885944576231374282L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param milestone model of milestone
+	 * @param parent parent component
+	 */
 	public MilestonePanel(String id, IModel<Milestone> milestone, Component parent) {
 		super(id);
 		
@@ -202,6 +232,11 @@ class MilestonePanel extends Panel {
 		add(eyeRightLabel);
 	}
 	
+	/**
+	 * Sets the class of the label
+	 * @param label the label to set the class for
+	 * @param value the value to use when determining the class to use
+	 */
 	private void setClass(Label label, short value) {
 		switch(value) {
 			case 2:
@@ -217,11 +252,24 @@ class MilestonePanel extends Panel {
 	}
 }
 
+/**
+ * Panel for entering a new milestone
+ * @author Joakim Lindskog
+ *
+ */
 class NextMilestonePanel extends DivisionPanel {
 	private static final long serialVersionUID = 2726451125512509536L;
 	
 	private static List<String> development;
 	
+	/**
+	 * Convert model value to a number
+	 * "Well developed" = 0
+	 * "Stays behind" = 1
+	 * "Not developed" = 2
+	 * @param model the model value
+	 * @return a short value representing the model value
+	 */
 	public static short convert(String model) {
 		int len = development.size();
 		for(int i=0; i<len; i++) {
@@ -243,6 +291,13 @@ class NextMilestonePanel extends DivisionPanel {
 	private NextMilestoneChoice eyesightLeft;
 	private NextMilestoneChoice eyesightRight;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param form form
+	 * @param panel parent panel
+	 * @param tests milestone tests to use
+	 */
 	public NextMilestonePanel(String id, SavingForm form, DivisionPanel panel, MilestoneTests tests) {
 		super(id, "nextMilestone");
 		
@@ -259,7 +314,8 @@ class NextMilestonePanel extends DivisionPanel {
 		
 		setForm(form, panel);
 		
-		Label ageLabel = new Label("age", new AgeModel(new Model<MilestoneTests>(this.tests), panel));
+		Label ageLabel = new Label("age", new AgeModel<MilestoneTests>(
+				new Model<MilestoneTests>(this.tests), panel));
 		ageLabel.setOutputMarkupId(true);
 		add(ageLabel);
 		// Add link to follow-up
@@ -358,6 +414,11 @@ class NextMilestonePanel extends DivisionPanel {
 		return this.tests;
 	}
 	
+	/**
+	 * A DropDownChoice which updates its model on selection change
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class NextMilestoneChoice extends DropDownChoice<String> {
 		private static final long serialVersionUID = 2632359447755639947L;
 

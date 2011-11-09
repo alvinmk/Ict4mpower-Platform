@@ -1,5 +1,6 @@
 package ict4mpower.childHealth.panels.medications;
 
+import ict4mpower.childHealth.panels.AgeModel;
 import ict4mpower.childHealth.panels.StatusDuePanel;
 import ict4mpower.childHealth.panels.StatusMissedPanel;
 import ict4mpower.childHealth.panels.StatusPanel;
@@ -45,7 +46,7 @@ public class MedicationsPanel extends Panel {
 		super(id);
 		
 		// Add supplement values
-		Label ageLabel = new Label("age", new AgeModel(medicine, this));
+		Label ageLabel = new Label("age", new AgeModel<Medicine>(medicine, this));
 		add(ageLabel);
 		Label drugLabel = new Label("name", new PropertyModel<String>(medicine, "name"));
 		add(drugLabel);
