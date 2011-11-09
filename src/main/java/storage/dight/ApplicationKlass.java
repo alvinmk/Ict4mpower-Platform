@@ -14,9 +14,10 @@ public class ApplicationKlass extends KlassContainer{
 		this.type = e.makeStringAttribute("type");
 		byte[] b = new byte[20];
 		EntryId eid = e.makeEntryId(b);
+		klass = e.createKlass(1L, eid, "ApplicationRecord");
+		
 		klass.addAttribute(application);
-		klass = e.createKlass(1L, eid, "MedicalRecord");
-		klass.addAttribute(type);
+		klass.addAttribute(this.type);
 		
 		//Should be called last
 		klass.commit(EAA);
