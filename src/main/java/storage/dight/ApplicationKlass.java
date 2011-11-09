@@ -21,5 +21,4 @@ public class ApplicationKlass extends KlassContainer{
 		//Should be called last
 		klass.commit(EAA);
 	}	
-
 }

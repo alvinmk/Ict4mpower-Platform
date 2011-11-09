@@ -16,9 +16,9 @@ public class MeasurementKlass extends KlassContainer{
 		super(e);
 		this.measurement = e.makeStringAttribute("measurment");
 		this.unit = e.makeStringAttribute("unit");
-		this.value = e.makeSmallintAttribute("value");
+		this.value = e.makeDoubleAttribute("value");
 		this.date = e.makeDateAttribute("date");
-		this.patientId = e.makeSmallintAttribute("patientId");
+		this.patientId = e.makeStringAttribute("patientId");
 		byte[] b = new byte[20];
 		EntryId eid = e.makeEntryId(b);
 		klass = e.createKlass(1L, eid, "MedicalRecord");

@@ -44,13 +44,22 @@ public abstract class BaseRecord {
 	/*
 	 *  Makes an query from attributes and values
 	 */
-	protected Set<Object> attributesQuery(Set<HashMap> a){
+	protected Set<Object> attributesQueryToObject(Set<HashMap> a){
+		Set<Entry> x = attributesQuery(a);
+		return getObjectsFromEntrySet(x);
+	}
+	
+	protected Set<Objekt> attributesQueryToObjekt(Set<HashMap> a){
+		Set<Entry> x = attributesQuery(a);
+		return getObjektsFromEntrySet(x);
+	}
+	
+	private Set<Entry> attributesQuery(Set<HashMap> a){
 		AttributeQuery aq = null;
 		for(HashMap<String, Object> map : a){
 			aq = e.createAttributeQuery(record, true);
 			aq.setValue((Attribute) map.get("attribute"), (ValueTemplate)map.get("value"));
-		}
-		
+		}		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send query to server
 		QueryResult qr = null;
@@ -63,7 +72,19 @@ public abstract class BaseRecord {
 		AttributeQueryResult indexQResult;
 		indexQResult = (AttributeQueryResult) qr;
 		Set<Entry> x = indexQResult.getResult();
-		return getObjectsFromEntrySet(x);
+		return x;		
+	}
+	
+	private Set<Objekt> getObjektsFromEntrySet(Set<Entry> s){
+		Set<Objekt> ret = null;
+		for(Entry currentEntry: s){
+			ret.add(getObjektFromEntry(currentEntry));
+		}
+		return ret;
+	}
+	
+	private Objekt getObjektFromEntry(Entry entry){
+		return (Objekt) entry;
 	}
 	
 	/*
@@ -76,6 +97,7 @@ public abstract class BaseRecord {
 		}
 		return ret;
 	}
+		
 	
 	/*
 	 * Takes an entry and extracts the objekt and then get the payload

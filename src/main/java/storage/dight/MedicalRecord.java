@@ -62,7 +62,7 @@ public class MedicalRecord extends BaseRecord{
 		h.put("attribute", klassContainer.visitId);
 		h.put("value", visitId);
 		s.add(h);		
-		return attributesQuery(s);
+		return attributesQueryToObject(s);
 	}
 	
 	public Set<Object> getObjectsFromVisitId(long visitId, String patientId){
@@ -76,7 +76,7 @@ public class MedicalRecord extends BaseRecord{
 		h.put("attribute", klassContainer.patientId);
 		h.put("value", VpatientId);
 		s.add(h);
-		return attributesQuery(s);
+		return attributesQueryToObject(s);
 	}
 	
 	public Set<Object> getObjectsFromPatientId(String patientId){
@@ -86,7 +86,7 @@ public class MedicalRecord extends BaseRecord{
 		h.put("attribute", klassContainer.patientId);
 		h.put("value", VPatientId);
 		s.add(h);		
-		return attributesQuery(s);
+		return attributesQueryToObject(s);
 	}
 	
 	public Set<Object> getObjectsFromDateRange(String patientId, Date low, Date high){
@@ -99,6 +99,6 @@ public class MedicalRecord extends BaseRecord{
 		h.put("attribute", klassContainer.visitId);
 		h.put("value", visitVal);
 		s.add(h);
-		return attributesQuery(s);
+		return attributesQueryToObject(s);
 	}
 }

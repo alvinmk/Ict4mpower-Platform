@@ -6,13 +6,16 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.WicketTester;
+
+import storage.MeasurementRecordSocket;
 import storage.MedicalRecordSocket;
 
 public class Storage extends TestCase{
-	MedicalRecordSocket MRSocket = new MedicalRecordSocket();
+	
 		
 	
-	public void testStoreAndRetrive(){
+	public void testMedicalRecords(){
+		MedicalRecordSocket MRSocket = new MedicalRecordSocket();
 		MockPatient m1 = new MockPatient();
 		MockPatient m2 = new MockPatient();
 		MockPatient m3 = new MockPatient();
@@ -29,6 +32,24 @@ public class Storage extends TestCase{
 		s = MRSocket.getEntriesFromPatientId("112");
 		assertTrue(s.contains(m3.pi));
 		assertTrue(s.size()==1);		
+	}
+	
+	public void testMeasurmentRecords(){
+		MeasurementRecordSocket mSocket = new MeasurementRecordSocket();
+		MockPatient m1 = new MockPatient();
+		MockPatient m2 = new MockPatient();
+		MockPatient m3 = new MockPatient();
+		mSocket.SignEntry("test", "m", 10.0, "111");
+		mSocket.SignEntry("test", "m", 11.5, "111");
+		mSocket.SignEntry("Water", "m", 12.0, "111");
+		mSocket.SignEntry("Water", "l", 100.0, "112");
+		
+		mSocket.getMesurmentByType("test", "111");
+		mSocket.getMesurmentByType("Water", "111");
+		mSocket.getMesurmentByType("Water", "112");
+		
+		
+		
 	}
 
 }

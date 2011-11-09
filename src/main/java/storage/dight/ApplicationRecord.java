@@ -46,7 +46,7 @@ public class ApplicationRecord extends BaseRecord{
 		h.put("value", type);
 		s.add(h);
 		
-		return attributesQuery(s);
+		return attributesQueryToObject(s);
 		
 	}
 
