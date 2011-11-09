@@ -1,4 +1,4 @@
-package ict4mpower.childHealth.panels.immunization;
+package ict4mpower.childHealth.panels;
 
 import ict4mpower.childHealth.Callback;
 
@@ -21,15 +21,24 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-public class ImmunizationDialog extends ModalWindow {
+/**
+ * A dialog for receiving new age and text values
+ * @author Joakim Lindskog
+ *
+ */
+public class AgeTextDialog extends ModalWindow {
 	private static final long serialVersionUID = -2412496739475497485L;
 	
-	private ImmunizationDialogPanel panel;
+	private AgeTextDialogPanel panel;
 
-	public ImmunizationDialog(String id) {
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
+	public AgeTextDialog(String id) {
 		super(id);
 		
-		this.panel = new ImmunizationDialogPanel(getContentId(), this);
+		this.panel = new AgeTextDialogPanel(getContentId(), this);
 		setContent(this.panel);
 		
 		setResizable(false);
@@ -37,30 +46,56 @@ public class ImmunizationDialog extends ModalWindow {
 		setHeightUnit("em");
 	}
 
+	/**
+	 * Show error message
+	 * @param target AjaxRequestTarget
+	 * @param key properties key
+	 */
 	public void error(AjaxRequestTarget target, String key) {
 		panel.error(target, key);
 	}
 
+	/**
+	 * Gets the selected calendar field String
+	 * @return the selected calendar field String
+	 */
 	public String getCalendarType() {
 		return panel.getCalendarType();
 	}
 
+	/**
+	 * Shows the calendar field dropdown
+	 */
 	public void showCalTypes() {
 		panel.showCalTypes();
 	}
 	
+	/**
+	 * Hides the calendar field dropdown
+	 */
 	public void hideCalTypes() {
 		panel.hideCalTypes();
 	}
 
+	/**
+	 * Sets the label text
+	 * @param string label text
+	 */
 	public void setLabel(String string) {
 		panel.setLabel(string);
 	}
 
+	/**
+	 * @return the entered text
+	 */
 	public String getText() {
 		return panel.getText();
 	}
 	
+	/**
+	 * Adds a callback on a click on the confirm button
+	 * @param callback a callback
+	 */
 	public void addOnSubmit(Callback callback) {
 		panel.addOnSubmit(callback);
 	}
@@ -72,7 +107,12 @@ public class ImmunizationDialog extends ModalWindow {
 	}
 }
 
-class ImmunizationDialogPanel extends Panel {
+/**
+ * Panel for the age text dialog
+ * @author Joakim Lindskog
+ *
+ */
+class AgeTextDialogPanel extends Panel {
 	private static final long serialVersionUID = -8179931789513768591L;
 	
 	private Label label;
@@ -81,9 +121,14 @@ class ImmunizationDialogPanel extends Panel {
 	private Map<String, String> calMap = new HashMap<String, String>();
 	private Button confirmButton;
 	private List<Callback> callbacks = new ArrayList<Callback>();
-	private ImmunizationDialogPanelForm form;
+	private AgeTextDialogPanelForm form;
 
-	public ImmunizationDialogPanel(String id, ModalWindow dialog) {
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param dialog parent window
+	 */
+	public AgeTextDialogPanel(String id, ModalWindow dialog) {
 		super(id);
 		
 		calMap.put("age.weeks", "weeks");
@@ -93,10 +138,15 @@ class ImmunizationDialogPanel extends Panel {
 		dialog.setInitialWidth(25);
 		dialog.setInitialHeight(7);
 		
-		this.form = new ImmunizationDialogPanelForm("form");
+		this.form = new AgeTextDialogPanelForm("form");
 		add(this.form);
 	}
 	
+	/**
+	 * Show error message
+	 * @param target AjaxRequestTarget
+	 * @param key properties key
+	 */
 	public void error(AjaxRequestTarget target, String key) {
 		setLabel(getString(key));
 		target.add(label);
@@ -104,19 +154,34 @@ class ImmunizationDialogPanel extends Panel {
 		target.focusComponent(dialogText);
 	}
 
+	/**
+	 * Sets the label text
+	 * @param string label text
+	 */
 	public void setLabel(String string) {
 		this.form.setLabel(string);
 		this.label.modelChanged();
 	}
 
+	/**
+	 * @return the entered text
+	 */
 	public String getText() {
 		return dialogText.getConvertedInput();
 	}
 	
+	/**
+	 * Gets the selected calendar field String
+	 * @return the selected calendar field String
+	 */
 	public String getCalendarType() {
 		return calMap.get(calType.getConvertedInput());
 	}
 	
+	/**
+	 * Adds a callback on a click on the confirm button
+	 * @param callback a callback
+	 */
 	public void addOnSubmit(Callback callback) {
 		callbacks.add(callback);
 	}
@@ -125,15 +190,26 @@ class ImmunizationDialogPanel extends Panel {
 		target.focusComponent(dialogText);
 	}
 	
+	/**
+	 * Shows the calendar field dropdown
+	 */
 	public void showCalTypes() {
 		calType.setVisible(true);
 	}
 	
+	/**
+	 * Hides the calendar field dropdown
+	 */
 	public void hideCalTypes() {
 		calType.setVisible(false);
 	}
 
-	class ImmunizationDialogPanelForm extends Form<Model<?>> {
+	/**
+	 * Form for the age text dialog panel
+	 * @author Joakim Lindskog
+	 *
+	 */
+	class AgeTextDialogPanelForm extends Form<Model<?>> {
 		private static final long serialVersionUID = 1L;
 		
 		@SuppressWarnings("unused")
@@ -149,7 +225,11 @@ class ImmunizationDialogPanel extends Panel {
 		@SuppressWarnings("unused")
 		private String labelText;
 
-		public ImmunizationDialogPanelForm(String id) {
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
+		public AgeTextDialogPanelForm(String id) {
 			super(id);
 			
 			label = new Label("label_text", new PropertyModel<String>(this, "labelText"));
