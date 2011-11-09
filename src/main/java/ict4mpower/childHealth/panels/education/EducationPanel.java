@@ -3,6 +3,7 @@ package ict4mpower.childHealth.panels.education;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import ict4mpower.childHealth.data.CheckableOption;
 import ict4mpower.childHealth.data.EducationData;
@@ -12,36 +13,28 @@ import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
 import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
+import storage.ApplicationSocketTemp;
+
 public class EducationPanel extends Panel {
 	private static final long serialVersionUID = -1172218871548889654L;
 
 	public EducationPanel(String id) {
 		super(id);
 		
-		// TODO Temporary - get from database
+		// Get checkable options from database
 		EducationData data = EducationData.instance();
+		Set<Object> set = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "EducationOptions");
+		CheckableOption[][][] options = null;
+		for(Object o : set) {
+			// Get only first object - there should be only one
+			options = (CheckableOption[][][]) o;
+		}
 		// Feeding
 		List<List<CheckableOption>> feedingOptions = new ArrayList<List<CheckableOption>>();
-		feedingOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("f1_option1"),
-				new CheckableOption("f1_option2"),
-				new CheckableOption("f1_option3")
-		}));
-		feedingOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("f2_option1"),
-				new CheckableOption("f2_option2"),
-				new CheckableOption("f2_option3")
-		}));
-		feedingOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("f3_option1"),
-				new CheckableOption("f3_option2"),
-				new CheckableOption("f3_option3")
-		}));
-		feedingOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("f4_option1"),
-				new CheckableOption("f4_option2"),
-				new CheckableOption("f4_option3")
-		}));
+		feedingOptions.add(Arrays.asList(options[0][0]));
+		feedingOptions.add(Arrays.asList(options[0][1]));
+		feedingOptions.add(Arrays.asList(options[0][2]));
+		feedingOptions.add(Arrays.asList(options[0][3]));
 		for(int i=0; i<4; i++) {
 			if(data.getFeedingOptions().size() <= i || data.getFeedingOptions().get(i) == null) {
 				data.setFeedingHeader(i, "feeding"+(i+1));
@@ -51,26 +44,10 @@ public class EducationPanel extends Panel {
 		}
 		// Oral medications
 		List<List<CheckableOption>> oralOptions = new ArrayList<List<CheckableOption>>();
-		oralOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("o1_option1"),
-				new CheckableOption("o1_option2"),
-				new CheckableOption("o1_option3")
-		}));
-		oralOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("o2_option1"),
-				new CheckableOption("o2_option2"),
-				new CheckableOption("o2_option3")
-		}));
-		oralOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("o3_option1"),
-				new CheckableOption("o3_option2"),
-				new CheckableOption("o3_option3")
-		}));
-		oralOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("o4_option1"),
-				new CheckableOption("o4_option2"),
-				new CheckableOption("o4_option3")
-		}));
+		oralOptions.add(Arrays.asList(options[1][0]));
+		oralOptions.add(Arrays.asList(options[1][1]));
+		oralOptions.add(Arrays.asList(options[1][2]));
+		oralOptions.add(Arrays.asList(options[1][3]));
 		for(int i=0; i<4; i++) {
 			if(data.getOralOptions().size() <= i || data.getOralOptions().get(i) == null) {
 				data.setOralHeader(i, "oral"+(i+1));
@@ -80,26 +57,10 @@ public class EducationPanel extends Panel {
 		}
 		// Infections
 		List<List<CheckableOption>> infectionsOptions = new ArrayList<List<CheckableOption>>();
-		infectionsOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("i1_option1"),
-				new CheckableOption("i1_option2"),
-				new CheckableOption("i1_option3")
-		}));
-		infectionsOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("i2_option1"),
-				new CheckableOption("i2_option2"),
-				new CheckableOption("i2_option3")
-		}));
-		infectionsOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("i3_option1"),
-				new CheckableOption("i3_option2"),
-				new CheckableOption("i3_option3")
-		}));
-		infectionsOptions.add(Arrays.asList(new CheckableOption[] {
-				new CheckableOption("i4_option1"),
-				new CheckableOption("i4_option2"),
-				new CheckableOption("i4_option3")
-		}));
+		infectionsOptions.add(Arrays.asList(options[2][0]));
+		infectionsOptions.add(Arrays.asList(options[2][1]));
+		infectionsOptions.add(Arrays.asList(options[2][2]));
+		infectionsOptions.add(Arrays.asList(options[2][3]));
 		for(int i=0; i<4; i++) {
 			if(data.getInfectionsOptions().size() <= i || data.getInfectionsOptions().get(i) == null) {
 				data.setInfectionsHeader(i, "infections"+(i+1));

@@ -1,5 +1,6 @@
 package ict4mpower.childHealth;
 
+import ict4mpower.childHealth.data.CheckableOption;
 import ict4mpower.childHealth.panels.development.MilestoneTests;
 import ict4mpower.childHealth.panels.immunization.Vaccination;
 import ict4mpower.childHealth.panels.medications.Medicine;
@@ -216,6 +217,79 @@ public class SetupData {
 						null)
 		);
 		store.storeData(app, "MilestoneTests", tests);
+		
+		// Education - checkable options that can be shown in the visit summary
+		// Note: Make sure to have the text for the properties listed here
+		// (f1_option1 etc.) in the DivisionPanel.properties file
+		CheckableOption[][][] options = new CheckableOption[][][]{
+			new CheckableOption[][]{ // Feeding
+					new CheckableOption[] {
+							new CheckableOption("f1_option1"),
+							new CheckableOption("f1_option2"),
+							new CheckableOption("f1_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("f2_option1"),
+							new CheckableOption("f2_option2"),
+							new CheckableOption("f2_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("f3_option1"),
+							new CheckableOption("f3_option2"),
+							new CheckableOption("f3_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("f4_option1"),
+							new CheckableOption("f4_option2"),
+							new CheckableOption("f4_option3")
+					}
+			},
+			new CheckableOption[][]{ // Oral medications
+					new CheckableOption[] {
+							new CheckableOption("o1_option1"),
+							new CheckableOption("o1_option2"),
+							new CheckableOption("o1_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("o2_option1"),
+							new CheckableOption("o2_option2"),
+							new CheckableOption("o2_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("o3_option1"),
+							new CheckableOption("o3_option2"),
+							new CheckableOption("o3_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("o4_option1"),
+							new CheckableOption("o4_option2"),
+							new CheckableOption("o4_option3")
+					}
+			},
+			new CheckableOption[][]{ // Local infections
+					new CheckableOption[] {
+							new CheckableOption("i1_option1"),
+							new CheckableOption("i1_option2"),
+							new CheckableOption("i1_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("i2_option1"),
+							new CheckableOption("i2_option2"),
+							new CheckableOption("i2_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("i3_option1"),
+							new CheckableOption("i3_option2"),
+							new CheckableOption("i3_option3")
+					},
+					new CheckableOption[] {
+							new CheckableOption("i4_option1"),
+							new CheckableOption("i4_option2"),
+							new CheckableOption("i4_option3")
+					}
+			}
+		};
+		store.storeData(app, "EducationOptions", options);
 		
 		// Save
 		store.save();
