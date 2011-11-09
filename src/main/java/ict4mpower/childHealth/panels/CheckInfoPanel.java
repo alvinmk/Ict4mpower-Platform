@@ -11,9 +11,19 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
+/**
+ * A panel for the StatusPraesens task with a checkbox and a toggling input field
+ * @author Joakim Lindskog
+ *
+ */
 public class CheckInfoPanel extends Panel {
 	private static final long serialVersionUID = 827830474865500102L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param model model
+	 */
 	public CheckInfoPanel(String id, IModel<CheckInfoData> model) {
 		super(id);
 		
@@ -32,7 +42,6 @@ public class CheckInfoPanel extends Panel {
 				}
 				else {
 					input.setVisible(true);
-					//target.appendJavaScript("document.getElementById('" + input.getMarkupId() + "').focus();");
 					target.focusComponent(input);
 				}
 				target.add(input);

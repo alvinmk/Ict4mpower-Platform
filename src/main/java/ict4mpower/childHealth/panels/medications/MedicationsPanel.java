@@ -23,6 +23,11 @@ import org.odlabs.wiquery.core.effects.EffectBehavior;
 import org.odlabs.wiquery.ui.effects.EffectsHelper;
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
+/**
+ * A row panel for the medications tables
+ * @author Joakim Lindskog
+ *
+ */
 public class MedicationsPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
 	
@@ -41,11 +46,19 @@ public class MedicationsPanel extends Panel {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param medicine model of medicine
+	 * @param list list view of medicines
+	 * @param form form to use
+	 * @param medPanel the give medications panel
+	 */
 	public MedicationsPanel(String id, final IModel<Medicine> medicine, final ListView<Medicine> list,
 			final Form<?> form, final GiveMedicationPanel medPanel) {
 		super(id);
 		
-		// Add supplement values
+		// Add medicine values
 		Label ageLabel = new Label("age", new AgeModel<Medicine>(medicine, this));
 		add(ageLabel);
 		Label drugLabel = new Label("name", new PropertyModel<String>(medicine, "name"));

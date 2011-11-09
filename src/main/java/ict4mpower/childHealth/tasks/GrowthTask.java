@@ -5,9 +5,18 @@ import ict4mpower.childHealth.panels.growth.GrowthIndicatorsPanel;
 import ict4mpower.childHealth.panels.growth.PMTCTRecordPanel;
 import tasks.Task;
 
+/**
+ * Growth task
+ * @author Joakim Lindskog
+ *
+ */
 public class GrowthTask extends Task {
 	private static final long serialVersionUID = 2326422988561164400L;
 
+	/**
+	 * Constructor
+	 * @param name the name of the task
+	 */
 	public GrowthTask(String name) {
 		super(name);
 		

@@ -8,6 +8,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Data class for the Medications task
+ * @author Joakim Lindskog
+ *
+ */
 public class MedicationsData implements ChildHealthData {
 	private static final long serialVersionUID = 4239968609396691757L;
 	
@@ -32,7 +37,7 @@ public class MedicationsData implements ChildHealthData {
 	// Other medication
 	private List<Medicine> otherMeds;
 	
-	// Creation date
+	/** Date of last edit */
 	private Date date;
 	
 	private MedicationsData() {}
@@ -85,6 +90,11 @@ public class MedicationsData implements ChildHealthData {
 		return getFromToday(otherMeds);
 	}
 	
+	/**
+	 * Gets a list of medicines from today
+	 * @param meds the list of medicines to search
+	 * @return a list of medicines from today or null if the supplied list is null
+	 */
 	private List<Medicine> getFromToday(List<Medicine> meds) {
 		if(meds == null) return null;
 		List<Medicine> list = new ArrayList<Medicine>();

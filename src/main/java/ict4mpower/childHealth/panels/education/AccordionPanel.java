@@ -19,9 +19,22 @@ import ict4mpower.childHealth.data.EducationInfoData;
 import ict4mpower.childHealth.panels.CheckableOptionPanel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * A panel to display the education info in an accordion
+ * @author Joakim Lindskog
+ *
+ */
 public class AccordionPanel extends DivisionPanel {
 	private static final long serialVersionUID = 8587720392401248160L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param titleId the property key of the title
+	 * @param acc the accordion
+	 * @param propertyName the property key to use for the contents of the list view
+	 * and as the component id of the saved list view
+	 */
 	public AccordionPanel(String id, String titleId, Accordion acc, String propertyName) {
 		super(id, titleId);
 		
@@ -31,9 +44,20 @@ public class AccordionPanel extends DivisionPanel {
 		acc.add(new AccordionForm("form", propertyName));
 	}
 	
+	/**
+	 * The form for accordion panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class AccordionForm extends SavingForm {
 		private static final long serialVersionUID = -4524436307145960370L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 * @param propertyName the property key to use for the contents of the list view
+		 * and as the component id of the saved list view
+		 */
 		public AccordionForm(String id, String propertyName) {
 			super(id);
 			
@@ -56,9 +80,20 @@ public class AccordionPanel extends DivisionPanel {
 	}
 }
 
+/**
+ * A panel for the contents of the accordion
+ * @author Joakim Lindskog
+ *
+ */
 class AccordionContentsPanel extends Panel {
 	private static final long serialVersionUID = 2026992424299296925L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param model model
+	 * @param parent parent component
+	 */
 	public AccordionContentsPanel(String id, IModel<EducationInfoData> model, Component parent) {
 		super(id);
 		// Add heading

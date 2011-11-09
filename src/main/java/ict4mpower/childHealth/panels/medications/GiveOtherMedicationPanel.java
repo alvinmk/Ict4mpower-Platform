@@ -7,6 +7,12 @@ import ict4mpower.childHealth.panels.DivisionPanel;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
+/**
+ * Panel for specifying the giving of general medicines
+ * (not vitamin A, de-worming or anti-malarial)
+ * @author Joakim Lindskog
+ *
+ */
 class GiveOtherMedicationPanel extends DivisionPanel {
 	private static final long serialVersionUID = 6954282130177169208L;
 	
@@ -16,6 +22,12 @@ class GiveOtherMedicationPanel extends DivisionPanel {
 	private TextField<String> reason;
 	private TextField<String> instructions;
 	
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param form the form to use
+	 * @param panel the parent panel
+	 */
 	public GiveOtherMedicationPanel(String id, SavingForm form, DivisionPanel panel) {
 		super(id, "medication_admin");
 		

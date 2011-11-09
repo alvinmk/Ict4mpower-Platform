@@ -7,11 +7,21 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
+/**
+ * Row panel for the other medications table
+ * @author Joakim Lindskog
+ *
+ */
 public class OtherMedicationsRowPanel extends Panel {
 	private static final long serialVersionUID = 3885944574671683382L;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param medicine the medicine
+	 */
 	public OtherMedicationsRowPanel(String id, Medicine medicine) {
 		super(id);
 		

@@ -3,6 +3,7 @@ package ict4mpower.childHealth.panels.immunization;
 import ict4mpower.childHealth.Callback;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
+import ict4mpower.childHealth.panels.AgeTextDialog;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
 import java.util.ArrayList;
@@ -19,6 +20,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
+/**
+ * Panel for specifying the giving a new/scheduled vaccination
+ * @author Joakim Lindskog
+ *
+ */
 public class GiveVaccinationPanel extends DivisionPanel {
 	private static final long serialVersionUID = 6954282130177169208L;
 	
@@ -30,7 +36,7 @@ public class GiveVaccinationPanel extends DivisionPanel {
 	private DropDownChoice<String> vaccineChoice;
 	private DropDownChoice<String> dosageChoice;
 	private TextField<String> serialNr;
-	private ImmunizationDialog dialog;
+	private AgeTextDialog dialog;
 	
 	@SuppressWarnings("unused")
 	private String vaccineChosen;
@@ -39,6 +45,12 @@ public class GiveVaccinationPanel extends DivisionPanel {
 	@SuppressWarnings("unused")
 	private Object[] ageChosen;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param form form to use
+	 * @param panel parent panel
+	 */
 	public GiveVaccinationPanel(String id, SavingForm form, DivisionPanel panel) {
 		super(id, "vaccine_admin");
 		
@@ -260,7 +272,7 @@ public class GiveVaccinationPanel extends DivisionPanel {
 		add(this.serialNr);
 		
 		// Dialog
-		this.dialog = new ImmunizationDialog("dialog");
+		this.dialog = new AgeTextDialog("dialog");
 		
 		add(this.dialog);
 	}

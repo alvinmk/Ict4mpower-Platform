@@ -7,9 +7,18 @@ import ict4mpower.childHealth.panels.medications.VitaminASupplementationPanel;
 
 import tasks.Task;
 
+/**
+ * Medications task
+ * @author Joakim Lindskog
+ *
+ */
 public class MedicationsTask extends Task {
 	private static final long serialVersionUID = 7860744301857688767L;
 
+	/**
+	 * Constructor
+	 * @param name the name of the task
+	 */
 	public MedicationsTask(String name) {
 		super(name);
 		

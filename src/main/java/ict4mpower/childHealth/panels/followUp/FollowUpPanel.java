@@ -15,12 +15,21 @@ import ict4mpower.childHealth.ValidationClassBehavior;
 import ict4mpower.childHealth.data.FollowUpData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for the follow-up task
+ * @author Joakim Lindskog
+ *
+ */
 public class FollowUpPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 	
 	private DateTimeField date;
 	private TextArea<String> message;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public FollowUpPanel(String id) {
 		super(id, "title");
 		
@@ -30,9 +39,18 @@ public class FollowUpPanel extends DivisionPanel {
 		setForm(form, this);
 	}
 	
+	/**
+	 * Form for the follow-up panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class FollowUpForm extends SavingForm {
 		private static final long serialVersionUID = -2039157252043048544L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public FollowUpForm(String id) {
 			super(id);
 			

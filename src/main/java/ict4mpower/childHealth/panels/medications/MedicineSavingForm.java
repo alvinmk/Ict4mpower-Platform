@@ -15,12 +15,21 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.MedicationsData;
 
+/**
+ * Basic form for the medications task
+ * @author Joakim Lindskog
+ *
+ */
 public class MedicineSavingForm extends SavingForm {
 	private static final long serialVersionUID = -73635838347441944L;
 
 	protected ListView<Medicine> list;
 	protected GiveMedicationPanel medPanel;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public MedicineSavingForm(String id) {
 		super(id);
 	}

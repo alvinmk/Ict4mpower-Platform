@@ -14,6 +14,11 @@ import ict4mpower.childHealth.data.StatusPraesensData;
 import ict4mpower.childHealth.panels.CheckInfoPanel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for check-up
+ * @author Joakim Lindskog
+ *
+ */
 public class CheckUpPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 	
@@ -42,6 +47,10 @@ public class CheckUpPanel extends DivisionPanel {
 	
 	private ListView<CheckInfoData> list;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public CheckUpPanel(String id) {
 		super(id, "title");
 		
@@ -51,9 +60,18 @@ public class CheckUpPanel extends DivisionPanel {
 		setForm(form, this);
 	}
 	
+	/**
+	 * Form for check-up panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class CheckUpForm extends SavingForm {
 		private static final long serialVersionUID = 6330056812131097169L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public CheckUpForm(String id) {
 			super(id);
 			

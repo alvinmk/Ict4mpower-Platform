@@ -25,6 +25,11 @@ import org.apache.wicket.model.StringResourceModel;
 
 import storage.DataEndPoint;
 
+/**
+ * Panel for feeding information
+ * @author Joakim Lindskog
+ *
+ */
 public class FeedingPanel extends DivisionPanel {
 	private static final long serialVersionUID = 4179450386998797319L;
 	
@@ -36,6 +41,10 @@ public class FeedingPanel extends DivisionPanel {
 			"mixed",
 			"other"}));
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public FeedingPanel(String id) {
 		super(id, "title");
 		
@@ -45,9 +54,18 @@ public class FeedingPanel extends DivisionPanel {
 		setForm(form, this);
 	}
 	
+	/**
+	 * Form for the feeding panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class FeedingForm extends SavingForm {
 		private static final long serialVersionUID = 7663790124524711200L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public FeedingForm(String id) {
 			super(id);
 			

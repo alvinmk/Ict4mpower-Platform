@@ -22,6 +22,11 @@ import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 import storage.DataEndPoint;
 
+/**
+ * Panel for the PMTCT record of the child
+ * @author Joakim Lindskog
+ *
+ */
 public class PMTCTRecordPanel extends DivisionPanel {
 	private static final long serialVersionUID = 3074630914459300687L;
 	
@@ -33,6 +38,10 @@ public class PMTCTRecordPanel extends DivisionPanel {
 			"trrdm",
 			"trrdmdb"});
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public PMTCTRecordPanel(String id) {
 		super(id, "title");
 		
@@ -42,9 +51,18 @@ public class PMTCTRecordPanel extends DivisionPanel {
 		setForm(form, this);
 	}
 	
+	/**
+	 * Form for the PMTCT record panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class PMTCTRecordForm extends SavingForm {
 		private static final long serialVersionUID = -2897098367783146028L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public PMTCTRecordForm(String id) {
 			super(id);
 			

@@ -14,6 +14,11 @@ import ict4mpower.childHealth.data.StatusPraesensData;
 import ict4mpower.childHealth.panels.CheckInfoPanel;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for recent health problems
+ * @author Joakim Lindskog
+ *
+ */
 public class RecentHealthProblemsPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 	
@@ -33,6 +38,10 @@ public class RecentHealthProblemsPanel extends DivisionPanel {
 	
 	private ListView<CheckInfoData> list;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public RecentHealthProblemsPanel(String id) {
 		super(id, "title");
 
@@ -42,9 +51,18 @@ public class RecentHealthProblemsPanel extends DivisionPanel {
 		setForm(form, this);
 	}
 	
+	/**
+	 * Form for recent health problems panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	private class RecentHealthProblemsForm extends SavingForm {
 		private static final long serialVersionUID = -5639227795730149964L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public RecentHealthProblemsForm(String id) {
 			super(id);
 			

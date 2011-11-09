@@ -4,6 +4,11 @@ import ict4mpower.childHealth.ChildHealthData;
 
 import java.util.List;
 
+/**
+ * Data class for the StatusPraesens task
+ * @author Joakim Lindskog
+ *
+ */
 public class StatusPraesensData implements ChildHealthData {
 	private static final long serialVersionUID = -7582569994675017144L;
 	

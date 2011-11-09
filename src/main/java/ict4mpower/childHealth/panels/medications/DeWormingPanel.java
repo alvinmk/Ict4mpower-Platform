@@ -24,9 +24,18 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for de-worming medications
+ * @author Joakim Lindskog
+ *
+ */
 public class DeWormingPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	@SuppressWarnings("unchecked")
 	public DeWormingPanel(String id) {
 		super(id, "title", false);
@@ -75,9 +84,18 @@ public class DeWormingPanel extends DivisionPanel {
 		add(new DeWormingForm("form"));
 	}
 	
+	/**
+	 * Form for de-worming panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class DeWormingForm extends MedicineSavingForm {
 		private static final long serialVersionUID = 2648446174418300654L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public DeWormingForm(String id) {
 			super(id);
 			

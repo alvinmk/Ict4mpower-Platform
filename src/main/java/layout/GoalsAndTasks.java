@@ -11,7 +11,7 @@ public class GoalsAndTasks {
 		g.addGoal("Demographics");
 		g.addTask("Demographics", "AdditionalInfoTask");
 		
-		// Main part
+		// Main part of Child Health application
 		g.addGoal("ChildHealth");
 		g.addTask("ChildHealth", "DashboardTask");
 		g.addTask("ChildHealth", "GrowthTask");

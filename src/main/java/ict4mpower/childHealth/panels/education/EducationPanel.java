@@ -15,9 +15,18 @@ import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import storage.ApplicationSocketTemp;
 
+/**
+ * Panel for the education task
+ * @author Joakim Lindskog
+ *
+ */
 public class EducationPanel extends Panel {
 	private static final long serialVersionUID = -1172218871548889654L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public EducationPanel(String id) {
 		super(id);
 		

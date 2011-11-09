@@ -14,6 +14,11 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
+/**
+ * A medicine
+ * @author Joakim Lindskog
+ *
+ */
 public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 	private static final long serialVersionUID = -4299959951236886609L;
 	
@@ -33,6 +38,16 @@ public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 	private int calField = -1;
 	private int calAdd = -1;
 	
+	/**
+	 * Constructor
+	 * @param pi patient info
+	 * @param name medicine name
+	 * @param calField calendar field to add to the due date (weeks/months etc.)
+	 * @param calAdd amount of the calendar field type to add to the due date (e.g. 3 (weeks))
+	 * @param givenDate the date the medicine was given
+	 * @param dosage the dose of the medicine
+	 * @param batchNr the batch number
+	 */
 	public Medicine(PatientInfo pi, String name, int calField, int calAdd, Date givenDate, String dosage, String batchNr) {
 		this.patientInfo = pi;
 		this.name = name;
@@ -46,6 +61,15 @@ public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 		this.givenDate = givenDate;
 	}
 	
+	/**
+	 * Constructor for standard (scheduled) medicine
+	 * @param name medicine name
+	 * @param calField calendar field to add to the due date (weeks/months etc.)
+	 * @param calAdd amount of the calendar field type to add to the due date (e.g. 3 (weeks))
+	 * @param givenDate the date the medicine was given
+	 * @param dosage the dose of the medicine
+	 * @param batchNr the batch number
+	 */
 	public Medicine(String name, int calField, int calAdd, Date givenDate, String dosage, String batchNr) {
 		this.name = name;
 		this.dosage = dosage;
@@ -57,12 +81,12 @@ public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 	
 	/**
 	 * Constructor for other medications
-	 * @param name
-	 * @param form
-	 * @param dose
-	 * @param reason
-	 * @param instructions
-	 * @param parent
+	 * @param name medicine name
+	 * @param form medicine form
+	 * @param dose dose of the medicine
+	 * @param reason reason for giving the medicine
+	 * @param instructions instructions for taking the medicine
+	 * @param givenDate the date the medicine was given
 	 */
 	public Medicine(String name, String form, String dose, String reason, String instructions, Date givenDate) {
 		this.name = name;
@@ -73,16 +97,32 @@ public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 		this.givenDate = givenDate;
 	}
 	
+	/**
+	 * Gets the due age for these milestone tests
+	 * @param parent the parent component
+	 * @return a String representation of the due age
+	 */
 	public String getDueAge(Component parent) {
 		return getAgeValue(parent).getObject();
 	}
 	
+	/**
+	 * Gets the due age for these milestone tests, as a StringResourceModel
+	 * @param parent the parent component
+	 * @return a StringResourceModel representation of the due age
+	 */
 	public StringResourceModel getAgeValue(Component parent) {
 		Object[] arr = getAccurateAgeArray();
 		return new StringResourceModel((String)arr[0], parent,
 				(arr[1] == null ? null : new Model<Float>((float)(0.5f*Math.floor((Float)arr[1]/0.5f)))));
 	}
 	
+	/**
+	 * Returns an array representing the age of the child
+	 * [0] => properties key for the age unit (weeks/months/years)
+	 * [1] => number of units of age (e.g. 3 (weeks))
+	 * @return an array representing the age of the child
+	 */
 	public Object[] getAccurateAgeArray() {
 		Calendar due = Calendar.getInstance();
 		due.setTime(dueDate);
@@ -147,6 +187,9 @@ public class Medicine implements Serializable, Comparable<Medicine>, IDueAge {
 		this.dosage = dosage;
 	}
 	
+	/**
+	 * @return the current status of this medicine (missed/due/taken)
+	 */
 	public String getStatus() {
 		if(givenDate == null) {
 			if(dueDate.before(new Date())) {

@@ -3,8 +3,8 @@ package ict4mpower.childHealth.panels.medications;
 import ict4mpower.childHealth.Callback;
 import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.ValidationClassBehavior;
+import ict4mpower.childHealth.panels.AgeTextDialog;
 import ict4mpower.childHealth.panels.DivisionPanel;
-import ict4mpower.childHealth.panels.immunization.ImmunizationDialog;
 
 import java.util.List;
 
@@ -18,6 +18,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
+/**
+ * Panel for specifying the giving of a medicine
+ * @author Joakim Lindskog
+ *
+ */
 class GiveMedicationPanel extends DivisionPanel {
 	private static final long serialVersionUID = 6954282130177169208L;
 	
@@ -25,7 +30,7 @@ class GiveMedicationPanel extends DivisionPanel {
 	private DropDownChoice<String> medicineChoice;
 	private DropDownChoice<String> dosageChoice;
 	private TextField<String> serialNr;
-	private ImmunizationDialog dialog;
+	private AgeTextDialog dialog;
 	
 	@SuppressWarnings("unused")
 	private Object[] ageChosen;
@@ -34,6 +39,15 @@ class GiveMedicationPanel extends DivisionPanel {
 	@SuppressWarnings("unused")
 	private String dosageChosen;
 	
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param ages a list of age values
+	 * @param medicines a list of medicine names
+	 * @param dosages a list of dosages
+	 * @param form the form to use
+	 * @param panel the parent panel
+	 */
 	public GiveMedicationPanel(String id, final List<Object[]> ages, final List<String> medicines,
 			final List<String> dosages, SavingForm form, DivisionPanel panel) {
 		super(id, "medication_admin");
@@ -232,7 +246,7 @@ class GiveMedicationPanel extends DivisionPanel {
 		add(this.serialNr);
 		
 		// Dialog
-		this.dialog = new ImmunizationDialog("dialog");
+		this.dialog = new AgeTextDialog("dialog");
 		
 		add(this.dialog);
 	}

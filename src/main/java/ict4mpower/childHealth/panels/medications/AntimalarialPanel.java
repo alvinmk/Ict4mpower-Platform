@@ -24,9 +24,18 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for anti-malarial medications
+ * @author Joakim Lindskog
+ *
+ */
 public class AntimalarialPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	@SuppressWarnings("unchecked")
 	public AntimalarialPanel(String id) {
 		super(id, "title", false);
@@ -75,9 +84,18 @@ public class AntimalarialPanel extends DivisionPanel {
 		add(new AntimalarialForm("form"));
 	}
 	
+	/**
+	 * Form for antimalarial panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class AntimalarialForm extends MedicineSavingForm {
 		private static final long serialVersionUID = 2648446174418300654L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public AntimalarialForm(String id) {
 			super(id);
 			

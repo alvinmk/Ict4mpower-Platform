@@ -33,6 +33,10 @@ import ict4mpower.childHealth.panels.growth.Indicator;
 public class GrowthChartPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218234548889654L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public GrowthChartPanel(String id) {
 		super(id, "title", false);
 		
@@ -84,9 +88,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			GrowthData gd = null;
 			// Get from db
 			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
-			System.out.println("set "+set.size());
 			for(Object o : set) {
-				System.out.println("obj "+o.getClass());
 				if(o instanceof GrowthData) {
 					gd = (GrowthData) o;
 					if(gd.getIndicators() != null && gd.getIndicators().size() > max) {

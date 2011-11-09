@@ -7,6 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Data class for the Development task
+ * @author Joakim Lindskog
+ *
+ */
 public class DevelopmentData implements ChildHealthData {
 	private static final long serialVersionUID = -3866379165135838860L;
 
@@ -20,6 +25,7 @@ public class DevelopmentData implements ChildHealthData {
 	}
 	
 	private List<Milestone> milestones;
+	/** Date of last edit */
 	private Date date;
 	
 	private DevelopmentData() {}
@@ -32,6 +38,10 @@ public class DevelopmentData implements ChildHealthData {
 		this.milestones = milestones;
 	}
 
+	/**
+	 * Gets the milestone for today (if there is one)
+	 * @return today's milestone
+	 */
 	public Milestone getTodaysMilestone() {
 		if(milestones == null) return null;
 		Calendar mCal = Calendar.getInstance();

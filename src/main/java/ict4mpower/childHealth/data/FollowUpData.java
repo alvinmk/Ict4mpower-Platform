@@ -4,6 +4,11 @@ import ict4mpower.childHealth.ChildHealthData;
 
 import java.util.Date;
 
+/**
+ * Data class for the FollowUp task
+ * @author Joakim Lindskog
+ *
+ */
 public class FollowUpData implements ChildHealthData {
 	private static final long serialVersionUID = -8893036385045807296L;
 	
@@ -16,6 +21,7 @@ public class FollowUpData implements ChildHealthData {
 		return instance;
 	}
 	
+	/** Date of follow-up visit */
 	private Date date;
 	private String message;
 	

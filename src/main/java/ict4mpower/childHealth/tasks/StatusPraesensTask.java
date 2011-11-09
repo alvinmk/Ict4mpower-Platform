@@ -7,9 +7,18 @@ import ict4mpower.childHealth.panels.status.RecentHealthProblemsPanel;
 
 import tasks.Task;
 
+/**
+ * Status praesens task
+ * @author Joakim Lindskog
+ *
+ */
 public class StatusPraesensTask extends Task {
 	private static final long serialVersionUID = 2903452079635015272L;
 
+	/**
+	 * Constructor
+	 * @param name the name of the task
+	 */
 	public StatusPraesensTask(String name) {
 		super(name);
 		

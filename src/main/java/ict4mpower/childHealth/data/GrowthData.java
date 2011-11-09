@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Data for the Growth task
+ * Data class for the Growth task
  * @author Joakim Lindskog
  *
  */
@@ -23,7 +23,7 @@ public class GrowthData implements ChildHealthData {
 		return instance;
 	}
 	
-	// Date of creation
+	/** Date of last edit */
 	private Date date;
 	
 	// Growth indicators

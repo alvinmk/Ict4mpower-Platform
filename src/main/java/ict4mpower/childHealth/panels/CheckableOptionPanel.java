@@ -9,9 +9,20 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
+/**
+ * A panel for the Education task with a checkbox and a label
+ * @author Joakim Lindskog
+ *
+ */
 public class CheckableOptionPanel extends Panel {
 	private static final long serialVersionUID = 8243634455154294405L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param model model
+	 * @param parent parent component
+	 */
 	public CheckableOptionPanel(String id, IModel<CheckableOption> model, Component parent) {
 		super(id);
 		// Add check

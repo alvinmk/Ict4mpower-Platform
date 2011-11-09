@@ -8,6 +8,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Data class for the Immunization task
+ * @author Joakim Lindskog
+ *
+ */
 public class ImmunizationData implements ChildHealthData {
 	private static final long serialVersionUID = -553200314531540733L;
 	
@@ -21,6 +26,7 @@ public class ImmunizationData implements ChildHealthData {
 	}
 
 	private List<Vaccination> vaccinations;
+	/** Date of last edit */
 	private Date date;
 	
 	private ImmunizationData() {}
@@ -33,6 +39,10 @@ public class ImmunizationData implements ChildHealthData {
 		this.vaccinations = vaccinations;
 	}
 
+	/**
+	 * Gets today's vaccinations (if any)
+	 * @return today's vaccinations or null if vaccinations are null
+	 */
 	public List<Vaccination> getVaccinationsToday() {
 		if(vaccinations == null) return null;
 		List<Vaccination> list = new ArrayList<Vaccination>();

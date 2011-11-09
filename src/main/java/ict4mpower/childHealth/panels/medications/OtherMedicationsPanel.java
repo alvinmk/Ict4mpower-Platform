@@ -20,11 +20,21 @@ import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for other (general) medications
+ * (not vitamin A, de-worming or anti-malarial)
+ * @author Joakim Lindskog
+ *
+ */
 public class OtherMedicationsPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 	private ListView<Medicine> list;
 	private GiveOtherMedicationPanel medPanel;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public OtherMedicationsPanel(String id) {
 		super(id, "title", false);
 		
@@ -33,9 +43,18 @@ public class OtherMedicationsPanel extends DivisionPanel {
 		add(new OtherMedicationsForm("form"));
 	}
 	
+	/**
+	 * Form for other medications panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class OtherMedicationsForm extends SavingForm {
 		private static final long serialVersionUID = -6533255463323812596L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public OtherMedicationsForm(String id) {
 			super(id);
 			

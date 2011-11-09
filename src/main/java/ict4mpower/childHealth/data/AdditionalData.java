@@ -8,6 +8,11 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 
+/**
+ * Data class for the AdditionalInfo task
+ * @author Joakim Lindskog
+ *
+ */
 public class AdditionalData implements ChildHealthData {
 	private static final long serialVersionUID = -283564779395916587L;
 	
@@ -24,7 +29,7 @@ public class AdditionalData implements ChildHealthData {
 	private Date date;
 	
 	private AdditionalData() {}
-
+	
 	public List<String> getReasons() {
 		if(reasons == null) {
 			reasons = new ArrayList<String>();

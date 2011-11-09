@@ -21,18 +21,36 @@ import ict4mpower.childHealth.SavingForm;
 import ict4mpower.childHealth.data.AdditionalData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * A panel for selecting reasons for special care
+ * @author Joakim Lindskog
+ *
+ */
 public class ReasonsPanel extends DivisionPanel {
 	private static final long serialVersionUID = 2899319801604156038L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public ReasonsPanel(String id) {
 		super(id, "title");
 		
 		add(new SpecialCareForm("form"));
 	}
 	
+	/**
+	 * Form for reasons panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class SpecialCareForm extends SavingForm {
 		private static final long serialVersionUID = -3198391667064524025L;
 
+		/**
+		 * Constructor
+		 * @param id component id
+		 */
 		public SpecialCareForm(String id) {
 			super(id);
 			

@@ -20,9 +20,18 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.AdditionalData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for showing the reasons for special care
+ * @author Joakim Lindskog
+ *
+ */
 public class SpecialCarePanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218871548889654L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public SpecialCarePanel(String id) {
 		super(id, "title", false);
 		
@@ -63,9 +72,20 @@ public class SpecialCarePanel extends DivisionPanel {
 	}
 }
 
+/**
+ * Row panel for each line of text (each reason)
+ * @author Joakim Lindskog
+ *
+ */
 class SpecialCareRowPanel extends Panel {
 	private static final long serialVersionUID = -2836463365050103653L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param model model
+	 * @param panel parent panel
+	 */
 	public SpecialCareRowPanel(String id, IModel<String> model, Panel panel) {
 		super(id);
 		

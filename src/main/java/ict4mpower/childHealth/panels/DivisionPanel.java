@@ -52,6 +52,12 @@ public class DivisionPanel extends Panel {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param titleId the properties key for the title
+	 * @param savable whether this panel can be saved or not
+	 */
 	public DivisionPanel(String id, String titleId, boolean savable) {
 		super(id);
 		setOutputMarkupId(true);
@@ -75,10 +81,21 @@ public class DivisionPanel extends Panel {
 		add(saveLabel);
 	}
 	
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param titleId properties key for title
+	 */
 	public DivisionPanel(String id, String titleId) {
 		this(id, titleId, true);
 	}
 
+	/**
+	 * Connects the given form with the saving mechanism
+	 * and the given panel with the save effects
+	 * @param form form to save
+	 * @param panel panel to give effects
+	 */
 	public void setForm(final SavingForm form, final DivisionPanel panel) {
 		saveButton.add(new AjaxFormValidatingBehavior(form, "onclick") {
 			private static final long serialVersionUID = 1L;

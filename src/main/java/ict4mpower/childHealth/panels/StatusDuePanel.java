@@ -15,9 +15,19 @@ import org.apache.wicket.model.StringResourceModel;
 
 import layout.Template;
 
+/**
+ * Panel to show that a vaccination or medication is due a certain time
+ * @author Joakim Lindskog
+ *
+ */
 public class StatusDuePanel extends StatusPanel {
 	private static final long serialVersionUID = 3478275227783326633L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 * @param dueDate due date
+	 */
 	public StatusDuePanel(String id, final Date dueDate) {
 		super(id);
 		
@@ -43,6 +53,11 @@ public class StatusDuePanel extends StatusPanel {
 	}
 }
 
+/**
+ * Simple model for the date
+ * @author Joakim Lindskog
+ *
+ */
 class DateModel implements Serializable {
 	private static final long serialVersionUID = -5696644918692417636L;
 	

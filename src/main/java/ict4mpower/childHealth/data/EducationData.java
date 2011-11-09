@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Data class for the Education task
+ * @author Joakim Lindskog
+ *
+ */
 public class EducationData implements ChildHealthData {
 	private static final long serialVersionUID = -5967334292372509608L;
 

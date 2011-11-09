@@ -5,6 +5,11 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.FormComponent;
 
+/**
+ * A behaviour to visually indicate validation errors
+ * @author Joakim Lindskog
+ *
+ */
 public class ValidationClassBehavior extends Behavior {
 	private static final long serialVersionUID = 4562221021482306992L;
 	

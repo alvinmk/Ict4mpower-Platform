@@ -39,6 +39,11 @@ import ict4mpower.childHealth.panels.growth.Indicator;
 import ict4mpower.childHealth.panels.immunization.Vaccination;
 import ict4mpower.childHealth.panels.medications.Medicine;
 
+/**
+ * Panel for the visit summary
+ * @author Joakim Lindskog
+ *
+ */
 public class VisitSummaryPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172223673548889654L;
 	
@@ -47,6 +52,10 @@ public class VisitSummaryPanel extends DivisionPanel {
 	private ConfirmDialog dialog;
 	private boolean signed = false;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	public VisitSummaryPanel(String id) {
 		super(id, "title");
 		
@@ -311,6 +320,10 @@ public class VisitSummaryPanel extends DivisionPanel {
 		add(new MultiLineLabel("followUpNote", followUp != null ? followUp.getMessage() : null));
 	}
 	
+	/**
+	 * Saves this visit to the database
+	 * @return true if successful
+	 */
 	private boolean saveVisit() {
 		AppSession session = (AppSession)getSession();
 		String goal = session.getGoal()+":";

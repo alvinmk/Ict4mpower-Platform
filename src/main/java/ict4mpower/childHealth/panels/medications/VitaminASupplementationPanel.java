@@ -24,9 +24,18 @@ import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
 import ict4mpower.childHealth.panels.DivisionPanel;
 
+/**
+ * Panel for vitamin A supplementation
+ * @author Joakim Lindskog
+ *
+ */
 public class VitaminASupplementationPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1916771602507841446L;
 
+	/**
+	 * Constructor
+	 * @param id component id
+	 */
 	@SuppressWarnings("unchecked")
 	public VitaminASupplementationPanel(String id) {
 		super(id, "title", false);
@@ -75,6 +84,11 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 		add(new VitaminASupplementationForm("form"));
 	}
 	
+	/**
+	 * Form for vitamin A supplementation panel
+	 * @author Joakim Lindskog
+	 *
+	 */
 	class VitaminASupplementationForm extends MedicineSavingForm {
 		private static final long serialVersionUID = 9075678298910357463L;
 
