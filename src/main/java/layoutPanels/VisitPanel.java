@@ -1,6 +1,10 @@
 package layoutPanels;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import ict4mpower.AppSession;
@@ -20,12 +24,17 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		AppSession session = (AppSession) getSession();
-		List<String> l = session.getAllVisits();
-		if(l == null){
-			l = new ArrayList<String>();
+		List<Long> allVisits = session.getAllVisits();
+		Collections.sort(allVisits);
+		List<String> l = new ArrayList<String>();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		for(long ts : allVisits) {
+			l.add(df.format(new Date(ts)));
+		}
+		if(l.isEmpty()){
 			l.add("No visits available");
 		}
-		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), l);
+		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel<String>(this, "session.currentVisit"), l);
 		add(visits);
 		add( new Label("visitStage", "VISIT SIGNED"));
 	}

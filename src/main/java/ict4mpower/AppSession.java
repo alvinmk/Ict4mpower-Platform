@@ -1,10 +1,8 @@
 package ict4mpower;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.request.ClientInfo;
 import org.apache.wicket.request.Request;
 
 import models.PatientInfo;
@@ -17,8 +15,8 @@ public class AppSession extends WebSession{
 	private String goal; //Current goal
 	private String task; //Current task
 	private String[] roles;
-	private String currentVisit;
-	private List<String> allVisits; //A visit is a date and a point in time
+	private long currentVisit;
+	private List<Long> allVisits; //A visit is a date and a point in time
 	private PatientInfo patientInfo;
 	
 	public PatientInfo getPatientInfo(){
@@ -65,19 +63,19 @@ public class AppSession extends WebSession{
 		return roles;
 	}
 
-	public List<String> getAllVisits() {
+	public List<Long> getAllVisits() {
 		return allVisits;
 	}
 
-	public void setAllVisits(List<String> allVisits) {
+	public void setAllVisits(List<Long> allVisits) {
 		this.allVisits = allVisits;
 	}
 
-	public String getCurrentVisit() {
+	public long getCurrentVisit() {
 		return currentVisit;
 	}
 
-	public void setCurrentVisit(String currentVisit) {
+	public void setCurrentVisit(long currentVisit) {
 		this.currentVisit = currentVisit;
 	}
 	
