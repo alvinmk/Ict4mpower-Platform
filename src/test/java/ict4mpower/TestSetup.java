@@ -26,6 +26,9 @@ public class TestSetup {
 	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public static void main(String[] args) {
+		// Create mock patient
+		MockPatient p = new MockPatient();
+		
 		// Add some indicators to growth indicators table
 		GrowthData data = GrowthData.instance();
 		PatientInfo pi;
@@ -39,7 +42,7 @@ public class TestSetup {
 			indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
 			data.setIndicators(indicators);
 			data.setDate(df.parse("01/01/1900"));
-			DataEndPoint.getDataEndPoint().signEntry(data, "1", 1L, "ChildHealth");
+			DataEndPoint.getDataEndPoint().signEntry(data, "1", p.visits.get(0), "ChildHealth");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +57,7 @@ public class TestSetup {
 			}));
 			medData.setOtherMeds(meds);
 			medData.setDate(df.parse("01/01/1900"));
-			DataEndPoint.getDataEndPoint().signEntry(medData, "1", 1L, "ChildHealth");
+			DataEndPoint.getDataEndPoint().signEntry(medData, "1", p.visits.get(0), "ChildHealth");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
