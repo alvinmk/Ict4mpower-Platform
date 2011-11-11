@@ -13,6 +13,10 @@ public class MeasurementKlass extends KlassContainer{
 	Attribute patientId;
 		
 	public MeasurementKlass(Engine e){
+		//Check if class exsists
+		
+		
+		//If not create it
 		super(e);
 		this.measurement = e.makeStringAttribute("measurment");
 		this.unit = e.makeStringAttribute("unit");

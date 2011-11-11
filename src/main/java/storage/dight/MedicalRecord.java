@@ -11,16 +11,17 @@ import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.Objekt;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.Value;
-
 public class MedicalRecord extends BaseRecord{
 	private static MedicalRecordKlass klassContainer;
 
 	public MedicalRecord(){
-		super();
 		klassContainer = new MedicalRecordKlass(e);
-		record = klassContainer.getKlass();		
+		setKlassContainer(klassContainer);
 	}
 	
+	/*
+	 * Creates a new entry and commits it to the DIGHT database. Returns the entry id.
+	 */
 	public String newEntry(Object data, String type, String app,String patientId, long visitId) {
 		Value vType = e.makeStringValue(type);
 		Value vApp = e.makeStringValue(app);
@@ -28,9 +29,7 @@ public class MedicalRecord extends BaseRecord{
 		Value vVisitId = e.makeBigintValue(visitId);
 		Value vDate = e.makeDateValue(new Date());
 		//Make an Entry id
-		int value=1;
-		byte[] byts = new byte[]{(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value,(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value};
-		EntryId eid = e.makeEntryId(byts);
+		EntryId eid = klassContainer.generateUniqeEntryId();
 		
 		byte[] payload = null;
 		try {
@@ -38,8 +37,7 @@ public class MedicalRecord extends BaseRecord{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		System.err.print("SIZE OF PAYLOAD IS " + payload.length);
-		
+				
 		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, payload );
 		entry.setValue(klassContainer.application, vApp);
 		entry.setValue(klassContainer.patientId, vPatientId);
@@ -50,7 +48,9 @@ public class MedicalRecord extends BaseRecord{
 		//Send to server
 		return eid.getId().toString();
 	}
-	
+	/* 
+	 * Makes a query to DIGHT using visit and type and returns a set of matching objects
+	 */
 	public Set<Object> getObjectsFromTypeAndVisitId(String type, long visitId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
@@ -65,6 +65,9 @@ public class MedicalRecord extends BaseRecord{
 		return attributesQueryToObject(s);
 	}
 	
+	/*
+	 * Returns all objects in a visit belonging to one patient
+	 */
 	public Set<Object> getObjectsFromVisitId(long visitId, String patientId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
@@ -79,6 +82,9 @@ public class MedicalRecord extends BaseRecord{
 		return attributesQueryToObject(s);
 	}
 	
+	/*
+	 * Get all objects belonging to a specific patient
+	 */
 	public Set<Object> getObjectsFromPatientId(String patientId){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
@@ -89,6 +95,9 @@ public class MedicalRecord extends BaseRecord{
 		return attributesQueryToObject(s);
 	}
 	
+	/*
+	 * Get all objects for a patient betweens specific dates
+	 */
 	public Set<Object> getObjectsFromDateRange(String patientId, Date low, Date high){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();

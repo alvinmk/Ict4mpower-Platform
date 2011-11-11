@@ -20,9 +20,8 @@ public class MeasurementRecord extends BaseRecord{
 	private static MeasurementKlass klassContainer;
 
 	public MeasurementRecord(){
-		super();
 		klassContainer = new MeasurementKlass(e);
-		record = klassContainer.getKlass();
+		setKlassContainer(klassContainer);
 	}
 	
 	public String newEntry(String measurement, String unit, Double value, String patientId){
@@ -32,14 +31,11 @@ public class MeasurementRecord extends BaseRecord{
 		Value vValue = e.makeDoubleValue(value);
 		Value vPatientId = e.makeStringValue(patientId);
 		Value vDate = e.makeDateValue(new Date());
-
-		//Make an Entry id
-		int byteval=1;
-		byte[] byts = new byte[]{(byte)(byteval >>> 24),(byte)(byteval >>> 16),(byte)(byteval >>> 8),(byte)byteval,(byte)(byteval >>> 24),(byte)(byteval >>> 16),(byte)(byteval >>> 8),(byte)byteval,(byte)(byteval >>> 24),(byte)(byteval >>> 16),(byte)(byteval >>> 8),(byte)byteval,(byte)(byteval >>> 24),(byte)(byteval >>> 16),(byte)(byteval >>> 8),(byte)byteval,(byte)(byteval >>> 24),(byte)(byteval >>> 16),(byte)(byteval >>> 8),(byte)byteval};
-		EntryId eid = e.makeEntryId(byts);
 	
+		EntryId eid = klassContainer.generateUniqeEntryId();
+		byte b[] = new byte[0];
 		
-		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, byts);
+		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, b);
 		entry.setValue(klassContainer.patientId, vPatientId);
 		entry.setValue(klassContainer.date, vDate);
 		entry.setValue(klassContainer.measurement, vMeasurement);

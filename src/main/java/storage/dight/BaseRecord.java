@@ -29,7 +29,6 @@ import se.sics.dight.storage.store.query.QueryResult;
 
 public abstract class BaseRecord {
 	protected KlassContainer klassContainer;
-	protected Klass record;
 	protected Engine e = Engine.makeEngine(17, 16 * 1024 * 1024);
 	int version;
 	private List<Credential> credential = new ArrayList<Credential>();
@@ -37,8 +36,8 @@ public abstract class BaseRecord {
 	public BaseRecord(){
 	}
 	
-	public void setKlass(KlassContainer kc){
-		record = kc.getKlass();
+	public void setKlassContainer(KlassContainer kc){
+		this.klassContainer=kc;
 	}			
 	
 	/*
@@ -57,7 +56,7 @@ public abstract class BaseRecord {
 	private Set<Entry> attributesQuery(Set<HashMap> a){
 		AttributeQuery aq = null;
 		for(HashMap<String, Object> map : a){
-			aq = e.createAttributeQuery(record, true);
+			aq = e.createAttributeQuery(klassContainer.getKlass(), true);
 			aq.setValue((Attribute) map.get("attribute"), (ValueTemplate)map.get("value"));
 		}		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
