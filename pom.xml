@@ -46,8 +46,25 @@
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
+		<cxf.version>2.2.3</cxf.version>
 	</properties>
 	<dependencies>
+		<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-frontend-jaxws</artifactId>
+		<version>${cxf.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-transports-http</artifactId>
+		<version>${cxf.version}</version>
+	</dependency>
+        <!-- Jetty is needed if you're are not using the CXFServlet -->
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-transports-http-jetty</artifactId>
+		<version>${cxf.version}</version>
+	</dependency>
 		<dependency> 
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
@@ -178,6 +195,29 @@
 			</testResource>
 		</testResources>
 		<plugins>
+			<plugin>
+	<groupId>org.apache.cxf</groupId>
+	<artifactId>cxf-codegen-plugin</artifactId>
+	<version>${cxf.version}</version>
+	<executions>
+		<execution>
+			<id>generate-sources</id>
+			<phase>generate-sources</phase>
+			<configuration>
+				<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
+				<wsdlOptions>
+					<wsdlOption>
+						<wsdl>http://lucan.sics.se:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
+					</wsdlOption>
+				</wsdlOptions>
+			</configuration>
+			<goals>
+				<goal>wsdl2java</goal>
+			</goals>
+		</execution>
+	</executions>
+		</plugin>
+			
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
