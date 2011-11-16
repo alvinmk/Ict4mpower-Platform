@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import models.BaseModel;
+
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.Objekt;
@@ -26,7 +28,14 @@ public class MedicalRecord extends BaseRecord{
 	/*
 	 * Creates a new entry and commits it to the DIGHT database. Returns the entry id.
 	 */
-	public String newEntry(Object data, String type, String app,String patientId, long visitId) {
+	public String newEntry(Object data, String app,String patientId, long visitId) {
+		String type = data.getClass().getSimpleName();
+		
+		BaseModel base = (BaseModel) data;
+		base.setApplication(app);
+		base.setType(type);
+		base.setVisit(visitId);
+		
 		Value vType = e.makeStringValue(type);
 		Value vApp = e.makeStringValue(app);
 		Value vPatientId = e.makeStringValue(patientId);
@@ -60,32 +69,18 @@ public class MedicalRecord extends BaseRecord{
 		
 		return eid.getId().toString();
 	}
-	/* 
-	 * Makes a query to DIGHT using visit and type and returns a set of matching objects
-	 */
-	public Set<Object> getObjectsFromTypeAndVisitId(String type, long visitId){
-		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
-		Value typeVal = e.makeStringValue(type);
-		h.put("attribute", klassContainer.type);
-		h.put("value", typeVal);
-		
-		Value patientIdVal = e.makeBigintValue(visitId);
-		h = new HashMap<String, Object>();
-		h.put("attribute", klassContainer.visitId);
-		h.put("value", visitId);
-		s.add(h);		
-		return attributesQueryToObject(s);
-	}
+	
 	
 	/*
-	 * Returns all objects in a visit belonging to one patient
+	 * Returns all objects of a specific type for an application
 	 */
-	public Set<Object> getObjectsFromVisitId(long visitId, String patientId){
+	public Set<Object> getObjectsForVisit(long visitId, String patientId, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
 		ValueTemplate Vvisit = e.makeBigintValueTemplate(visitId);
 		ValueTemplate VpatientId = e.makeStringValueTemplate(patientId);
+		ValueTemplate Vapplication = e.makeStringValueTemplate(application);
+		ValueTemplate Vtype = e.makeStringValueTemplate(type);
 		h.put("attribute", klassContainer.visitId);
 		h.put("value", Vvisit);
 		s.add(h);
@@ -93,36 +88,77 @@ public class MedicalRecord extends BaseRecord{
 		h.put("attribute", klassContainer.patientId);
 		h.put("value", VpatientId);
 		s.add(h);
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.type);
+		h.put("value", Vtype);
+		s.add(h);
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.application);
+		h.put("value", Vapplication);
+		s.add(h);
+		
 		return attributesQueryToObject(s);
 	}
 	
 	/*
-	 * Get all objects belonging to a specific patient
+	 * Get all objects belonging to a patient of a type in one applicaiton
 	 */
-	public Set<Object> getObjectsFromPatientId(String patientId){
+	public Set<Object> getObjectsFromPatientId(String patientId, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
 		ValueTemplate VPatientId = e.makeStringValueTemplate(patientId);
+		ValueTemplate Vapplication = e.makeStringValueTemplate(application);
+		ValueTemplate Vtype = e.makeStringValueTemplate(type);
+		
 		h.put("attribute", klassContainer.patientId);
 		h.put("value", VPatientId);
 		s.add(h);		
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.type);
+		h.put("value", Vtype);
+		s.add(h);
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.application);
+		h.put("value", Vapplication);
+		s.add(h);
+		
 		return attributesQueryToObject(s);
 	}
 	
 	/*
 	 * Get all objects for a patient betweens specific dates
 	 */
-	public Set<Object> getObjectsFromDateRange(String patientId, Date low, Date high){
+	public Set<Object> getObjectsFromDateRange(String patientId, Date low, Date high, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap> s = new HashSet<HashMap>();
+		
 		ValueTemplate vDateRange = e.makeDateValueRangeTemplate(low, high);
+		ValueTemplate Vapplication = e.makeStringValueTemplate(application);
+		ValueTemplate Vtype = e.makeStringValueTemplate(type);
+		
 		h.put("attribute", klassContainer.date);
 		h.put("value", vDateRange);
 		Value visitVal = e.makeStringValue(patientId);
+		
 		h = new HashMap<String, Object>();
 		h.put("attribute", klassContainer.visitId);
 		h.put("value", visitVal);
 		s.add(h);
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.type);
+		h.put("value", Vtype);
+		s.add(h);
+		
+		h = new HashMap<String, Object>();
+		h.put("attribute", klassContainer.application);
+		h.put("value", Vapplication);
+		s.add(h);
+		
 		return attributesQueryToObject(s);
 	}
 }

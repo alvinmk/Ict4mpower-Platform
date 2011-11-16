@@ -3,7 +3,7 @@ package models;
 import java.io.Serializable;
 import java.util.List;
 
-public class PatientInfo implements Serializable {
+public class PatientInfo extends BaseModel {
 	private static final long serialVersionUID = -1691781881788990803L;
 	private String name;
 	private String clientId;
