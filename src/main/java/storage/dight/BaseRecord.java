@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,18 +56,19 @@ public abstract class BaseRecord {
 	
 	private Set<Entry> attributesQuery(Set<HashMap> a){
 		AttributeQuery aq = null;
+		aq = e.createAttributeQuery(klassContainer.getKlass());
 		for(HashMap<String, Object> map : a){
-			aq = e.createAttributeQuery(klassContainer.getKlass(), true);
 			aq.setValue((Attribute) map.get("attribute"), (ValueTemplate)map.get("value"));
 		}		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send query to server
-		QueryResult qr = null;
+		DightSocket d = new DightSocket();
+		QueryResult qr=null;
 		try {
 			qr = DightSocket.CreateOperationResult(aq, credential, e);
-		} catch (IOException e) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 		AttributeQueryResult indexQResult;
 		indexQResult = (AttributeQueryResult) qr;
@@ -90,7 +92,7 @@ public abstract class BaseRecord {
 	 * Returns a set of objects with data in them
 	 */
 	private Set<Object> getObjectsFromEntrySet(Set<Entry> s){
-		Set<Object> ret = null;
+		Set<Object> ret = new HashSet<Object>();
 		for(Entry currentEntry: s){
 			ret.add(getObjectFromEntry(currentEntry));
 		}
