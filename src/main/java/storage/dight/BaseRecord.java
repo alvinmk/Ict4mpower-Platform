@@ -32,9 +32,12 @@ public abstract class BaseRecord {
 	protected KlassContainer klassContainer;
 	protected Engine e = Engine.makeEngine(17, 16 * 1024 * 1024);
 	int version;
-	private List<Credential> credential = new ArrayList<Credential>();
+	protected List<Credential> cred = new ArrayList<Credential>();
 		
 	public BaseRecord(){
+		Credential c = new Credential() {
+		};
+		cred.add(c);
 	}
 	
 	public void setKlassContainer(KlassContainer kc){
@@ -65,11 +68,12 @@ public abstract class BaseRecord {
 		DightSocket d = new DightSocket();
 		QueryResult qr=null;
 		try {
-			qr = DightSocket.CreateOperationResult(aq, credential, e);
+			qr = DightSocket.CreateOperationResult(aq, cred, e);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.err.println("****************************************"+qr.getSize());
 		AttributeQueryResult indexQResult;
 		indexQResult = (AttributeQueryResult) qr;
 		Set<Entry> x = indexQResult.getResult();

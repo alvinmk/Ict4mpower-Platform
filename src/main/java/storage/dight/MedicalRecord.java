@@ -59,9 +59,8 @@ public class MedicalRecord extends BaseRecord{
 		entry.setValue(klassContainer.visitId, vVisitId);
 		
 		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());
-		List<Credential> creds = null;
 		try {
-			DightSocket.CreateOperationResult(entry, creds, e);
+			DightSocket.CreateOperationResult(entry, cred, e);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

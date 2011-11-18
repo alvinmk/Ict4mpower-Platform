@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
-
+import org.apache.log4j.Logger;
 import se.sics.dight.data.model.Entry;
 import se.sics.dight.data.security.Credential;
 import se.sics.dight.storage.engine.Engine;
@@ -14,6 +14,7 @@ import se.sics.dight.storage.webservice.DightStorageServiceEndpoint;
 
 public class DightSocket {
 	
+	 private static final Logger log = Logger.getLogger(DightSocket.class);
 	
 	public static QueryResult CreateOperationResult(Entry entry, List<Credential> creds, Engine e) throws IOException {
 		ByteArrayOutputStream credBytes = new ByteArrayOutputStream();
@@ -28,7 +29,7 @@ public class DightSocket {
 		byte[] result = endpoint.performOperation(entryBytes, credBytes.toByteArray());
 		
 		OperationResult operationResult = new OperationResult(e, result);
-		System.err.println("Result of operation " +operationResult.getStatus().toString() +"");
+		log.info("*Result of operation " +operationResult.getStatus().toString());
 		return operationResult.getQueryResults();
 	}
 }
