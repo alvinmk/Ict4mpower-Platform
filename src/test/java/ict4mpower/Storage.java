@@ -1,24 +1,25 @@
 package ict4mpower;
 
-import java.io.Serializable;
 import java.util.Set;
-
 import junit.framework.TestCase;
-
 import models.AppInfo;
+import models.Measurement;
 import models.PatientInfo;
 import models.Prescription;
-
-import org.apache.wicket.util.tester.WicketTester;
-
 import storage.ApplicationSocket;
 import storage.MeasurementRecordSocket;
 import storage.MedicalRecordSocket;
-import storage.dight.MeasurementRecord.Measurement;
 
 public class Storage extends TestCase{
 	
+	
+	public void testApplicationRecortd(){
+		ApplicationSocket a = new ApplicationSocket();
+		AppInfo ar = new AppInfo();
+		String result = a.storeData("app", "appInfo", ar);
+		assertNotNull("No id returned!", result);
 		
+	}
 	
 	public void testMedicalRecords(){
 		MedicalRecordSocket MRSocket = new MedicalRecordSocket();
@@ -55,9 +56,9 @@ public class Storage extends TestCase{
 		mSocket.SignEntry("Water", "m", 12.0, "111");
 		mSocket.SignEntry("Water", "l", 100.0, "112");
 		Set<Measurement> s;
-		/*
+		
 		s = mSocket.getMesurmentByType("test", "111");
-		assertTrue(s.size() == 2);
+		
 		Measurement m  = s.iterator().next();
 		assertEquals("111", m.getPatientId());
 		assertEquals(10.0, m.getValue());
@@ -69,17 +70,15 @@ public class Storage extends TestCase{
 		assertEquals("m", m.getUnit());
 		
 		s = mSocket.getMesurmentByType("Water", "111");
-		assertTrue(s.size() == 1);
 		m  = s.iterator().next();
 		assertEquals("111", m.getPatientId());
 		assertEquals(12.0, m.getValue());
 		assertEquals("l", m.getUnit());
 		s = mSocket.getMesurmentByType("Water", "112");
-		assertTrue(s.size() == 1);
 		m  = s.iterator().next();
 		assertEquals("112", m.getPatientId());
 		assertEquals(100.0, m.getValue());
-		assertEquals("l", m.getUnit());*/
+		assertEquals("l", m.getUnit());
 	}
 	
 	public void testApplicationRecord(){

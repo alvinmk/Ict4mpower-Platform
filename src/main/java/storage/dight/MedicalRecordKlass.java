@@ -16,7 +16,7 @@ public class MedicalRecordKlass extends KlassContainer{
 	Attribute visitId;
 	Attribute date;
 	Attribute patientId;
-	Long version = 2l;
+	Long version = 3l;
 		
 	public MedicalRecordKlass(Engine e){
 		super(e);
@@ -35,7 +35,7 @@ public class MedicalRecordKlass extends KlassContainer{
 		
 	}	
 	
-	private void createAttributes(){
+	protected void createAttributes(){
 		this.type = e.makeStringAttribute("type");
 		this.application = e.makeStringAttribute("application");
 		this.visitId = e.makeBigintAttribute("visitId");
@@ -43,7 +43,7 @@ public class MedicalRecordKlass extends KlassContainer{
 		this.patientId = e.makeStringAttribute("patientId");
 	}
 	
-	private void createAndStoreKlass(){
+	protected void createAndStoreKlass(){
 		
 		byte[] b = new byte[20];
 		EntryId eid = e.makeEntryId(b);
@@ -55,10 +55,9 @@ public class MedicalRecordKlass extends KlassContainer{
 		klass.addAttribute(visitId);
 		//Should be called last
 		klass.commit(EAA);
-		List<Credential> creds=null;
 		QueryResult result = null;
 		try {
-			result = DightSocket.CreateOperationResult(klass, creds, e);
+			result = DightSocket.CreateOperationResult(klass, klassCreds, e);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

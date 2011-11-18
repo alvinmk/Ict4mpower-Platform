@@ -3,6 +3,7 @@ package storage.dight;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +22,12 @@ import se.sics.dight.storage.engine.Engine;
 import se.sics.dight.storage.store.query.KlassQueryResult;
 import se.sics.dight.storage.store.query.QueryResult;
 
-public class KlassContainer {
+public abstract class KlassContainer {
 	protected Klass klass;
 	Engine e;
 	String klassName;
+	protected List<Credential> klassCreds = new ArrayList<Credential>();
+	protected long version;
 	
 	EntryAuthenticationAlgorithm EAA = new DummyEntryAuthenticationAlgorithm();
 	
@@ -40,7 +43,10 @@ public class KlassContainer {
 		return EAA;
 	}
 	
-	public EntryId generateUniqeEntryId(){
+	protected abstract void createAttributes();
+	protected abstract void createAndStoreKlass();
+	
+	protected EntryId generateUniqeEntryId(){
 		byte id[] = new byte[20];
 		UUID u = UUID.randomUUID();
 		Date d = new Date();
@@ -61,15 +67,14 @@ public class KlassContainer {
 		return e.makeEntryId(id);	
 	}
 	
-	public Klass queryKlass(String klass){
+	protected Klass queryKlass(String klass){
 		//Does the class exsist
 		KlassQuery query;
 		query = e.createKlassQuery(klass, KlassQuery.LATEST_VERSION);
 		query.commit(EAA);
-		List<Credential> creds = null;
 		QueryResult result = null;
 		try {
-			result = DightSocket.CreateOperationResult(query, creds, e);
+			result = DightSocket.CreateOperationResult(query, klassCreds, e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
