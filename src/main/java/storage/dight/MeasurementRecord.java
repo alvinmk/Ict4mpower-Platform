@@ -8,12 +8,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import models.Measurement;
+
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Objekt;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.DateValue;
 import se.sics.dight.data.model.values.DoubleValue;
 import se.sics.dight.data.model.values.Value;
+import se.sics.dight.storage.store.query.QueryResult;
 
 public class MeasurementRecord extends BaseRecord{
 
@@ -33,7 +36,8 @@ public class MeasurementRecord extends BaseRecord{
 		Value vDate = e.makeDateValue(new Date());
 	
 		EntryId eid = klassContainer.generateUniqeEntryId();
-		byte b[] = new byte[0];
+		byte b[] = new byte[1];
+		b[0] = 1;
 		
 		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, b);
 		entry.setValue(klassContainer.patientId, vPatientId);
@@ -42,7 +46,12 @@ public class MeasurementRecord extends BaseRecord{
 		entry.setValue(klassContainer.unit, vUnit);
 		entry.setValue(klassContainer.value, vValue);
 		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());
-		//Send to server
+		try {
+			QueryResult res = DightSocket.CreateOperationResult(entry, cred, e);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		return eid.getId().toString();
 	}
 	
@@ -53,7 +62,9 @@ public class MeasurementRecord extends BaseRecord{
 		h.put("attribute", klassContainer.measurement);
 		h.put("value", vMeasurement);
 		s.add(h);		
+		
 		ValueTemplate vPatientId = e.makeStringValueTemplate(patientId);
+		h = new HashMap<String, Object>();
 		h.put("attribute", klassContainer.patientId);
 		h.put("value", vPatientId);
 		s.add(h);
@@ -74,45 +85,6 @@ public class MeasurementRecord extends BaseRecord{
 	}
 	
 	
-	public class Measurement{
-		private Date date;
-		private String patientId;
-		private Double value;
-		private String measurement;
-		private String unit;
-		
-		public Date getDate() {
-			return date;
-		}
-		public void setDate(Date date) {
-			this.date = date;
-		}
-		public String getPatientId() {
-			return patientId;
-		}
-		public void setPatientId(String patientId) {
-			this.patientId = patientId;
-		}
-		public String getMeasurement() {
-			return measurement;
-		}
-		public void setMeasurement(String measurement) {
-			this.measurement = measurement;
-		}
-		public Double getValue() {
-			return value;
-		}
-		public void setValue(Double value) {
-			this.value = value;
-		}
-		public String getUnit() {
-			return unit;
-		}
-		public void setUnit(String unit) {
-			this.unit = unit;
-		}	
-	}	
-
 	private class MeasurementComparator implements Comparator<Measurement>{
 		public int compare(Measurement m1, Measurement m2){
 			if(m1.getDate().before(m2.getDate())){
