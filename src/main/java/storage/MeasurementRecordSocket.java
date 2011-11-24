@@ -17,7 +17,6 @@ public class MeasurementRecordSocket {
 	
 	public String SignEntry(String measurement, String unit, Double value, String patientId){
 		MeasurementRecord m = new MeasurementRecord();
-		System.err.println("------------------------------------CREATING ENTRY FROM SOCKET---------------------------------------------");
 		return m.newEntry(measurement, unit, value, patientId);
 	}
 }

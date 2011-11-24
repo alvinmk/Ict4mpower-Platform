@@ -1,5 +1,6 @@
 package ict4mpower;
 
+import java.util.Iterator;
 import java.util.Set;
 import junit.framework.TestCase;
 import models.AppInfo;
@@ -45,7 +46,7 @@ public class Storage extends TestCase{
 		s = MRSocket.getVisitEntries(1l, "12", "Prescription", "app");
 		for(Object o : s){
 			Prescription pi = (Prescription) o;
-			assertEquals(o.getClass().getSimpleName(), p.getClass().getSimpleName());	
+			assertEquals(o.getClass().getSimpleName(), pi.getClass().getSimpleName());	
 		}			
 	}
 	
@@ -59,37 +60,25 @@ public class Storage extends TestCase{
 		
 		s = mSocket.getMesurmentByType("test", "111");
 		
-		Measurement m  = s.iterator().next();
-		assertEquals("111", m.getPatientId());
-		assertEquals(10.0, m.getValue());
-		assertEquals("m", m.getUnit());
+		double value=0;
+		for(Measurement m : s){
+			assertTrue("value is " +value + " and got " +m.getValue(),value != m.getValue());
+			value = m.getValue();
+			assertTrue(m.getValue() == 10.0 || m.getValue() == 11.5);
+			assertEquals("111", m.getPatientId());
+			assertEquals("m", m.getUnit());
 		
-		m  = s.iterator().next();
-		assertEquals("111", m.getPatientId());
-		assertEquals(11.5, m.getValue());
-		assertEquals("m", m.getUnit());
-		
+		}
 		s = mSocket.getMesurmentByType("Water", "111");
-		m  = s.iterator().next();
-		assertEquals("111", m.getPatientId());
-		assertEquals(12.0, m.getValue());
-		assertEquals("l", m.getUnit());
-		s = mSocket.getMesurmentByType("Water", "112");
-		m  = s.iterator().next();
-		assertEquals("112", m.getPatientId());
-		assertEquals(100.0, m.getValue());
-		assertEquals("l", m.getUnit());
+		for(Measurement m : s){
+			assertTrue("value is " +value + " and got " +m.getValue(),value != m.getValue());
+			value = m.getValue();
+			assertTrue(m.getValue() == 100.0 || m.getValue() == 12.0);
+			assertEquals("111", m.getPatientId());
+			assertEquals("m", m.getUnit());
+		
+		}
+		
+		
 	}
-	
-	public void testApplicationRecord(){
-		ApplicationSocket aSocket = new ApplicationSocket();
-		AppInfo a1 = new AppInfo();
-		AppInfo a2 = new AppInfo();
-		AppInfo a3 = new AppInfo();
-		/*aSocket.storeData("test", "general", a1);
-		aSocket.storeData("test", "general", a2);
-		aSocket.storeData("test", "other", a3);
-		aSocket.storeData("test", "other", a1);*/
-	}
-
 }

@@ -4,19 +4,12 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 import models.BaseModel;
-
 import se.sics.dight.data.model.EntryId;
-import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.Objekt;
-import se.sics.dight.data.model.attributes.Attribute;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.Value;
-import se.sics.dight.data.security.Credential;
-import se.sics.dight.storage.store.query.QueryResult;
 public class MedicalRecord extends BaseRecord{
 	private static MedicalRecordKlass klassContainer;
 
@@ -28,14 +21,11 @@ public class MedicalRecord extends BaseRecord{
 	/*
 	 * Creates a new entry and commits it to the DIGHT database. Returns the entry id.
 	 */
-	public String newEntry(Object data, String app,String patientId, long visitId) {
-		String type = data.getClass().getSimpleName();
-		
-		BaseModel base = (BaseModel) data;
-		base.setApplication(app);
-		base.setType(type);
-		base.setVisit(visitId);
-		
+	public String newEntry(BaseModel data, String app,String patientId, long visitId) {
+		String type = data.getClass().getSimpleName();		
+		data.setApplication(app);
+		data.setType(type);
+		data.setVisit(visitId);
 		Value vType = e.makeStringValue(type);
 		Value vApp = e.makeStringValue(app);
 		Value vPatientId = e.makeStringValue(patientId);
@@ -75,7 +65,7 @@ public class MedicalRecord extends BaseRecord{
 	 */
 	public Set<Object> getObjectsForVisit(long visitId, String patientId, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
+		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
 		ValueTemplate Vvisit = e.makeBigintValueTemplate(visitId);
 		ValueTemplate VpatientId = e.makeStringValueTemplate(patientId);
 		ValueTemplate Vapplication = e.makeStringValueTemplate(application);
@@ -106,7 +96,7 @@ public class MedicalRecord extends BaseRecord{
 	 */
 	public Set<Object> getObjectsFromPatientId(String patientId, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
+		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
 		ValueTemplate VPatientId = e.makeStringValueTemplate(patientId);
 		ValueTemplate Vapplication = e.makeStringValueTemplate(application);
 		ValueTemplate Vtype = e.makeStringValueTemplate(type);
@@ -133,7 +123,7 @@ public class MedicalRecord extends BaseRecord{
 	 */
 	public Set<Object> getObjectsFromDateRange(String patientId, Date low, Date high, String type, String application){
 		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
+		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
 		
 		ValueTemplate vDateRange = e.makeDateValueRangeTemplate(low, high);
 		ValueTemplate Vapplication = e.makeStringValueTemplate(application);

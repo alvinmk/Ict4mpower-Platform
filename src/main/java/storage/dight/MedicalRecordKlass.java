@@ -1,16 +1,18 @@
 package storage.dight;
 
 import java.io.IOException;
-import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.attributes.Attribute;
-import se.sics.dight.data.security.Credential;
 import se.sics.dight.storage.engine.Engine;
 import se.sics.dight.storage.store.query.QueryResult;
 
 public class MedicalRecordKlass extends KlassContainer{
+	private static final Logger log = Logger.getLogger(MedicalRecord.class);
+	private Klass klass;
 	Attribute type;
 	Attribute application;
 	Attribute visitId;
@@ -23,13 +25,12 @@ public class MedicalRecordKlass extends KlassContainer{
 		klassName = "MedicalRecord";
 		createAttributes();
 		klass = queryKlass(klassName);
-		if(klass!=null && klass.getVersion() >= version){
-			System.err.println("KLASSS FOUND");
-			System.err.println(klass.getName() +" ");
+		if(klass != null){
+			log.info(klass.getName() +" exist in database");
 	
 		}
 		else{
-			System.err.println("KLASSS NOT FOUND; CREATING IT");
+			log.info(klassName +" does not exsitst in database, creating it");
 			createAndStoreKlass();
 		}		
 		
@@ -44,9 +45,7 @@ public class MedicalRecordKlass extends KlassContainer{
 	}
 	
 	protected void createAndStoreKlass(){
-		
-		byte[] b = new byte[20];
-		EntryId eid = e.makeEntryId(b);
+		EntryId eid = generateUniqeEntryId();
 		klass = e.createKlass(version, eid, klassName);
 		klass.addAttribute(date);
 		klass.addAttribute(patientId);
@@ -62,5 +61,10 @@ public class MedicalRecordKlass extends KlassContainer{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	@Override
+	public Klass getKlass() {
+		return klass;
 	}
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import models.BaseModel;
+
 import storage.dight.MedicalRecord;
 
 //import storage.dight.MedicalRecord;
@@ -13,7 +15,7 @@ public class MedicalRecordSocket {
 	 * This takes an entry and stores it in the database.
 	 * Since it's singned it can no longer be edited. 
 	 */
-	public String SignEntry(Object o,String patientId, long visitId, String application){
+	public String SignEntry(BaseModel o,String patientId, long visitId, String application){
 		String type = o.getClass().getName();
 		MedicalRecord mr = new MedicalRecord();
 		return mr.newEntry(o, application, patientId, visitId);

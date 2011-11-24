@@ -1,7 +1,6 @@
 package storage.dight;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +20,6 @@ public class ApplicationRecord extends BaseRecord{
 	}
 	
 	public String newEntry(String application, String type, Object data){
-		klassContainer = new ApplicationKlass(e);
 		Value vApplication = e.makeStringValue(application);
 		Value vType = e.makeStringValue(type);
 		
@@ -42,7 +40,7 @@ public class ApplicationRecord extends BaseRecord{
 	
 	public Set<Object> getApplicationData(String application, String type){
 		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
+		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
 		ValueTemplate vApplication = e.makeStringValueTemplate(application);
 		ValueTemplate vType = e.makeStringValueTemplate(type);
 		h.put("attribute", klassContainer.type);

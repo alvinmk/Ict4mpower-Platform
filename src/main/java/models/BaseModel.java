@@ -2,7 +2,9 @@ package models;
 
 import java.io.Serializable;
 
-public class BaseModel implements Serializable{
+public abstract class BaseModel implements Serializable{
+
+	private static final long serialVersionUID = -7111368952969440473L;
 	private String application;
 	private Long visit;
 	private String patientId;

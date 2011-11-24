@@ -5,16 +5,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import se.sics.dight.data.model.Entry;
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.KlassQuery;
-import se.sics.dight.data.model.attributes.Attribute;
 import se.sics.dight.data.security.Credential;
 import se.sics.dight.data.security.EntryAuthenticationAlgorithm;
 import se.sics.dight.security.DummyEntryAuthenticationAlgorithm;
@@ -23,7 +20,6 @@ import se.sics.dight.storage.store.query.KlassQueryResult;
 import se.sics.dight.storage.store.query.QueryResult;
 
 public abstract class KlassContainer {
-	protected Klass klass;
 	Engine e;
 	String klassName;
 	protected List<Credential> klassCreds = new ArrayList<Credential>();
@@ -35,9 +31,7 @@ public abstract class KlassContainer {
 		this.e = e;
 	}
 
-	public Klass getKlass(){
-		return klass;
-	}
+	public abstract Klass getKlass();
 		
 	public EntryAuthenticationAlgorithm getEntryAuthenticationAlgorithm(){
 		return EAA;
@@ -49,7 +43,6 @@ public abstract class KlassContainer {
 	protected EntryId generateUniqeEntryId(){
 		byte id[] = new byte[20];
 		UUID u = UUID.randomUUID();
-		Date d = new Date();
 		ByteBuffer bb = ByteBuffer.wrap(id);
 		bb.order(ByteOrder.LITTLE_ENDIAN);
 		bb.putLong(u.getMostSignificantBits());
@@ -68,9 +61,8 @@ public abstract class KlassContainer {
 	}
 	
 	protected Klass queryKlass(String klass){
-		//Does the class exsist
-		KlassQuery query;
-		query = e.createKlassQuery(klass, KlassQuery.LATEST_VERSION);
+		//Does the Klass exsist?
+		KlassQuery query = e.createKlassQuery(klass, KlassQuery.LATEST_VERSION);
 		query.commit(EAA);
 		QueryResult result = null;
 		try {
@@ -80,14 +72,10 @@ public abstract class KlassContainer {
 		}
 		if(result != null){
 			KlassQueryResult klassQResult = (KlassQueryResult) result;
-			Set<Entry> x = klassQResult.getResult();
 			Entry entry  = klassQResult.getResult().iterator().next();
 			Klass k = (Klass) entry;
 			return k;
 		}
 		return null;
-		
-		
-		//if not create it
 	}
 }

@@ -9,21 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
 import se.sics.dight.data.model.AttributeQuery;
 import se.sics.dight.data.model.Entry;
-import se.sics.dight.data.model.EntryId;
-import se.sics.dight.data.model.Klass;
 import se.sics.dight.data.model.Objekt;
 import se.sics.dight.data.model.attributes.Attribute;
 import se.sics.dight.data.model.ex.PayloadNotRetrieved;
 import se.sics.dight.data.model.templates.ValueTemplate;
-import se.sics.dight.data.model.values.Value;
 import se.sics.dight.data.security.Credential;
-import se.sics.dight.data.security.EntryAuthenticationAlgorithm;
-import se.sics.dight.security.DummyEntryAuthenticationAlgorithm;
 import se.sics.dight.storage.engine.Engine;
 import se.sics.dight.storage.store.query.AttributeQueryResult;
 import se.sics.dight.storage.store.query.QueryResult;
@@ -35,9 +28,6 @@ public abstract class BaseRecord {
 	protected List<Credential> cred = new ArrayList<Credential>();
 		
 	public BaseRecord(){
-		Credential c = new Credential() {
-		};
-		cred.add(c);
 	}
 	
 	public void setKlassContainer(KlassContainer kc){
@@ -47,41 +37,37 @@ public abstract class BaseRecord {
 	/*
 	 *  Makes an query from attributes and values
 	 */
-	protected Set<Object> attributesQueryToObject(Set<HashMap> a){
+	protected Set<Object> attributesQueryToObject(Set<HashMap<String, Object>> a){
 		Set<Entry> x = attributesQuery(a);
 		return getObjectsFromEntrySet(x);
 	}
 	
-	protected Set<Objekt> attributesQueryToObjekt(Set<HashMap> a){
+	protected Set<Objekt> attributesQueryToObjekt(Set<HashMap<String, Object>> a){
 		Set<Entry> x = attributesQuery(a);
 		return getObjektsFromEntrySet(x);
 	}
 	
-	private Set<Entry> attributesQuery(Set<HashMap> a){
-		AttributeQuery aq = null;
-		aq = e.createAttributeQuery(klassContainer.getKlass());
+	private Set<Entry> attributesQuery(Set<HashMap<String, Object>> a){
+		AttributeQuery aq = e.createAttributeQuery(klassContainer.getKlass(), false);
 		for(HashMap<String, Object> map : a){
 			aq.setValue((Attribute) map.get("attribute"), (ValueTemplate)map.get("value"));
 		}		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send query to server
-		DightSocket d = new DightSocket();
-		QueryResult qr=null;
+		QueryResult qr = null;
 		try {
 			qr = DightSocket.CreateOperationResult(aq, cred, e);
-		} catch (IOException e1) {
+		} catch (IOException e2) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e2.printStackTrace();
 		}
-		System.err.println("****************************************"+qr.getSize());
-		AttributeQueryResult indexQResult;
-		indexQResult = (AttributeQueryResult) qr;
+		AttributeQueryResult indexQResult = (AttributeQueryResult) qr;
 		Set<Entry> x = indexQResult.getResult();
 		return x;		
 	}
 	
 	private Set<Objekt> getObjektsFromEntrySet(Set<Entry> s){
-		Set<Objekt> ret = null;
+		Set<Objekt> ret = new HashSet<Objekt>();
 		for(Entry currentEntry: s){
 			ret.add(getObjektFromEntry(currentEntry));
 		}
@@ -127,6 +113,7 @@ public abstract class BaseRecord {
 	 * Serialize the object
 	 */
 	protected static byte[] serialize(Object obj) throws IOException {
+		System.err.println();
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
     	ObjectOutputStream os = new ObjectOutputStream(out);
 		os.writeObject(obj);

@@ -8,27 +8,32 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
+
 import models.Measurement;
 
 import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Objekt;
+import se.sics.dight.data.model.attributes.Attribute;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.DateValue;
 import se.sics.dight.data.model.values.DoubleValue;
+import se.sics.dight.data.model.values.StringValue;
 import se.sics.dight.data.model.values.Value;
 import se.sics.dight.storage.store.query.QueryResult;
 
 public class MeasurementRecord extends BaseRecord{
 
 	private static MeasurementKlass klassContainer;
-
+	private static final Logger log = Logger.getLogger(MeasurementRecord.class);
+	
 	public MeasurementRecord(){
 		klassContainer = new MeasurementKlass(e);
 		setKlassContainer(klassContainer);
 	}
 	
 	public String newEntry(String measurement, String unit, Double value, String patientId){
-		klassContainer = new MeasurementKlass(e);
 		Value vMeasurement = e.makeStringValue(measurement);
 		Value vUnit = e.makeStringValue(unit);
 		Value vValue = e.makeDoubleValue(value);
@@ -45,7 +50,7 @@ public class MeasurementRecord extends BaseRecord{
 		entry.setValue(klassContainer.measurement, vMeasurement);
 		entry.setValue(klassContainer.unit, vUnit);
 		entry.setValue(klassContainer.value, vValue);
-		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());
+		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());		
 		try {
 			QueryResult res = DightSocket.CreateOperationResult(entry, cred, e);
 		} catch (IOException e1) {
@@ -57,7 +62,7 @@ public class MeasurementRecord extends BaseRecord{
 	
 	public Set<Measurement> getMeasurement(String patientId, String measurement){
 		HashMap<String, Object> h = new HashMap<String, Object>();
-		Set<HashMap> s = new HashSet<HashMap>();
+		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
 		ValueTemplate vMeasurement = e.makeStringValueTemplate(measurement);
 		h.put("attribute", klassContainer.measurement);
 		h.put("value", vMeasurement);
@@ -76,7 +81,7 @@ public class MeasurementRecord extends BaseRecord{
 			Measurement m = new Measurement();
 			m.setDate( ((DateValue) o.getValue(klassContainer.date)).getValue());
 			m.setValue( ((DoubleValue)o.getValue(klassContainer.value)).getValue() );
-			m.setUnit( o.getValue(klassContainer.unit).toString());
+			m.setUnit( ((StringValue)o.getValue(klassContainer.unit)).getValue());
 			m.setMeasurement(measurement);
 			m.setPatientId(patientId);
 			ret.add(m);

@@ -207,7 +207,7 @@
 				<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
 				<wsdlOptions>
 					<wsdlOption>
-						<wsdl>http://lucan.sics.se:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
+						<wsdl>http://alvin-laptop:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
 					</wsdlOption>
 				</wsdlOptions>
 			</configuration>

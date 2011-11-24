@@ -14,7 +14,7 @@ import se.sics.dight.storage.webservice.DightStorageServiceEndpoint;
 
 public class DightSocket {
 	
-	 private static final Logger log = Logger.getLogger(DightSocket.class);
+	private static final Logger log = Logger.getLogger(DightSocket.class);
 	
 	public static QueryResult CreateOperationResult(Entry entry, List<Credential> creds, Engine e) throws IOException {
 		ByteArrayOutputStream credBytes = new ByteArrayOutputStream();
@@ -29,7 +29,7 @@ public class DightSocket {
 		byte[] result = endpoint.performOperation(entryBytes, credBytes.toByteArray());
 		
 		OperationResult operationResult = new OperationResult(e, result);
-		log.info("*Result of operation " +operationResult.getStatus().toString());
+		log.info("Result of operation for entry " + entry.getId() +" " +operationResult.getStatus().toString());
 		return operationResult.getQueryResults();
 	}
 }
