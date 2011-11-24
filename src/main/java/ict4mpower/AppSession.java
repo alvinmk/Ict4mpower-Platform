@@ -3,11 +3,12 @@ package ict4mpower;
 import java.util.HashMap;
 import java.util.List;
 
+import models.PatientInfo;
+
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.ClientInfo;
 import org.apache.wicket.request.Request;
 
-import models.PatientInfo;
 /*
  * What should be stored in the session
  */

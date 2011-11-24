@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class PatientInfo implements Serializable {
+public class PatientInfo extends BaseModel implements Serializable {
 	private static final long serialVersionUID = -1691781881788990803L;
 	private String name;
 	private String clientId;

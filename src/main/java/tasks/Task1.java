@@ -1,6 +1,9 @@
 package tasks;
 
+import java.util.Date;
 import java.util.Locale;
+
+import models.PatientInfo;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.Button;
@@ -11,7 +14,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.Person;
 
 public class Task1 extends Task{
 	//final Logger log = Logger.getLogger(Task1.class);
@@ -22,7 +24,7 @@ public class Task1 extends Task{
 	        protected void onSubmit() {}
 	    };
 	    add(form);
-	    Person person = new Person();
+	    PatientInfo person = new PatientInfo("Alvin", "111", "No varnings", new Date());
 	    
 	    form.add(new RequiredTextField("personName", new PropertyModel(person, "name")));
 	    

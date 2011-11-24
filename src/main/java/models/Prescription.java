@@ -1,9 +1,10 @@
 package models;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Prescription implements Serializable{
+public class Prescription extends BaseModel{
+
+	private static final long serialVersionUID = 2283499333207223801L;
 	private Date Start;
 	private Date end;
 	private String drug;
