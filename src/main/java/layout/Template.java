@@ -33,7 +33,7 @@ public class Template extends WebPage {
 		GoalsAndTasks gt = new GoalsAndTasks();
 		MockPatient mock = new MockPatient();
 		AppSession s = (AppSession) getSession();
-		s.setAllVisits(mock.visits);
+		//s.setAllVisits(mock.visits);
 		s.setPatientInfo(mock.pi);
 		
 		//Parse the parameter and add the coresponding tab

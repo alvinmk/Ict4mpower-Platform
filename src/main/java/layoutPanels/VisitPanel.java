@@ -8,7 +8,8 @@ import ict4mpower.AppSession;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
+
 
 public class VisitPanel extends Panel {
 
@@ -20,7 +21,16 @@ public class VisitPanel extends Panel {
 	public VisitPanel(String id) {
 		super(id);
 		AppSession session = (AppSession) getSession();
-		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new PropertyModel(this, "session.CurrentVisit"), session.getAllVisits()){
+		List<String> visitList = session.getAllVisits();
+		if(visitList == null){
+			visitList = new ArrayList<String>();
+			visitList.add("No visit");
+		}
+		String currentVisit = session.getCurrentVisit();
+		if(currentVisit == null){
+			currentVisit = "No visit";
+		}
+		DropDownChoice<String> visits = new DropDownChoice<String>("visitList", new Model<String>(currentVisit), visitList){
 			private static final long serialVersionUID = 6239600167733224223L;
 			@Override
 			protected void onSelectionChanged(String newSelection) {
