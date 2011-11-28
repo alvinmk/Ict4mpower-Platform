@@ -1,19 +1,3 @@
-/*
- *  This file is part of the ICT4MPOWER platform.
- *
- *  The ICT4MPOWER platform is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The ICT4MPOWER platform is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with the ICT4MPOWER platform.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ict4mpower.childHealth.panels.dash;
 
 import java.io.Serializable;
@@ -287,7 +271,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			.getMarkerOptions()
 				.setShowHighlight(false);
 		options.addNewSeries() // Weight (+1)
-			.setColor(c1)
+			.setColor("#55ff55")
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
@@ -295,7 +279,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			.getMarkerOptions()
 				.setShowHighlight(false);
 		options.addNewSeries() // Weight (+2)
-			.setColor(c2)
+			.setColor("#993333")
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
@@ -303,7 +287,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			.getMarkerOptions()
 				.setShowHighlight(false);
 		options.addNewSeries() // Weight (+3)
-			.setColor(c3)
+			.setColor("#ff3333")
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
