@@ -1,3 +1,19 @@
+/*
+ *  This file is part of the ICT4MPOWER platform.
+ *
+ *  The ICT4MPOWER platform is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The ICT4MPOWER platform is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with the ICT4MPOWER platform.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ict4mpower.childHealth.panels.education;
 
 import java.util.List;
@@ -66,7 +82,7 @@ public class AccordionPanel extends DivisionPanel {
 			EducationData data = EducationData.instance();
 			
 			// Contents
-			add(new ListView<EducationInfoData>("container",
+			ListView<EducationInfoData> list = new ListView<EducationInfoData>("container",
 					new PropertyModel<List<EducationInfoData>>(data, propertyName)) {
 				private static final long serialVersionUID = 4806869925646123546L;
 
@@ -75,7 +91,8 @@ public class AccordionPanel extends DivisionPanel {
 						ListItem<EducationInfoData> item) {
 					item.add(new AccordionContentsPanel("contents", item.getModel(), AccordionPanel.this));
 				}
-			}, propertyName);
+			};
+			add(list, propertyName);
 		}
 	}
 }
