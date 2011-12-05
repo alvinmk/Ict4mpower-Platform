@@ -33,8 +33,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.ApplicationSocketTemp;
-import storage.DataEndPoint;
+import storage.ApplicationSocket;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
@@ -68,7 +68,8 @@ public class AntimalarialPanel extends DivisionPanel {
 			}
 			MedicationsData med = null;
 			// Get from db
-			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			MedicalRecordSocket socket = new MedicalRecordSocket();
+			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), med.getClass().getSimpleName(), "ChildHealth");
 			for(Object o : set) {
 				if(o instanceof MedicationsData) {
 					med = (MedicationsData) o;
@@ -84,7 +85,8 @@ public class AntimalarialPanel extends DivisionPanel {
 			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 			List<Medicine> std = null;
 			List<Medicine> meds = new ArrayList<Medicine>();
-			Set<Object> medSet = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "StandardAntimalarial");
+			ApplicationSocket appSocket = new ApplicationSocket();
+			Set<Object> medSet = appSocket.getData("ChildHealth", "StandardAntimalarial");
 			for(Object o : medSet) {
 				// Get only first object - there should be only one
 				std = (List<Medicine>) o;

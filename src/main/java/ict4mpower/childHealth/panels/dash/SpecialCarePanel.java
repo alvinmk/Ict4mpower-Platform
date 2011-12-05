@@ -29,8 +29,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.AdditionalData;
@@ -63,14 +62,13 @@ public class SpecialCarePanel extends DivisionPanel {
 			}
 			AdditionalData ad = null;
 			// Get from db
-			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			MedicalRecordSocket socket = new MedicalRecordSocket();
+			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), ad.getClass().getSimpleName(), "ChildHealth");
 			for(Object o : set) {
-				if(o instanceof AdditionalData) {
-					ad = (AdditionalData) o;
-					if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
-						data.setReasons(ad.getReasons());
-						max = ad.getDate();
-					}
+				ad = (AdditionalData) o;
+				if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
+					data.setReasons(ad.getReasons());
+					max = ad.getDate();
 				}
 			}
 		}

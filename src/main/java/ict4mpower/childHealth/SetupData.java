@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import storage.ApplicationSocketTemp;
+import storage.ApplicationSocket;
 
 /**
  * Class to set up the application specific data in the database
@@ -39,8 +39,10 @@ public class SetupData {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ApplicationSocketTemp store = ApplicationSocketTemp.getApplicationSocketTemp();
+		ApplicationSocket store = new ApplicationSocket();
 		String app = "ChildHealth";
+		
+		
 		
 		// Dashboard & Growth - Reference values for growth chart and growth indicators
 		Float[][] growthValuesGirls = new Float[][] {
@@ -173,9 +175,12 @@ public class SetupData {
 						5.0f, 5.3f, 5.6f, 6.0f, 6.4f, 6.8f, 7.2f, 7.5f, 7.8f, 8.0f, 8.3f, 8.5f, 8.8f, 9.0f, 9.7f, 10.4f, 10.9f, 11.4f, 11.9f, 12.3f, 12.7f, 13.0f, 13.3f, 13.7f, 14.0f, 14.3f, 14.6f, 14.9f, 15.3f, 15.6f, 15.9f, 16.2f, 16.5f, 16.8f, 17.1f, 17.5f, 17.8f, 18.1f, 18.4f, 18.7f, 19.0f, 19.3f, 19.6f, 19.9f, 20.2f, 20.4f, 20.7f, 21.0f, 21.3f, 21.6f, 21.9f, 22.1f, 22.4f, 22.7f, 23.0f, 23.3f, 23.6f, 23.9f, 24.2f, 24.5f, 24.8f, 25.1f, 25.4f, 25.7f, 26.0f, 26.3f, 26.6f, 26.9f, 27.2f, 27.6f, 27.9f
 				}
 		};
-		store.storeData(app, "GrowthReferenceValues:girls", growthValuesGirls);
-		store.storeData(app, "GrowthReferenceValues:boys", growthValuesBoys);
-		
+		if(store.getData(app, growthValuesGirls.getClass().getSimpleName()) == null ){
+			store.storeData(app, "GrowthReferenceValues:girls", growthValuesGirls);
+		}
+		if(store.getData(app, growthValuesBoys.getClass().getSimpleName()) == null ){
+			store.storeData(app, "GrowthReferenceValues:boys", growthValuesBoys);
+		}
 		// Immunization - standard vaccinations to be given
 		List<Vaccination> vaccinations = new ArrayList<Vaccination>(Arrays.asList(new Vaccination[]{
 				new Vaccination("BCG", Calendar.WEEK_OF_YEAR, 0, null, "", ""),
@@ -308,6 +313,5 @@ public class SetupData {
 		store.storeData(app, "EducationOptions", options);
 		
 		// Save
-		store.save();
 	}
 }

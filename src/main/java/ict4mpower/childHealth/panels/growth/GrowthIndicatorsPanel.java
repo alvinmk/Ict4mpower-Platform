@@ -44,7 +44,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 /**
  * Panel for growth indicators
@@ -95,14 +95,13 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 				}
 				GrowthData gd = null;
 				// If no data in session, get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof GrowthData) {
-						gd = (GrowthData) o;
-						if(gd.getIndicators() != null && gd.getDate().after(max)) {
-							data.setIndicators(gd.getIndicators());
-							max = gd.getDate();
-						}
+					gd = (GrowthData) o;
+					if(gd.getIndicators() != null && gd.getDate().after(max)) {
+						data.setIndicators(gd.getIndicators());
+						max = gd.getDate();
 					}
 				}
 			}

@@ -39,8 +39,7 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.CloseButt
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
-import storage.DataEndPoint;
-
+import storage.MedicalRecordSocket;
 /**
  * Panel for feeding information
  * @author Joakim Lindskog
@@ -94,8 +93,8 @@ public class FeedingPanel extends DivisionPanel {
 					e.printStackTrace();
 				}
 				GrowthData gd = null;
-				// Get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					if(o instanceof GrowthData) {
 						gd = (GrowthData) o;

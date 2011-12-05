@@ -30,7 +30,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
@@ -97,7 +97,8 @@ public class ReasonsPanel extends DivisionPanel {
 				}
 				AdditionalData ad = null;
 				// Get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), ad.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					if(o instanceof AdditionalData) {
 						ad = (AdditionalData) o;

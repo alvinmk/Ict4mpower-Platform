@@ -20,12 +20,14 @@ import ict4mpower.childHealth.ChildHealthData;
 
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the StatusPraesens task
  * @author Joakim Lindskog
  *
  */
-public class StatusPraesensData implements ChildHealthData {
+public class StatusPraesensData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -7582569994675017144L;
 	
 	private static StatusPraesensData instance = null;

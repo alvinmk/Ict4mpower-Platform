@@ -24,12 +24,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the Immunization task
  * @author Joakim Lindskog
  *
  */
-public class ImmunizationData implements ChildHealthData {
+public class ImmunizationData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -553200314531540733L;
 	
 	private static ImmunizationData instance = null;

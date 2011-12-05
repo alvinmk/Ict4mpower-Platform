@@ -22,12 +22,14 @@ import ict4mpower.childHealth.panels.growth.Indicator;
 import java.util.Date;
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the Growth task
  * @author Joakim Lindskog
  *
  */
-public class GrowthData implements ChildHealthData {
+public class GrowthData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -7434447093247650316L;
 	
 	private static GrowthData instance = null;

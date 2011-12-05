@@ -29,7 +29,7 @@ import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
 import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
-import storage.ApplicationSocketTemp;
+import storage.ApplicationSocket;
 
 /**
  * Panel for the education task
@@ -48,7 +48,8 @@ public class EducationPanel extends Panel {
 		
 		// Get checkable options from database
 		EducationData data = EducationData.instance();
-		Set<Object> set = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "EducationOptions");
+		ApplicationSocket appSocket = new ApplicationSocket();
+		Set<Object> set = appSocket.getData("ChildHealth", "EducationOptions");
 		CheckableOption[][][] options = null;
 		for(Object o : set) {
 			// Get copy of only first object - there should be only one

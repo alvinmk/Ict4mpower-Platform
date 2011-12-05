@@ -29,7 +29,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
@@ -84,14 +84,13 @@ public class OtherMedicationsPanel extends DivisionPanel {
 				}
 				MedicationsData med = null;
 				// Get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), med.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof MedicationsData) {
-						med = (MedicationsData) o;
-						if(med.getOtherMeds() != null && med.getDate().after(max)) {
-							data.setOtherMeds(med.getOtherMeds());
-							max = med.getDate();
-						}
+					med = (MedicationsData) o;
+					if(med.getOtherMeds() != null && med.getDate().after(max)) {
+						data.setOtherMeds(med.getOtherMeds());
+						max = med.getDate();
 					}
 				}
 			}

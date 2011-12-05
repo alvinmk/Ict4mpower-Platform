@@ -33,23 +33,24 @@ public class ClientPanel extends Panel {
 	public ClientPanel(String id) {
 		super(id);
 		AppSession s = (AppSession) getSession();
-		
-		//final ModalWindow mw = new ModalWindow("patientDialog");
-		//mw.setTitle(new PropertyModel<String>(this ,"session.PatientInfo.getName()" ));
+
 		final Dialog patientDialog = new Dialog("patientDialog");
 		Component childs = new ClientInfoPanel("patientData");
 		patientDialog.add(childs);
 		String name;
 		String warnings;
-		if(s.getPatientInfo() != null){
+		//Try to read warnings and patient name from the session, set a fallback
+		try{
 			name = s.getPatientInfo().getName();
-			warnings =s.getPatientInfo().getWarnings();
-		}
-		else{
+		}catch(NullPointerException e){
 			name = "No patient selected";
-			warnings ="";
 		}
-		
+		try{
+			warnings = s.getPatientInfo().getWarnings();
+		}catch(NullPointerException e){
+			warnings = "No warnings";
+		}
+		   
 		patientDialog.setTitle(name);
 		AjaxLink<String> patientName = new AjaxLink<String>("clientName") {
 			private static final long serialVersionUID = -1999518640202002086L;

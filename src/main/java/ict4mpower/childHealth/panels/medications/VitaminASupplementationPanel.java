@@ -16,7 +16,7 @@
  */
 package ict4mpower.childHealth.panels.medications;
 
-import java.io.Serializable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import storage.ApplicationSocketTemp;
-import storage.DataEndPoint;
+import storage.ApplicationSocket;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.MedicationsData;
@@ -68,7 +68,8 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 			}
 			MedicationsData med = null;
 			// Get from db
-			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			MedicalRecordSocket socket = new MedicalRecordSocket();
+			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), med.getClass().getSimpleName(), "ChildHealth");
 			for(Object o : set) {
 				if(o instanceof MedicationsData) {
 					med = (MedicationsData) o;
@@ -84,7 +85,8 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 			PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 			List<Medicine> std = null;
 			List<Medicine> vitamins = new ArrayList<Medicine>();
-			Set<Object> vit = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "StandardVitaminA");
+			ApplicationSocket appSocket = new ApplicationSocket();
+			Set<Object> vit = appSocket.getData("ChildHealth", "StandardVitaminA");
 			for(Object o : vit) {
 				// Get only first object - there should be only one
 				std = (List<Medicine>) o;

@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import storage.DataEndPoint;
+import junit.framework.TestCase;
+
+import org.apache.wicket.util.tester.WicketTester;
+
+import storage.MedicalRecordSocket;
 
 import models.PatientInfo;
 import models.PatientInfo.Sex;
@@ -22,8 +26,17 @@ import ict4mpower.childHealth.panels.medications.Medicine;
  * @author Joakim Lindskog
  *
  */
-public class TestSetup {
+public class TestSetup extends TestCase{
 	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+	private WicketTester tester;
+	//EnhancedWicketTester enhanced = new EnhancedWicketTester(tester);
+
+	@Override
+	public void setUp()
+	{
+		tester = new WicketTester(new WicketApplication());
+	}
 	
 	public static void main(String[] args) {
 		// Create mock patient
@@ -32,6 +45,7 @@ public class TestSetup {
 		// Add some indicators to growth indicators table
 		GrowthData data = GrowthData.instance();
 		PatientInfo pi;
+		MedicalRecordSocket mrSocket = new MedicalRecordSocket();
 		try {
 			pi = new PatientInfo("Alvin Mattsson Kjellqvist", "1", "Allergic to peanuts",
 					df.parse("01/06/2011"), Sex.MALE);
@@ -42,7 +56,8 @@ public class TestSetup {
 			indicators.add(new Indicator(pi, 42, 64, 7f, df.parse("12/10/2011")));
 			data.setIndicators(indicators);
 			data.setDate(df.parse("01/01/1900"));
-			DataEndPoint.getDataEndPoint().signEntry(data, "1", p.visits.get(0), "ChildHealth");
+			
+			mrSocket.SignEntry(data, "1", p.visits.get(0), "ChildHealth");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -57,12 +72,13 @@ public class TestSetup {
 			}));
 			medData.setOtherMeds(meds);
 			medData.setDate(df.parse("01/01/1900"));
-			DataEndPoint.getDataEndPoint().signEntry(medData, "1", p.visits.get(0), "ChildHealth");
+			mrSocket.SignEntry(medData, "1", p.visits.get(0), "ChildHealth");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		// Save everything
-		DataEndPoint.getDataEndPoint().save();
+	}
+	
+	public void testSomething(){
 	}
 }

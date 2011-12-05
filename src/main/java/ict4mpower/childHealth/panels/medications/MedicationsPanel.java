@@ -34,9 +34,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.effects.EffectBehavior;
-import org.odlabs.wiquery.ui.effects.EffectsHelper;
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
 /**
@@ -51,12 +49,12 @@ public class MedicationsPanel extends Panel {
 			new HighlightEffect(HighlightEffect.Mode.show, "'#FDCD35'", 1800)) {
 		private static final long serialVersionUID = 1L;
 		
-		@Override
+	/*	@Override
 		public void contribute(
 				WiQueryResourceManager wiQueryResourceManager) {
 			EffectsHelper.highlight(wiQueryResourceManager);
 		}
-		
+	*/	
 		public boolean isTemporary(Component component) {
 			return true;
 		}

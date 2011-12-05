@@ -18,6 +18,8 @@ package ict4mpower.childHealth.data;
 
 import java.io.Serializable;
 
+import models.BaseModel;
+
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -25,7 +27,7 @@ import org.apache.wicket.model.StringResourceModel;
  * @author Joakim Lindskog
  *
  */
-public class CheckInfoData implements Serializable {
+public class CheckInfoData extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 4232181354140299404L;
 	
 	/** Whether this item is selected or not */

@@ -24,9 +24,6 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.openid4java.OpenIDException;
 import org.openid4java.discovery.Identifier;
-
-import storage.DataEndPoint;
-
 import authentication.AuthStrategy;
 import authentication.LoginPage;
 import authentication.OpenIdCallbackPage;
@@ -89,12 +86,6 @@ public class WicketApplication extends WebApplication
 
 		};
 		consumer.init(this);
-	}
-	
-	public void onDestroy(){
-		//Save data
-//		DataEndPoint d = DataEndPoint.getDataEndPoint();
-//		d.save();
-	}
+	}	
 		
 }

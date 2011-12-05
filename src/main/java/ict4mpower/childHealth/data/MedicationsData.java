@@ -24,12 +24,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the Medications task
  * @author Joakim Lindskog
  *
  */
-public class MedicationsData implements ChildHealthData {
+public class MedicationsData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = 4239968609396691757L;
 	
 	private static MedicationsData instance = null;

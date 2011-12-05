@@ -39,13 +39,13 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.effects.EffectBehavior;
-import org.odlabs.wiquery.ui.effects.EffectsHelper;
+
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
-import storage.ApplicationSocketTemp;
-import storage.DataEndPoint;
+import storage.ApplicationSocket;
+import storage.MedicalRecordSocket;
+
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
@@ -106,20 +106,20 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 					e.printStackTrace();
 				}
 				ImmunizationData imd = null;
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), imd.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof ImmunizationData) {
-						imd = (ImmunizationData) o;
-						if(imd.getVaccinations() != null && imd.getDate().after(max)) {
-							data.setVaccinations(imd.getVaccinations());
-							max = imd.getDate();
-						}
+					imd = (ImmunizationData) o;
+					if(imd.getVaccinations() != null && imd.getDate().after(max)) {
+						data.setVaccinations(imd.getVaccinations());
+						max = imd.getDate();
 					}
 				}
 			}
 			if(data.getVaccinations() == null) {
 				// No data in db for patient - get "starting vaccinations list" for patient
-				Set<Object> v = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "StandardVaccinations");
+				ApplicationSocket appSocket = new ApplicationSocket();
+				Set<Object> v = appSocket.getData("ChildHealth", "StandardVaccinations");
 				List<Vaccination> va = null;
 				List<Vaccination> vaccinations = new ArrayList<Vaccination>();
 				PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
@@ -253,12 +253,12 @@ class VaccinationPanel extends Panel {
 			new HighlightEffect(HighlightEffect.Mode.show, "'#FDCD35'", 1800)) {
 		private static final long serialVersionUID = 1L;
 		
-		@Override
+	/*	@Override
 		public void contribute(
 				WiQueryResourceManager wiQueryResourceManager) {
 			EffectsHelper.highlight(wiQueryResourceManager);
 		}
-		
+	*/	
 		public boolean isTemporary(Component component) {
 			return true;
 		}

@@ -35,8 +35,7 @@ import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.ui.datepicker.DatePicker;
-
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 /**
  * Panel for the PMTCT record of the child
@@ -95,25 +94,24 @@ public class PMTCTRecordPanel extends DivisionPanel {
 				}
 				GrowthData gd = null;
 				// Get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof GrowthData) {
-						gd = (GrowthData) o;
-						if(gd.getDate().after(max)) {
-							if(gd.getPmtct() != null) {
-								data.setPmtct(gd.getPmtct());
-							}
-							if(gd.getHivTestRadio() != null) {
-								data.setHivTestRadio(gd.getHivTestRadio());
-							}
-							if(gd.getInitTreatmentRadio() != null) {
-								data.setInitTreatmentRadio(gd.getInitTreatmentRadio());
-							}
-							if(gd.getInitTreatmentDate() != null) {
-								data.setInitTreatmentDate(gd.getInitTreatmentDate());
-							}
-							max = gd.getDate();
+					gd = (GrowthData) o;
+					if(gd.getDate().after(max)) {
+						if(gd.getPmtct() != null) {
+							data.setPmtct(gd.getPmtct());
 						}
+						if(gd.getHivTestRadio() != null) {
+								data.setHivTestRadio(gd.getHivTestRadio());
+						}
+						if(gd.getInitTreatmentRadio() != null) {
+							data.setInitTreatmentRadio(gd.getInitTreatmentRadio());
+						}
+						if(gd.getInitTreatmentDate() != null) {
+							data.setInitTreatmentDate(gd.getInitTreatmentDate());
+						}
+						max = gd.getDate();
 					}
 				}
 			}

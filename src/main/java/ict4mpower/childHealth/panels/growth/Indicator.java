@@ -31,7 +31,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-import storage.ApplicationSocketTemp;
+import storage.ApplicationSocket;
+
 
 /**
  * Data class representing an indicator
@@ -204,7 +205,7 @@ public class Indicator implements Serializable, Comparable<Indicator>, IDueAge {
 	 */
 	private Float[][] getReferenceValues() {
 		Float[][] references = null;
-		ApplicationSocketTemp store = ApplicationSocketTemp.getApplicationSocketTemp();
+		ApplicationSocket store = new ApplicationSocket();
 		String gb = null;
 		if(patientInfo.getSex() == PatientInfo.Sex.FEMALE) {
 			gb = "girls";

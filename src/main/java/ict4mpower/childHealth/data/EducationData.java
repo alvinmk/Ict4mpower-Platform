@@ -22,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the Education task
  * @author Joakim Lindskog
  *
  */
-public class EducationData implements ChildHealthData {
+public class EducationData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -5967334292372509608L;
 
 	private static EducationData instance;

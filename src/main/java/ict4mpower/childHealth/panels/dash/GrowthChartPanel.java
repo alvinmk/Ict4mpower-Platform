@@ -16,7 +16,6 @@
  */
 package ict4mpower.childHealth.panels.dash;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +31,8 @@ import nl.topicus.wqplot.options.PlotTooltipLocation;
 
 import org.apache.wicket.model.util.ListModel;
 
-import storage.ApplicationSocketTemp;
-import storage.DataEndPoint;
+import storage.ApplicationSocket;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.data.GrowthData;
@@ -59,7 +58,7 @@ public class GrowthChartPanel extends DivisionPanel {
 		// Values - get reference values depending on the sex of the child
 		PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 		Float[][] references = null;
-		ApplicationSocketTemp store = ApplicationSocketTemp.getApplicationSocketTemp();
+		ApplicationSocket store = new ApplicationSocket();
 		String gb = null;
 		if(pi.getSex() == PatientInfo.Sex.FEMALE) {
 			gb = "girls";
@@ -103,14 +102,13 @@ public class GrowthChartPanel extends DivisionPanel {
 			int max = 0;
 			GrowthData gd = null;
 			// Get from db
-			Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+			MedicalRecordSocket mrSocket = new MedicalRecordSocket();
+			Set<Object> set = mrSocket.getEntriesForPatientId( ((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
 			for(Object o : set) {
-				if(o instanceof GrowthData) {
-					gd = (GrowthData) o;
-					if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
-						data.setIndicators(gd.getIndicators());
-						max = gd.getIndicators().size();
-					}
+				gd = (GrowthData) o;
+				if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
+					data.setIndicators(gd.getIndicators());
+					max = gd.getIndicators().size();
 				}
 			}
 			indicators = data.getIndicators();

@@ -20,12 +20,14 @@ import ict4mpower.childHealth.ChildHealthData;
 
 import java.util.Date;
 
+import models.BaseModel;
+
 /**
  * Data class for the FollowUp task
  * @author Joakim Lindskog
  *
  */
-public class FollowUpData implements ChildHealthData {
+public class FollowUpData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -8893036385045807296L;
 	
 	private static FollowUpData instance = null;

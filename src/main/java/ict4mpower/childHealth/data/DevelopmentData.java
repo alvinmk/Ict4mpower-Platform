@@ -23,12 +23,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import models.BaseModel;
+
 /**
  * Data class for the Development task
  * @author Joakim Lindskog
  *
  */
-public class DevelopmentData implements ChildHealthData {
+public class DevelopmentData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -3866379165135838860L;
 
 	private static DevelopmentData instance = null;

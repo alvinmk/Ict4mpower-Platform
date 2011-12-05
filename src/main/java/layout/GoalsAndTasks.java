@@ -16,6 +16,7 @@
  */
 package layout;
 
+import ict4mpower.MockPatient;
 import tasks.Goals;
 
 public class GoalsAndTasks {

@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.BaseModel;
+
 import org.apache.wicket.Component;
 
 /**
@@ -29,7 +31,7 @@ import org.apache.wicket.Component;
  * @author Joakim Lindskog
  *
  */
-public class AdditionalData implements ChildHealthData {
+public class AdditionalData extends BaseModel implements ChildHealthData {
 	private static final long serialVersionUID = -283564779395916587L;
 	
 	private static AdditionalData instance;

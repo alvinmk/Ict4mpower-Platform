@@ -28,11 +28,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.StringResourceModel;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.effects.EffectBehavior;
 import org.odlabs.wiquery.core.effects.EffectSpeed;
 import org.odlabs.wiquery.core.effects.fading.FadeOut;
-import org.odlabs.wiquery.ui.effects.EffectsHelper;
 import org.odlabs.wiquery.ui.effects.HighlightEffect;
 
 /**
@@ -50,11 +48,11 @@ public class DivisionPanel extends Panel {
 	private EffectBehavior highlightEffect = new EffectBehavior(new HighlightEffect(HighlightEffect.Mode.show, "'#77ED45'", 1500)) {
 		private static final long serialVersionUID = 1L;
 		
-		@Override
-		public void contribute(
-				WiQueryResourceManager wiQueryResourceManager) {
-			EffectsHelper.highlight(wiQueryResourceManager);
-		}
+		//@Override
+		//public void contribute(
+		//		WiQueryResourceManager wiQueryResourceManager) {
+		//	EffectsHelper.highlight(wiQueryResourceManager);
+		//}
 		
 		public boolean isTemporary(Component component) {
 			return true;

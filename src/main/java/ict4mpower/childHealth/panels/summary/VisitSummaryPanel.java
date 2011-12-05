@@ -21,8 +21,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import layout.Template;
+import models.BaseModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -32,7 +34,7 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import storage.DataEndPoint;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.Callback;
@@ -342,7 +344,7 @@ public class VisitSummaryPanel extends DivisionPanel {
 	private boolean saveVisit() {
 		AppSession session = (AppSession)getSession();
 		String goal = session.getGoal()+":";
-		DataEndPoint dep = DataEndPoint.getDataEndPoint();
+		MedicalRecordSocket dep = new MedicalRecordSocket();
 		
 		Serializable[] data = new Serializable[]{
 				session.getAttribute(goal+"GrowthTask"),
@@ -354,12 +356,11 @@ public class VisitSummaryPanel extends DivisionPanel {
 				session.getAttribute(goal+"FollowUpTask"),
 				session.getAttribute("Demographics:AdditionalInfoTask")
 		};
-		for(Serializable s : data) {
+	/*	for(Serializable s : data) {
 			if(s != null) {
 				dep.signEntry(((ChildHealthData)s).clone(), session.getPatientInfo().getClientId(), session.getCurrentVisit(), "ChildHealth");
 			}
 		}
-		dep.save();
 		
 		// Reset data
 		session.replaceSession();
@@ -367,7 +368,7 @@ public class VisitSummaryPanel extends DivisionPanel {
 			if(s != null) {
 				((ChildHealthData)s).reset();
 			}
-		}
+		}*/
 		return true;
 	}
 }

@@ -16,15 +16,16 @@
  */
 package ict4mpower.childHealth.data;
 
-import java.io.Serializable;
 import java.util.List;
+
+import models.BaseModel;
 
 /**
  * Data class for storing Education info for one part
  * @author Joakim Lindskog
  *
  */
-public class EducationInfoData implements Serializable {
+public class EducationInfoData extends BaseModel {
 	private static final long serialVersionUID = -5329457188033766021L;
 	
 	private String header;

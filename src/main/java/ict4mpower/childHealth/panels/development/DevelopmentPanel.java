@@ -44,8 +44,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import storage.ApplicationSocketTemp;
-import storage.DataEndPoint;
+import storage.ApplicationSocket;
+import storage.MedicalRecordSocket;
 
 import ict4mpower.AppSession;
 import ict4mpower.childHealth.SavingForm;
@@ -77,7 +77,8 @@ public class DevelopmentPanel extends DivisionPanel {
 		super(id, "title", false);
 		
 		// Get milestone tests from db
-		Set<Object> set = ApplicationSocketTemp.getApplicationSocketTemp().getData("ChildHealth", "MilestoneTests");
+		ApplicationSocket appSocket = new ApplicationSocket();
+		Set<Object> set = appSocket.getData("ChildHealth", "MilestoneTests");
 		PatientInfo pi = ((AppSession)getSession()).getPatientInfo();
 		List<MilestoneTests> std = null;
 		for(Object o : set) {
@@ -118,15 +119,13 @@ public class DevelopmentPanel extends DivisionPanel {
 					e.printStackTrace();
 				}
 				DevelopmentData dev = null;
-				// Get from db
-				Set<Serializable> set = DataEndPoint.getDataEndPoint().getEntriesFromPatientId(((AppSession)getSession()).getPatientInfo().getClientId());
+				MedicalRecordSocket socket = new MedicalRecordSocket();
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), dev.getClass().getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof DevelopmentData) {
-						dev = (DevelopmentData) o;
-						if(dev.getMilestones() != null && dev.getDate().after(max)) {
-							data.setMilestones(dev.getMilestones());
-							max = dev.getDate();
-						}
+					dev = (DevelopmentData) o;
+					if(dev.getMilestones() != null && dev.getDate().after(max)) {
+						data.setMilestones(dev.getMilestones());
+						max = dev.getDate();
 					}
 				}
 			}
