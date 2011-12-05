@@ -25,3 +25,7 @@
 	font-weight: bold;
 	background-color: #BBB;
 }
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+	color: #1C94C4;
+}
