@@ -106,7 +106,7 @@ public class Vaccination implements Serializable, Comparable<Vaccination>, IDueA
 	}
 
 	/**
-	 * Gets the due age for these milestone tests
+	 * Gets the due age for this vaccination tests
 	 * @param parent the parent component
 	 * @return a String representation of the due age
 	 */
@@ -115,7 +115,7 @@ public class Vaccination implements Serializable, Comparable<Vaccination>, IDueA
 	}
 	
 	/**
-	 * Gets the due age for these milestone tests, as a StringResourceModel
+	 * Gets the due age for this vaccination, as a StringResourceModel
 	 * @param parent the parent component
 	 * @return a StringResourceModel representation of the due age
 	 */
@@ -126,7 +126,7 @@ public class Vaccination implements Serializable, Comparable<Vaccination>, IDueA
 	}
 	
 	/**
-	 * Returns an array representing the age of the child
+	 * Returns an array representing the due age for this vaccination
 	 * [0] => properties key for the age unit (weeks/months/years)
 	 * [1] => number of units of age (e.g. 3 (weeks))
 	 * @return an array representing the age of the child
