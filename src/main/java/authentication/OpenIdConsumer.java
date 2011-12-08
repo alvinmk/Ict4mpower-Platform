@@ -16,8 +16,10 @@
  */
 package authentication;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +29,14 @@ import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters.NamedPair;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.string.Strings;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerManager;
@@ -73,8 +79,6 @@ public abstract class OpenIdConsumer {
 
 	public void init(WebApplication application) {
 		consumers = new MapMaker().expireAfterWrite(5, TimeUnit.MINUTES).makeMap();
-		//application.mountPage("/openid/finish", OpenIdCallbackPage.class);
-		//application.mountBookmarkablePage("/openid/finish", OpenIdCallbackPage.class);
 		application.setMetaData(KEY, this);
 	}
 
@@ -88,10 +92,10 @@ public abstract class OpenIdConsumer {
 		ConsumerManager manager;
 		manager = new ConsumerManager();
 		List<?> discoveries = manager.discover(identity);
+		
 
-		String callbackUrl = applicationUrl + "/"
-				+ RequestCycle.get().urlFor(OpenIdCallbackPage.class, null);
-		log.info("THE CALLBACK URL IS : " +callbackUrl);
+		String callbackUrl = applicationUrl + "/openid/finish"; //+ RequestCycle.get().urlFor(OpenIdCallbackPage.class, null);
+			
 		callbackUrl += callbackUrl.contains("?") ? "&" : "?";
 		callbackUrl += "wicket.identity=" + identity;
 		log.info("CallbackURL: " +callbackUrl);
@@ -110,37 +114,48 @@ public abstract class OpenIdConsumer {
 		
 		throw new RedirectToUrlException(req.getDestinationUrl(true));
 	}
+	
+	public ParameterList getParameterList(IRequestParameters param){
+		log.info(param.toString());
+		Map<String, String> parameterMap = new HashMap<String, String>();
+		Set<String> keys = param.getParameterNames();
+		for(String key : keys){
+			parameterMap.put(key, param.getParameterValue(key).toString());
+		}
+		return new ParameterList(parameterMap);
+	}
 
 	public void finishLogin(Request req, Page page) {
 		
-		HttpServletRequest request = (HttpServletRequest) req;
-			
-		
-		String identity = request.getParameter("wicket.identity");
+		//HttpServletRequest request = (HttpServletRequest) req;
+		//String identity = request.getParameter("wicket.identity");
+		String identity = req.getRequestParameters().getParameterValue("wicket.identity").toString("");
 		if (Strings.isEmpty(identity)) {
 			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
-
+		
 		ConsumerManager manager = consumers.get(identity);
 		if (manager == null) {
 			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
 		consumers.remove(manager);
-
-		ParameterList response = new ParameterList(request.getParameterMap());
-
-		StringBuffer url = request.getRequestURL();
-		if (!Strings.isEmpty(request.getQueryString())) {
-			url.append("?").append(request.getQueryString());
+		
+		String url = applicationUrl +"/"+ req.getUrl().toString();
+		log.info("url string is : " +url);
+		//ParameterList response = new ParameterList(request.getParameterMap());
+		//StringBuffer url = request.getRequestURL();
+		//if (!Strings.isEmpty(request.getQueryString())) {
+		if (!Strings.isEmpty(req.getQueryParameters().toString())) {
+			url +="?"+req.getQueryParameters().toString();
 		}
-
+		ParameterList response = getParameterList(req.getRequestParameters());
+				
 		try {
-			VerificationResult verification = manager.verify(url.toString(),
-					response, null);
+			VerificationResult verification = manager.verify(url,response, null);
 			Identifier verified = verification.getVerifiedId();
 			AuthSuccess authSuccess =(AuthSuccess) verification.getAuthResponse();
 			
-			 log.info(authSuccess.getExtensions());	
+			log.info(authSuccess.getExtensions());	
 			 
 			 if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX))
              {

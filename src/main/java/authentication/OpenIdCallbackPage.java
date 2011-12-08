@@ -17,17 +17,34 @@
 package authentication;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.IMarkupResourceStreamProvider;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.StringResourceStream;
 
-public class OpenIdCallbackPage extends WebPage {
+public class OpenIdCallbackPage extends WebPage implements IMarkupResourceStreamProvider{
 	private static final long serialVersionUID = -7370038018494236607L;
 	final Logger log = Logger.getLogger(OpenIdCallbackPage.class);
+	
+	 //THIS PART---------------------------------------------------
+	  @Override
+	  public final void renderPage() {
+	  }
+	  
+	  public IResourceStream getMarkupResourceStream(MarkupContainer container, Class<?> containerClass) {
+	      return new StringResourceStream("");
+	  } 
+	  
+	  //-------------------------IS TO GET THE webservice part to work 
 	
 	/*
 	 * Handles callback from the openid provider.
 	 */
-	public OpenIdCallbackPage() {
+	public OpenIdCallbackPage(PageParameters p) {
+		log.info("Open ID callback page called");
 		OpenIdConsumer consumer = OpenIdConsumer.get(getApplication());
 		consumer.finishLogin(getRequest(), this);
-	}
+	}	
 }

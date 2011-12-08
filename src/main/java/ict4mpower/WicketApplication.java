@@ -65,6 +65,7 @@ public class WicketApplication extends WebApplication
 		mountPage("/openid/finish", OpenIdCallbackPage.class);
 		
 		
+		
 		getSecuritySettings().setAuthorizationStrategy(new AuthStrategy());
 		OpenIdConsumer consumer = new OpenIdConsumer("http://localhost:8080/template") {
 			
