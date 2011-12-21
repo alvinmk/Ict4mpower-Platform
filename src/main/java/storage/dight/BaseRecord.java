@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
+
 import se.sics.dight.data.model.AttributeQuery;
 import se.sics.dight.data.model.Entry;
 import se.sics.dight.data.model.Objekt;
@@ -26,6 +30,7 @@ public abstract class BaseRecord {
 	protected Engine e = Engine.makeEngine(17, 16 * 1024 * 1024);
 	int version;
 	protected List<Credential> cred = new ArrayList<Credential>();
+	private static final Logger log = Logger.getLogger(BaseRecord.class);
 		
 	public BaseRecord(){
 	}
@@ -39,11 +44,13 @@ public abstract class BaseRecord {
 	 */
 	protected Set<Object> attributesQueryToObject(Set<HashMap<String, Object>> a){
 		Set<Entry> x = attributesQuery(a);
+		log.info("Query returned " + x.size() +" Objects");
 		return getObjectsFromEntrySet(x);
 	}
 	
 	protected Set<Objekt> attributesQueryToObjekt(Set<HashMap<String, Object>> a){
 		Set<Entry> x = attributesQuery(a);
+		log.info("Query returned " + x.size() +" Objects");
 		return getObjektsFromEntrySet(x);
 	}
 	
@@ -54,16 +61,23 @@ public abstract class BaseRecord {
 		}		
 		aq.commit(klassContainer.getEntryAuthenticationAlgorithm());
 		//Send query to server
+		
 		QueryResult qr = null;
 		try {
 			qr = DightSocket.CreateOperationResult(aq, cred, e);
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		AttributeQueryResult indexQResult = (AttributeQueryResult) qr;
-		Set<Entry> x = indexQResult.getResult();
-		return x;		
+		Set<Entry> x;
+		if(indexQResult!=null){
+			x = indexQResult.getResult();
+		}
+		else{
+			log.info("Attribute query returned no results, creating empty result set");
+			x = new HashSet<Entry>();
+		}
+		return x;
 	}
 	
 	private Set<Objekt> getObjektsFromEntrySet(Set<Entry> s){
@@ -113,7 +127,6 @@ public abstract class BaseRecord {
 	 * Serialize the object
 	 */
 	protected static byte[] serialize(Object obj) throws IOException {
-		System.err.println();
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
     	ObjectOutputStream os = new ObjectOutputStream(out);
 		os.writeObject(obj);

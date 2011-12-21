@@ -67,7 +67,7 @@ public class WicketApplication extends WebApplication
 		
 		
 		getSecuritySettings().setAuthorizationStrategy(new AuthStrategy());
-		OpenIdConsumer consumer = new OpenIdConsumer("http://localhost:8080/template") {
+		OpenIdConsumer consumer = new OpenIdConsumer("http://127.0.0.1:8080/template") {
 			
 			@Override
 			protected void onLoginSuccessful(Identifier identifier, Page page) {

@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
@@ -31,12 +29,8 @@ import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.mapper.parameter.PageParameters.NamedPair;
-import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.string.Strings;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerManager;
@@ -47,10 +41,9 @@ import org.openid4java.message.AuthRequest;
 import org.openid4java.message.AuthSuccess;
 import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.AxMessage;
-import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
-import org.openid4java.message.sreg.SRegRequest;
 import org.openid4java.message.sreg.SRegResponse;
+
 
 import com.google.common.collect.MapMaker;
 
@@ -74,6 +67,7 @@ public abstract class OpenIdConsumer {
 	private String applicationUrl;
 
 	public OpenIdConsumer(String applicationUrl) {
+		log.info("Openid application url: " +applicationUrl); 
 		this.applicationUrl = applicationUrl;
 	}
 
@@ -91,9 +85,9 @@ public abstract class OpenIdConsumer {
 
 		ConsumerManager manager;
 		manager = new ConsumerManager();
+				
 		List<?> discoveries = manager.discover(identity);
 		
-
 		String callbackUrl = applicationUrl + "/openid/finish"; //+ RequestCycle.get().urlFor(OpenIdCallbackPage.class, null);
 			
 		callbackUrl += callbackUrl.contains("?") ? "&" : "?";
@@ -102,13 +96,13 @@ public abstract class OpenIdConsumer {
 		log.info("Discovery info: " +discoveries.toString());
 		DiscoveryInformation discovered = manager.associate(discoveries);
 		AuthRequest req = manager.authenticate(discovered, callbackUrl);
-		FetchRequest fetchRequest = FetchRequest.createFetchRequest();
-		fetchRequest.addAttribute("roles", "http://makotogroup.com/schema/1.0/roles", false);
-		req.addExtension(fetchRequest);
+		//FetchRequest fetchRequest = FetchRequest.createFetchRequest();
+		//fetchRequest.addAttribute("roles", "http://makotogroup.com/schema/1.0/roles", false);
+		//req.addExtension(fetchRequest);
 		
-		SRegRequest sRegRequest =  SRegRequest.createFetchRequest();
-		sRegRequest.addAttribute("fullname", false);
-		req.addExtension(sRegRequest);
+		//SRegRequest sRegRequest =  SRegRequest.createFetchRequest();
+		//sRegRequest.addAttribute("fullname", false);
+		//req.addExtension(sRegRequest);
 		
 		consumers.put(identity, manager);
 		
@@ -131,13 +125,16 @@ public abstract class OpenIdConsumer {
 		//String identity = request.getParameter("wicket.identity");
 		String identity = req.getRequestParameters().getParameterValue("wicket.identity").toString("");
 		if (Strings.isEmpty(identity)) {
+			log.warn("No manager for identity found");
 			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
-		
+		log.trace("Trying to get the consumer for " +identity);
 		ConsumerManager manager = consumers.get(identity);
 		if (manager == null) {
+			log.warn("Manager for identity is null");
 			throw new AbortWithHttpErrorCodeException(500, identity);
 		}
+		log.trace("Removing manager");
 		consumers.remove(manager);
 		
 		String url = applicationUrl +"/"+ req.getUrl().toString();
@@ -148,6 +145,7 @@ public abstract class OpenIdConsumer {
 		if (!Strings.isEmpty(req.getQueryParameters().toString())) {
 			url +="?"+req.getQueryParameters().toString();
 		}
+		log.trace("Setting up parameterlist");
 		ParameterList response = getParameterList(req.getRequestParameters());
 				
 		try {

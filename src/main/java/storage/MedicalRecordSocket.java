@@ -16,7 +16,6 @@
  */
 package storage;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 

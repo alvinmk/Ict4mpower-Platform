@@ -16,10 +16,18 @@
  */
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AppInfo {
+public class AppInfo implements Serializable{
 	private ArrayList<HashMap>  visits; //Visits and their status
+	private String applicationName;
+	public String getApplicationName() {
+		return applicationName;
+	}
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
 }
  

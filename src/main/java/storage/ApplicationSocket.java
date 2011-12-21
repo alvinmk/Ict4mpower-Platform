@@ -16,19 +16,25 @@
  */
 package storage;
 
-import java.io.Serializable;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
+
 import storage.dight.ApplicationRecord;
+import storage.dight.BaseRecord;
 
 public class ApplicationSocket {
-
+	private static final Logger log = Logger.getLogger(ApplicationSocket.class);
+	
 	public String storeData(String application, String type, Object data){
+		log.info("Store Data query with arguments, application:"+application +" type:"+type +" Object:" +data.toString() );
 		ApplicationRecord a = new ApplicationRecord();
 		return a.newEntry(application, type, data);
 	}
 	
 	public Set<Object> getData(String application, String type){
+		log.info("Get Data query with arguments, application:"+application +" type:"+type );
 		ApplicationRecord a = new ApplicationRecord();
 		return a.getApplicationData(application, type);
 	}

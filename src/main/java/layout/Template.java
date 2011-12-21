@@ -30,6 +30,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 import tasks.Task;
 import tasks.TaskList;
@@ -42,8 +43,9 @@ public class Template extends WebPage {
 	static final Logger log = Logger.getLogger(Template.class);
 	
 	public Template(final PageParameters parameters) {
-		add(new Label("title", new StringResourceModel("application_title", this, null)));
-
+		//add(new Label("title", new StringResourceModel("application_title", this, null)));
+		add(new Label("title", "Child Health"));
+		
 		AppSession session = (AppSession)getSession();
 		//--Add some mock data, this will be removed--
 		//Mock goals and tasks
@@ -54,6 +56,7 @@ public class Template extends WebPage {
 		session.setAllVisits(mock.visits);
 		session.setCurrentVisit(mock.visits.get(0));
 		session.setPatientInfo(mock.pi);
+		String application_title ="Child Health";
 		//--END OF MOCK DATA--
 		
 		TaskList taskList;
@@ -80,7 +83,7 @@ public class Template extends WebPage {
 				add( new Label("task", ""));
 			}
 		}
-		
+	
 		//The processpanel on top, uses the taskList to keep track of available tabs.
 		ProcessPanel p = new ProcessPanel("process", parameters, taskList );
 		add(p);

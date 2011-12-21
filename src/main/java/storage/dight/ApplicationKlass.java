@@ -23,13 +23,11 @@ public class ApplicationKlass extends KlassContainer{
 		klass = queryKlass(klassName);
 		if(klass!=null){
 			log.info(klass.getName() +" exist in database");
-			
 		}
 		else{
 			log.info(klassName +" does not exsitst in database, creating it");
 			createAndStoreKlass();
 		}		
-		
 	}
 
 	@Override
@@ -42,17 +40,14 @@ public class ApplicationKlass extends KlassContainer{
 	protected void createAndStoreKlass() {
 		EntryId eid = generateUniqeEntryId();
 		klass = e.createKlass(1L, eid, klassName);
-		
 		klass.addAttribute(application);
 		klass.addAttribute(type);
 		klass.commit(EAA);
 		try {
 			DightSocket.CreateOperationResult(klass, klassCreds, e);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 	}
 
 	@Override

@@ -49,10 +49,9 @@ public class MenuPanel extends Panel {
 				try{
 					pp.set("taskname", goals.getTasks(goal).getTaskByNumber(0).getName());
 				}catch(NullPointerException e){
-					pp.set("taskName", "None set");
 				}
-				BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
 				Label l = new Label("taskname", goal);
+				BookmarkablePageLink<Template> link = new BookmarkablePageLink<Template>("tasklink", Template.class, pp);
 				if(goal.equals(selectedGoal)){
 					l.add(new AttributeAppender("class", new Model<String>("selected"), " "));
 				}

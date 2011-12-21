@@ -20,17 +20,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 
-import authentication.OpenIdCallbackPage;
-
 public class TaskList implements Serializable {
+	static final Logger log = Logger.getLogger(TaskList.class);
 	private static final long serialVersionUID = 867500089746391660L;
 private List<String> tasks = new ArrayList<String>();
  
  public TaskList(){}
- static final Logger log = Logger.getLogger(OpenIdCallbackPage.class);
  
  public boolean addTask(String task){
 	tasks.add(task);
@@ -74,7 +71,9 @@ private List<String> tasks = new ArrayList<String>();
  }
  
  
- private Task constructTask(String name, String pack){
+ @SuppressWarnings({ "rawtypes", "unchecked" })
+private Task constructTask(String name, String pack){
+	 log.info("Trying to create task for " +pack +"." +name);
 	 Task returnTask = null;
 	 try {
 			Class cl = Class.forName(pack+"."+name);

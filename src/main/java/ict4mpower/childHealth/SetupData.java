@@ -26,7 +26,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import storage.ApplicationSocket;
+import storage.dight.ApplicationKlass;
 
 /**
  * Class to set up the application specific data in the database
@@ -34,6 +37,7 @@ import storage.ApplicationSocket;
  *
  */
 public class SetupData {
+	private static final Logger log = Logger.getLogger(SetupData.class);
 
 	/**
 	 * @param args
@@ -175,10 +179,12 @@ public class SetupData {
 						5.0f, 5.3f, 5.6f, 6.0f, 6.4f, 6.8f, 7.2f, 7.5f, 7.8f, 8.0f, 8.3f, 8.5f, 8.8f, 9.0f, 9.7f, 10.4f, 10.9f, 11.4f, 11.9f, 12.3f, 12.7f, 13.0f, 13.3f, 13.7f, 14.0f, 14.3f, 14.6f, 14.9f, 15.3f, 15.6f, 15.9f, 16.2f, 16.5f, 16.8f, 17.1f, 17.5f, 17.8f, 18.1f, 18.4f, 18.7f, 19.0f, 19.3f, 19.6f, 19.9f, 20.2f, 20.4f, 20.7f, 21.0f, 21.3f, 21.6f, 21.9f, 22.1f, 22.4f, 22.7f, 23.0f, 23.3f, 23.6f, 23.9f, 24.2f, 24.5f, 24.8f, 25.1f, 25.4f, 25.7f, 26.0f, 26.3f, 26.6f, 26.9f, 27.2f, 27.6f, 27.9f
 				}
 		};
-		if(store.getData(app, growthValuesGirls.getClass().getSimpleName()) == null ){
+		if(store.getData(app, "GrowthReferenceValues:girls").size()==0 ){
+			log.info("GrowthReferenceValues:girls does not exsist, creating it");
 			store.storeData(app, "GrowthReferenceValues:girls", growthValuesGirls);
 		}
-		if(store.getData(app, growthValuesBoys.getClass().getSimpleName()) == null ){
+		if(store.getData(app, "GrowthReferenceValues:boys").size()==0 ){
+			log.info("GrowthReferenceValues:boys does not exsist, creating it");
 			store.storeData(app, "GrowthReferenceValues:boys", growthValuesBoys);
 		}
 		// Immunization - standard vaccinations to be given
@@ -193,7 +199,10 @@ public class SetupData {
 				new Vaccination("DPT+HepB+Hib 3", Calendar.MONTH, 3, null, "", ""),
 				new Vaccination("Measles", Calendar.MONTH, 9, null, "", "")
 		}));
-		store.storeData(app, "StandardVaccinations", vaccinations);
+		if(store.getData(app, "StandardVaccinations").size()==0 ){
+			log.info("StandardVaccinations does not exsist, creating it");
+			store.storeData(app, "StandardVaccinations", vaccinations);
+		}
 		
 		// Medications - standard vitamin A supplements
 		List<Medicine> vitamins = null;
@@ -204,7 +213,10 @@ public class SetupData {
 				new Medicine("Vitamin A", Calendar.MONTH, 18, null, "100 000 IU", ""),
 				new Medicine("Vitamin A", Calendar.YEAR, 2, null, "100 000 IU", "")
 		}));
-		store.storeData(app, "StandardVitaminA", vitamins);
+		if(store.getData(app, "StandardVitaminA").size()==0 ){
+			log.info("StandardVitaminA does not exsist, creating it");
+			store.storeData(app, "StandardVitaminA", vitamins);
+		}
 		
 		// Medications - standard de-worming medications
 		List<Medicine> deworm = null;
@@ -212,7 +224,10 @@ public class SetupData {
 				new Medicine("De-worming 1", Calendar.WEEK_OF_YEAR, 0, null, "100 000 IU", ""),
 				new Medicine("De-worming 2", Calendar.MONTH, 6, null, "100 000 IU", "")
 		}));
-		store.storeData(app, "StandardDeworming", deworm);
+		if(store.getData(app, "StandardDeworming").size()==0 ){
+			log.info("StandardDeworming does not exsist, creating it");
+			store.storeData(app, "StandardDeworming", deworm);
+		}
 		
 		// Medications - standard anti-malarial medications
 		List<Medicine> antimal = null;
@@ -220,7 +235,10 @@ public class SetupData {
 				new Medicine("Antimalarial 1", Calendar.WEEK_OF_YEAR, 0, null, "100 000 IU", ""),
 				new Medicine("Antimalarial 2", Calendar.MONTH, 6, null, "100 000 IU", "")
 		}));
-		store.storeData(app, "StandardAntimalarial", antimal);
+		if(store.getData(app, "StandardAntimalarial").size()==0 ){
+			log.info("StandardAntimalarial does not exsist, creating it");
+			store.storeData(app, "StandardAntimalarial", antimal);
+		}
 		
 		// Development - milestone tests
 		List<MilestoneTests> tests = Arrays.asList(
@@ -237,7 +255,10 @@ public class SetupData {
 						"Hits two objects against each other",
 						null)
 		);
-		store.storeData(app, "MilestoneTests", tests);
+		if(store.getData(app, "MilestoneTests").size()==0 ){
+			log.info("MilestoneTests does not exsist, creating it");
+			store.storeData(app, "MilestoneTests", tests);
+		}
 		
 		// Education - checkable options that can be shown in the visit summary
 		// Note: Make sure to have the text for the properties listed here
@@ -310,8 +331,9 @@ public class SetupData {
 					}
 			}
 		};
-		store.storeData(app, "EducationOptions", options);
-		
-		// Save
+		if(store.getData(app, "EducationOptions").size()==0 ){
+			log.info("EducationOptions does not exsist, creating it");
+			store.storeData(app, "EducationOptions", options);
+		}
 	}
 }
