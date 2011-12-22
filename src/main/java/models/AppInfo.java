@@ -14,24 +14,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with the ICT4MPOWER platform.  If not, see <http://www.gnu.org/licenses/>.
  */
-package storage;
+package models;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import models.Measurement;
-
-import storage.dight.MeasurementRecord;
-
-
-public class MeasurementRecordSocket {
-
-	public Set<Measurement> getMesurmentByType(String measurement, String patienId){
-		MeasurementRecord m = new MeasurementRecord();
-		return m.getMeasurement(patienId, measurement);
+public class AppInfo implements Serializable{
+	private ArrayList<HashMap>  visits; //Visits and their status
+	private String applicationName;
+	public String getApplicationName() {
+		return applicationName;
 	}
-	
-	public String SignEntry(String measurement, String unit, Double value, String patientId){
-		MeasurementRecord m = new MeasurementRecord();
-		return m.newEntry(measurement, unit, value, patientId);
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
 	}
 }
+ 

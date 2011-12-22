@@ -11,7 +11,7 @@
      <repository>
          <id>wiquery-maven-repo</id>
          <name>WiQuery repository</name>
-         <url>https://wiquery.googlecode.com/svn/repo/</url>
+         <url>https://wiquery.googlecode.com/svn/repo</url>
      </repository>
       <repository>
     	<id>enhancedwickettester</id>
@@ -25,8 +25,16 @@
             </releases>
             <snapshots>
                 <enabled>false</enabled>
-            </snapshots>
-        </repository>     
+            </snapshots>	
+	</repository>
+        <repository>
+		<id>wicketstuff-core-releases</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>		
+</repository>
+   
     </repositories>
 	<description></description>
 	<!--
@@ -44,9 +52,10 @@
 		<wicket.version>1.5.3</wicket.version>
 		<wiquery.version>1.5.3</wiquery.version>
 		<jetty.version>6.1.25</jetty.version>
-		<slf4j.version>1.5.8</slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
-		<cxf.version>2.2.3</cxf.version>
+		<wqplot.version>0.1-SNAPSHOT</wqplot.version>
+		<cxf.version>2.2.4</cxf.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -60,16 +69,6 @@
 		<version>${cxf.version}</version>
 	</dependency>
         <!-- Jetty is needed if you're are not using the CXFServlet -->
-	<dependency>
-		<groupId>org.apache.cxf</groupId>
-		<artifactId>cxf-rt-transports-http-jetty</artifactId>
-		<version>${cxf.version}</version>
-	</dependency>
-		<dependency> 
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-			<version>${wicket.version}</version> 
-		</dependency>
 		<dependency>
         	<groupId>se.sics.dight</groupId>
         	<artifactId>dight-storage-store</artifactId>
@@ -84,33 +83,34 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.wicket</groupId>
-    		<artifactId>wicket-auth-roles</artifactId>
-    		<version>${wicket.version}</version>
+    		  <groupId>org.apache.wicket</groupId>
+    		  <artifactId>wicket-auth-roles</artifactId>
+    		  <version>${wicket.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
+        	  <groupId>org.apache.wicket</groupId>
+		  <artifactId>wicket-extensions</artifactId>
+		  <version>${wicket.version}</version>
+		</dependency>		
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-			<type>jar</type>
-			<optional>false</optional>
+    		  <groupId>org.apache.wicket</groupId>
+    		  <artifactId>wicket-datetime</artifactId>
+    		  <version>${wicket.version}</version>
 		</dependency>
 		<dependency>
         	<groupId>org.odlabs.wiquery</groupId>
         	<artifactId>wiquery-core</artifactId>
         	<version>${wiquery.version}</version>
+		</dependency>		
+		<dependency>
+        	  <groupId>org.odlabs.wiquery</groupId>
+        	  <artifactId>wiquery-jquery-ui</artifactId>
+        	  <version>${wiquery.version}</version>
 		</dependency>
 		<dependency>
-        	<groupId>org.odlabs.wiquery</groupId>
-        	<artifactId>wiquery-jquery-ui</artifactId>
-        	<version>${wiquery.version}</version>
+        	  <groupId>nl.topicus</groupId>
+        	  <artifactId>wqplot</artifactId>
+        	  <version>${wqplot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -120,6 +120,7 @@
 			<scope>test</scope>
 			<optional>false</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
@@ -163,9 +164,14 @@
   			<scope>test</scope>
 		</dependency>
 		<dependency>
-    		<groupId>commons-httpclient</groupId>
-    		<artifactId>commons-httpclient</artifactId>
-    		<version>3.1</version>
+    		  <groupId>commons-httpclient</groupId>
+    		  <artifactId>commons-httpclient</artifactId>
+    		  <version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -210,7 +216,7 @@
 				<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
 				<wsdlOptions>
 					<wsdlOption>
-						<wsdl>http://alvin-laptop:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
+						<wsdl>http://10.48.134.255:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
 					</wsdlOption>
 				</wsdlOptions>
 			</configuration>

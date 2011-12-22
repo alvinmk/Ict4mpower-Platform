@@ -9,9 +9,8 @@ import se.sics.dight.data.model.EntryId;
 import se.sics.dight.data.model.Objekt;
 import se.sics.dight.data.model.templates.ValueTemplate;
 import se.sics.dight.data.model.values.Value;
-
+import se.sics.dight.storage.store.query.QueryResult;
 public class ApplicationRecord extends BaseRecord{
-	
 	private static ApplicationKlass klassContainer;
 	
 	public ApplicationRecord(){
@@ -33,22 +32,32 @@ public class ApplicationRecord extends BaseRecord{
 		Objekt entry = e.createObjekt(klassContainer.getKlass(), eid, payload );
 		entry.setValue(klassContainer.type, vType);
 		entry.setValue(klassContainer.application, vApplication);		
+		
 		entry.commit(klassContainer.getEntryAuthenticationAlgorithm());
-		//Send to server
+		try {
+			QueryResult res = DightSocket.CreateOperationResult(entry, cred, e);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		return eid.getId().toString();
 	}
 	
 	public Set<Object> getApplicationData(String application, String type){
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		Set<HashMap<String, Object>> s = new HashSet<HashMap<String, Object>>();
+		
 		ValueTemplate vApplication = e.makeStringValueTemplate(application);
 		ValueTemplate vType = e.makeStringValueTemplate(type);
+		
 		h.put("attribute", klassContainer.type);
 		h.put("value", vType);
 		s.add(h);
+		
+		h = new HashMap<String, Object>();
 		h.put("attribute", klassContainer.application);
 		h.put("value", vApplication);
 		s.add(h);
+		
 		return attributesQueryToObject(s);
 		
 	}

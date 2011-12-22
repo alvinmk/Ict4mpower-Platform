@@ -1,12 +1,26 @@
+/*
+ *  This file is part of the ICT4MPOWER platform.
+ *
+ *  The ICT4MPOWER platform is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The ICT4MPOWER platform is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with the ICT4MPOWER platform.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ict4mpower;
 
-import java.util.HashMap;
 import java.util.List;
 
 import models.PatientInfo;
 
 import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.request.ClientInfo;
 import org.apache.wicket.request.Request;
 
 /*
@@ -18,8 +32,8 @@ public class AppSession extends WebSession{
 	private String goal; //Current goal
 	private String task; //Current task
 	private String[] roles;
-	private String currentVisit;
-	private List<String> allVisits; //A visit is a date and a point in time
+	private long currentVisit;
+	private List<Long> allVisits; //A visit is a date and a point in time
 	private PatientInfo patientInfo;
 	
 	public PatientInfo getPatientInfo(){
@@ -66,19 +80,19 @@ public class AppSession extends WebSession{
 		return roles;
 	}
 
-	public List<String> getAllVisits() {
+	public List<Long> getAllVisits() {
 		return allVisits;
 	}
 
-	public void setAllVisits(List<String> allVisits) {
+	public void setAllVisits(List<Long> allVisits) {
 		this.allVisits = allVisits;
 	}
 
-	public String getCurrentVisit() {
+	public long getCurrentVisit() {
 		return currentVisit;
 	}
 
-	public void setCurrentVisit(String currentVisit) {
+	public void setCurrentVisit(long currentVisit) {
 		this.currentVisit = currentVisit;
 	}
 	
