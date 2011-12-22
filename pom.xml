@@ -11,7 +11,7 @@
      <repository>
          <id>wiquery-maven-repo</id>
          <name>WiQuery repository</name>
-         <url>https://wiquery.googlecode.com/svn/repo/</url>
+         <url>https://wiquery.googlecode.com/svn/repo</url>
      </repository>
       <repository>
     	<id>enhancedwickettester</id>
@@ -25,11 +25,11 @@
             </releases>
             <snapshots>
                 <enabled>false</enabled>
-            </snapshots>
-        </repository>
+            </snapshots>	
+	</repository>
         <repository>
 		<id>wicketstuff-core-releases</id>
-		<url>https://oss.sonatype.org/content/repositories/releases</url>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		<releases>
 			<enabled>true</enabled>
 		</releases>		
@@ -98,9 +98,19 @@
     		  <version>${wicket.version}</version>
 		</dependency>
 		<dependency>
+        	<groupId>org.odlabs.wiquery</groupId>
+        	<artifactId>wiquery-core</artifactId>
+        	<version>${wiquery.version}</version>
+		</dependency>		
+		<dependency>
         	  <groupId>org.odlabs.wiquery</groupId>
         	  <artifactId>wiquery-jquery-ui</artifactId>
         	  <version>${wiquery.version}</version>
+		</dependency>
+		<dependency>
+        	  <groupId>nl.topicus</groupId>
+        	  <artifactId>wqplot</artifactId>
+        	  <version>${wqplot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -110,6 +120,7 @@
 			<scope>test</scope>
 			<optional>false</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
@@ -205,7 +216,7 @@
 				<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
 				<wsdlOptions>
 					<wsdlOption>
-						<wsdl>http://lucan.sics.se:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
+						<wsdl>http://10.48.134.255:8080/dight-storage-webservice-0.0.1-SNAPSHOT/dightStorageService?wsdl</wsdl>
 					</wsdlOption>
 				</wsdlOptions>
 			</configuration>

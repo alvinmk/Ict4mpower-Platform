@@ -96,7 +96,7 @@ public class GrowthIndicatorsPanel extends DivisionPanel {
 				GrowthData gd = null;
 				// If no data in session, get from db
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), GrowthData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					gd = (GrowthData) o;
 					if(gd.getIndicators() != null && gd.getDate().after(max)) {

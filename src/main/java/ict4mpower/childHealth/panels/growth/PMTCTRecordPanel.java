@@ -95,7 +95,7 @@ public class PMTCTRecordPanel extends DivisionPanel {
 				GrowthData gd = null;
 				// Get from db
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), GrowthData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					gd = (GrowthData) o;
 					if(gd.getDate().after(max)) {

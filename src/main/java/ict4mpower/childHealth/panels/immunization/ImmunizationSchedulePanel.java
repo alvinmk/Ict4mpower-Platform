@@ -107,7 +107,7 @@ public class ImmunizationSchedulePanel extends DivisionPanel {
 				}
 				ImmunizationData imd = null;
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), imd.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), ImmunizationData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					imd = (ImmunizationData) o;
 					if(imd.getVaccinations() != null && imd.getDate().after(max)) {

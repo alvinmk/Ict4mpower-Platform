@@ -69,7 +69,7 @@ public class VitaminASupplementationPanel extends DivisionPanel {
 			MedicationsData med = null;
 			// Get from db
 			MedicalRecordSocket socket = new MedicalRecordSocket();
-			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), med.getClass().getSimpleName(), "ChildHealth");
+			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), MedicationsData.class.getSimpleName(), "ChildHealth");
 			for(Object o : set) {
 				if(o instanceof MedicationsData) {
 					med = (MedicationsData) o;

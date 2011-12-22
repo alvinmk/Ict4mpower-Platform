@@ -356,19 +356,20 @@ public class VisitSummaryPanel extends DivisionPanel {
 				session.getAttribute(goal+"FollowUpTask"),
 				session.getAttribute("Demographics:AdditionalInfoTask")
 		};
-	/*	for(Serializable s : data) {
+		for(Serializable s : data) {
 			if(s != null) {
-				dep.signEntry(((ChildHealthData)s).clone(), session.getPatientInfo().getClientId(), session.getCurrentVisit(), "ChildHealth");
+				dep.SignEntry( ((BaseModel)s), session.getPatientInfo().getClientId(), session.getCurrentVisit(), "ChildHealth");
 			}
 		}
 		
 		// Reset data
 		session.replaceSession();
+		
 		for(Serializable s : data) {
 			if(s != null) {
 				((ChildHealthData)s).reset();
 			}
-		}*/
+		}
 		return true;
 	}
 }

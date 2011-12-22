@@ -63,7 +63,7 @@ public class SpecialCarePanel extends DivisionPanel {
 			AdditionalData ad = null;
 			// Get from db
 			MedicalRecordSocket socket = new MedicalRecordSocket();
-			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), ad.getClass().getSimpleName(), "ChildHealth");
+			Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), AdditionalData.class.getSimpleName(), "ChildHealth");
 			for(Object o : set) {
 				ad = (AdditionalData) o;
 				if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {

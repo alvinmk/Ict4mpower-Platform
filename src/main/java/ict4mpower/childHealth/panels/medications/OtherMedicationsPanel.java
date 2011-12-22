@@ -85,7 +85,7 @@ public class OtherMedicationsPanel extends DivisionPanel {
 				MedicationsData med = null;
 				// Get from db
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), med.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), MedicationsData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					med = (MedicationsData) o;
 					if(med.getOtherMeds() != null && med.getDate().after(max)) {

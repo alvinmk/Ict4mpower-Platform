@@ -120,7 +120,7 @@ public class DevelopmentPanel extends DivisionPanel {
 				}
 				DevelopmentData dev = null;
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), dev.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), DevelopmentData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					dev = (DevelopmentData) o;
 					if(dev.getMilestones() != null && dev.getDate().after(max)) {

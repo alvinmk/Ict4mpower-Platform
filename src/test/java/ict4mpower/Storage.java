@@ -1,8 +1,15 @@
 package ict4mpower;
 
+import ict4mpower.childHealth.SetupData;
+
 import java.util.Date;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
+
 import junit.framework.TestCase;
+import models.AppInfo;
 import models.Measurement;
 import models.PatientInfo;
 import models.PatientInfo.Sex;
@@ -13,10 +20,23 @@ import storage.MedicalRecordSocket;
 
 public class Storage extends TestCase{
 	
-	
 	public void testApplicationRecortd(){
 		ApplicationSocket a = new ApplicationSocket();
+		AppInfo appInfo = new AppInfo();
+		appInfo.setApplicationName("TestApp");
+		a.storeData("TestApp", "AppInfo", appInfo);
+		Set<Object> result = a.getData("TestApp", "AppInfo");
+		assertTrue(!result.isEmpty());
+		assertTrue(result.size() != 0);
+		AppInfo res = (AppInfo) result.iterator().next(); 
+		//assertEquals(res, appInfo);
+		result = a.getData("ChildHealth", "GrowthReferenceValues:girls");
+		assertNotNull(result);
+		assertTrue(result.size() > 0);
+		Float[][] data = (Float[][]) result.iterator().next();
 		
+		assertNotNull(data);
+		assertEquals(33.9f, data[0][0]);
 	//	String result = a.storeData("app", "appInfo", ar);
 	//	assertNotNull("No id returned!", result);
 		
@@ -76,7 +96,6 @@ public class Storage extends TestCase{
 			assertTrue(m.getValue() == 100.0 || m.getValue() == 12.0);
 			assertEquals("111", m.getPatientId());
 			assertEquals("m", m.getUnit());
-		
 		}
 		
 		

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import models.PatientInfo;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.NumberSeries;
 import nl.topicus.wqplot.options.PlotOptions;
@@ -47,7 +48,6 @@ import ict4mpower.childHealth.panels.growth.Indicator;
  */
 public class GrowthChartPanel extends DivisionPanel {
 	private static final long serialVersionUID = -1172218234548889654L;
-
 	/**
 	 * Constructor
 	 * @param id component id
@@ -72,7 +72,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			references = (Float[][]) o;
 			break;
 		}
-
+		
 		/** List of all series in the graph */
 		List<NumberSeries<Float, Float>> list = new ArrayList<NumberSeries<Float, Float>>();
 		
@@ -81,7 +81,7 @@ public class GrowthChartPanel extends DivisionPanel {
 		for(Float[] arr : references) {
 			series = new NumberSeries<Float, Float>();
 			for(int i=0; i<arr.length; i++) {
-				// Add entry to series
+				// Add entry to seriesNumber
 				series.addEntry((float)i, arr[i]);
 			}
 			// Add series to list of all series
@@ -103,7 +103,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			GrowthData gd = null;
 			// Get from db
 			MedicalRecordSocket mrSocket = new MedicalRecordSocket();
-			Set<Object> set = mrSocket.getEntriesForPatientId( ((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
+			Set<Object> set = mrSocket.getEntriesForPatientId( ((AppSession)getSession()).getPatientInfo().getClientId(), GrowthData.class.getSimpleName(), "ChildHealth");
 			for(Object o : set) {
 				gd = (GrowthData) o;
 				if(gd.getIndicators() != null && gd.getIndicators().size() > max) {
@@ -132,12 +132,13 @@ public class GrowthChartPanel extends DivisionPanel {
 			list.add(vLength);
 			list.add(vWeight);
 		}
-		
-		// Chart
-		JQPlot chart =
-			new JQPlot("chart", new ListModel<NumberSeries<Float, Float>>(list));
+		// Chart		
+		JQPlot chart = new JQPlot("chart", new ListModel<NumberSeries<Float, Float>>(list));
+
+
 		
 		// Options
+		
 		PlotOptions options = chart.getOptions();
 		
 		// Series
@@ -152,162 +153,162 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setColor(cMed)
 			.setShowMarker(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (-1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (-2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (-3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (+1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (+2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+		//		.setShowHighlight(false);
 		options.addNewSeries() // Head circumference (+3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setShowLabel(false)
 			.setLineWidth(lw)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (median)
 			.setLabel("Length")
 			.setColor(cMed)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (-1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (-2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (-3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (+1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (+2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Length (+3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y2axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (median)
 			.setLabel("Weight")
 			.setColor(cMed)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (-1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (-2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+		//		.setShowHighlight(false);
 		options.addNewSeries() // Weight (-3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (+1)
 			.setColor(c1)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (+2)
 			.setColor(c2)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.addNewSeries() // Weight (+3)
 			.setColor(c3)
 			.setShowMarker(false)
 			.setLineWidth(lw)
 			.setYaxis("y3axis")
 			.setShowLabel(false)
-			.getMarkerOptions()
-				.setShowHighlight(false);
+			.getMarkerOptions();
+	//			.setShowHighlight(false);
 		options.getHighlighter()
 			.setShow(true)
 			.setShowTooltip(true)
@@ -315,12 +316,12 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setTooltipAxes(PlotTooltipAxes.yx)
 			.setUseAxesFormatters(false)
 			.setFormatString("%.1f {{ySuffix}}, %.1f {{xSuffix}}")
-			.setTooltipLocation(PlotTooltipLocation.se)
-			.setxAxisFormatFunction("function(val) {" +
+			.setTooltipLocation(PlotTooltipLocation.se);
+	/*		.setxAxisFormatFunction("function(val) {" +
 					"if(val<14) {return val;}" +
 					"else if(val<22) {return val-10;}" +
 					"else if((val-10)%12==0) {return (val-10)/12;}" +
-					"else return (val-10)%12;}");
+					"else return (val-10)%12;}");*/
 		options.addNewSeries() // Head circumference
 			.setColor("black")
 			.setYaxis("yaxis")
@@ -359,12 +360,12 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setMax(60)
 			.setLabelRenderer("$.jqplot.CanvasAxisLabelRenderer")
 			.setTicks(xTicks)
-			.setHighlightSuffixFunction("function (val) {"
+		/*	.setHighlightSuffixFunction("function (val) {"
 					+"if(val<14) {return 'weeks'}"
 					+"else if(val<22) {return 'months'}"
 					+"else if((val-10)%12==0) {return 'years'}"
 					+"else {return 'months'}"
-					+"}")
+					+"}")*/
 			.getTickOptions()
 				.setFormatString("%i")
 				.setShowLabel(true);
@@ -375,7 +376,8 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setTickInterval(5)
 			.setLabelRenderer("$.jqplot.CanvasAxisLabelRenderer")
 			.setLabel("Head circumference (cm)")
-			.setHighlightSuffix(" cm")
+			
+			//.setHighlightSuffix(" cm")
 			.getTickOptions()
 				.setFormatString("%i");
 		// Length
@@ -386,7 +388,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setShow(true)
 			.setLabelRenderer("$.jqplot.CanvasAxisLabelRenderer")
 			.setLabel("Length (cm)")
-			.setHighlightSuffix(" cm")
+		//	.setHighlightSuffix(" cm")
 			.getTickOptions()
 				.setFormatString("%i");
 		// Weight
@@ -397,7 +399,7 @@ public class GrowthChartPanel extends DivisionPanel {
 			.setShow(true)
 			.setLabelRenderer("$.jqplot.CanvasAxisLabelRenderer")
 			.setLabel("Weight (kg)")
-			.setHighlightSuffix(" kg")
+	//		.setHighlightSuffix(" kg")
 			.getTickOptions()
 				.setFormatString("%i");
 

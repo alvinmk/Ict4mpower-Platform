@@ -98,14 +98,12 @@ public class ReasonsPanel extends DivisionPanel {
 				AdditionalData ad = null;
 				// Get from db
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), ad.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), AdditionalData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
-					if(o instanceof AdditionalData) {
-						ad = (AdditionalData) o;
-						if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
-							data.setReasons(ad.getReasons());
+					ad = (AdditionalData) o;
+					if(!ad.getReasons().isEmpty() && ad.getDate().after(max)) {
+						data.setReasons(ad.getReasons());
 							max = ad.getDate();
-						}
 					}
 				}
 			}

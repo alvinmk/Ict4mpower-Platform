@@ -94,7 +94,7 @@ public class FeedingPanel extends DivisionPanel {
 				}
 				GrowthData gd = null;
 				MedicalRecordSocket socket = new MedicalRecordSocket();
-				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), gd.getClass().getSimpleName(), "ChildHealth");
+				Set<Object> set = socket.getEntriesForPatientId(((AppSession)getSession()).getPatientInfo().getClientId(), GrowthData.class.getSimpleName(), "ChildHealth");
 				for(Object o : set) {
 					if(o instanceof GrowthData) {
 						gd = (GrowthData) o;
