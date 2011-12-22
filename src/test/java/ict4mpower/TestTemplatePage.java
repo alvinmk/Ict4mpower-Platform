@@ -11,7 +11,8 @@ import layoutPanels.UserPanel;
 import layoutPanels.VisitPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
-import pl.rabbitsoftware.EnhancedWicketTester;
+
+import tasks.Goals;
 
 
 /**
@@ -20,7 +21,7 @@ import pl.rabbitsoftware.EnhancedWicketTester;
 public class TestTemplatePage extends TestCase
 {
 	private WicketTester tester;
-	EnhancedWicketTester enhanced = new EnhancedWicketTester(tester);
+	//EnhancedWicketTester enhanced = new EnhancedWicketTester(tester);
 
 	@Override
 	public void setUp()
@@ -41,22 +42,20 @@ public class TestTemplatePage extends TestCase
 		
 	}
 	
-	public void notestState(){
+	public void testState(){
 		tester.startComponentInPage(new StatePanel("statePanel"));
-		tester.assertContains("CLIENT NAME");
-		tester.assertContains("WARNINGS: WARNINGS");
-		tester.assertContains("DATE");
-		tester.assertContains("VISIT SIGNED");
+		tester.assertContains("No patient selected");
+		tester.assertContains("No warnings");
 	}
 
 	
 	public void testProcess(){		
 		PageParameters pp = new PageParameters();
 		GoalsAndTasks gt = new GoalsAndTasks();
-		ProcessPanel p = new ProcessPanel("process", pp, gt.getGoals().getTasks("patients"));
+		ProcessPanel p = new ProcessPanel("process", pp, gt.getGoals().getTasks("ChildHealth"));
 		tester.startComponentInPage(p);	
-		tester.assertContains("Task1");
-		tester.assertContains("Task2");
+		tester.assertContains("DashboardTask");
+		tester.assertContains("GrowthTask");
 	}
 
 	public void testClientPanel(){
@@ -67,7 +66,7 @@ public class TestTemplatePage extends TestCase
 	public void testVisitPanel(){
 		VisitPanel v = new VisitPanel("visitPanel");
 		tester.startComponentInPage(v);
-		tester.assertContains("No visit");
+		tester.assertContains("0");
 	}
 
 	public void testUserPanel(){
@@ -79,10 +78,13 @@ public class TestTemplatePage extends TestCase
 	public void testMenu(){
 		PageParameters pp = new PageParameters();
 		GoalsAndTasks gt = new GoalsAndTasks();
-		MenuPanel m = new MenuPanel("menu", pp, gt.getGoals().getGoals());
+		MenuPanel m = new MenuPanel("menu", pp, gt.getGoals());
 		tester.startComponentInPage(m);
-		tester.assertContains("patient");
-		tester.assertContains("Overview");
+		GoalsAndTasks g = new GoalsAndTasks();
+		for(String goal : g.getGoals().getGoals() ){
+			tester.assertContains(goal);
+		}
+		
 	}
 
 }
